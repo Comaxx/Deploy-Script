@@ -26,7 +26,7 @@ Installation
 ###Installation Concrete 5
 Log into the server and grab a copy of the script.
 	
-	$ clone git@github.com:nedstars/Deploy-Script.git
+	$ clone git://github.com/nedstars/Deploy-Script.git
 	
 Copy the example file for each enviroment that your need, for example "staging" or "live", from sources/.. to the root of the project.
 When executing ./deploy the -c or --config argument is used to specify which config should be loaded.
