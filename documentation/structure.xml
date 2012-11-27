@@ -1,0 +1,3042 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project version="2.0.0a8" title="">
+  <file path="classes/DeployerException.php" hash="70814e65114b0b25f443abf6fe632f1e" package="Nedstars\PHPlib">
+    <docblock line="2">
+      <description><![CDATA[Deployer Exception class]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="project" description="NedStars PHPlib"/>
+      <tag line="2" name="category" description="Nedstars_Tools"/>
+      <tag line="2" name="package" description="Nedstars_PHPlib"/>
+      <tag line="2" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+      <tag line="2" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="21" package="Nedstars\PHPlib">
+      <extends>\NedStars_Exception</extends>
+      <name>DeployerException</name>
+      <full_name>\DeployerException</full_name>
+      <docblock line="12">
+        <description><![CDATA[Deployer Exception class, Logs msg via NedStars_Log]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="12" name="project" description="NedStars PHPlib"/>
+        <tag line="12" name="category" description="Nedstars_Tools"/>
+        <tag line="12" name="package" description="Nedstars_PHPlib"/>
+        <tag line="12" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+        <tag line="12" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+      </docblock>
+      <constant namespace="global" line="23" package="Nedstars\PHPlib">
+        <name>DISK_SPACE</name>
+        <full_name>DISK_SPACE</full_name>
+        <value><![CDATA[1]]></value>
+      </constant>
+      <constant namespace="global" line="24" package="Nedstars\PHPlib">
+        <name>NO_ROOT</name>
+        <full_name>NO_ROOT</full_name>
+        <value><![CDATA[2]]></value>
+      </constant>
+      <constant namespace="global" line="25" package="Nedstars\PHPlib">
+        <name>NO_LOCK</name>
+        <full_name>NO_LOCK</full_name>
+        <value><![CDATA[3]]></value>
+      </constant>
+      <constant namespace="global" line="26" package="Nedstars\PHPlib">
+        <name>BINARY_MISSING</name>
+        <full_name>BINARY_MISSING</full_name>
+        <value><![CDATA[4]]></value>
+      </constant>
+      <constant namespace="global" line="27" package="Nedstars\PHPlib">
+        <name>MYSQL_FAIL</name>
+        <full_name>MYSQL_FAIL</full_name>
+        <value><![CDATA[5]]></value>
+      </constant>
+      <constant namespace="global" line="28" package="Nedstars\PHPlib">
+        <name>DIR_FAIL</name>
+        <full_name>DIR_FAIL</full_name>
+        <value><![CDATA[6]]></value>
+      </constant>
+      <constant namespace="global" line="29" package="Nedstars\PHPlib">
+        <name>GIT_CREDENTIALS</name>
+        <full_name>GIT_CREDENTIALS</full_name>
+        <value><![CDATA[7]]></value>
+      </constant>
+      <constant namespace="global" line="30" package="Nedstars\PHPlib">
+        <name>CONFIG_FAIL</name>
+        <full_name>CONFIG_FAIL</full_name>
+        <value><![CDATA[8]]></value>
+      </constant>
+      <constant namespace="global" line="31" package="Nedstars\PHPlib">
+        <name>LOCAL_XML_FAILED</name>
+        <full_name>LOCAL_XML_FAILED</full_name>
+        <value><![CDATA[9]]></value>
+      </constant>
+      <constant namespace="global" line="32" package="Nedstars\PHPlib">
+        <name>PRINT_VERSION</name>
+        <full_name>PRINT_VERSION</full_name>
+        <value><![CDATA[10]]></value>
+      </constant>
+    </class>
+  </file>
+  <file path="classes/Pushover/API.php" hash="a7bf31d7a170664c0a5c0b25882a7e3e" package="Php-Pushover">
+    <docblock line="2">
+      <description><![CDATA[php-pushover]]></description>
+      <long-description><![CDATA[<p>PHP service wrapper for the pushover.net API: https://pushover.net/api</p>]]></long-description>
+      <tag line="2" name="project" description="NedStars Deployer"/>
+      <tag line="2" name="category" description="Notifications"/>
+      <tag line="2" name="package" description="Php-Pushover"/>
+      <tag line="2" name="author" description="Chris Schalenborgh &lt;chris.s@kryap.com&gt;"/>
+      <tag line="2" name="license" description="BSD License"/>
+      <tag line="2" name="version" description="Release: 0.1"/>
+      <tag line="2" name="link" description="https://pushover.net/api" link="https://pushover.net/api"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="29" package="Php-Pushover">
+      <extends/>
+      <name>Pushover_API</name>
+      <full_name>\Pushover_API</full_name>
+      <docblock line="16">
+        <description><![CDATA[php-pushover]]></description>
+        <long-description><![CDATA[<p>PHP service wrapper for the pushover.net API: https://pushover.net/api</p>]]></long-description>
+        <tag line="16" name="project" description="NedStars Deployer"/>
+        <tag line="16" name="category" description="Notifications"/>
+        <tag line="16" name="package" description="Php-Pushover"/>
+        <tag line="16" name="author" description="Chris Schalenborgh &lt;chris.s@kryap.com&gt;"/>
+        <tag line="16" name="license" description="BSD License"/>
+        <tag line="16" name="version" description="Release: 0.1"/>
+        <tag line="16" name="link" description="https://pushover.net/api" link="https://pushover.net/api"/>
+      </docblock>
+      <constant namespace="global" line="31" package="Php-Pushover">
+        <name>API_URL</name>
+        <full_name>API_URL</full_name>
+        <value><![CDATA['https://api.pushover.net/1/messages.xml']]></value>
+      </constant>
+      <property final="false" static="false" visibility="private" line="38" namespace="global" package="Default">
+        <name>$_token</name>
+        <default><![CDATA[]]></default>
+        <docblock line="33">
+          <description><![CDATA[Application API token]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="33" name="var" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="private" line="45" namespace="global" package="Default">
+        <name>$_user</name>
+        <default><![CDATA[]]></default>
+        <docblock line="40">
+          <description><![CDATA[User API token]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="40" name="var" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="private" line="52" namespace="global" package="Default">
+        <name>$_debug</name>
+        <default><![CDATA[false]]></default>
+        <docblock line="47">
+          <description><![CDATA[Turn on/off debug mode]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="47" name="var" description="" type="bool">
+            <type by_reference="false">bool</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="private" line="59" namespace="global" package="Default">
+        <name>$_title</name>
+        <default><![CDATA[]]></default>
+        <docblock line="54">
+          <description><![CDATA[Title of the message]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="54" name="var" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="private" line="66" namespace="global" package="Default">
+        <name>$_message</name>
+        <default><![CDATA[]]></default>
+        <docblock line="61">
+          <description><![CDATA[The message itself (up to 512 characters)]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="61" name="var" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="private" line="73" namespace="global" package="Default">
+        <name>$_timestamp</name>
+        <default><![CDATA[]]></default>
+        <docblock line="68">
+          <description><![CDATA[Timestamp in Unix timestamp format]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="68" name="var" description="" type="int">
+            <type by_reference="false">int</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="private" line="80" namespace="global" package="Default">
+        <name>$_device</name>
+        <default><![CDATA[]]></default>
+        <docblock line="75">
+          <description><![CDATA[User's device (user specific)]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="75" name="var" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="private" line="87" namespace="global" package="Default">
+        <name>$_priority</name>
+        <default><![CDATA[0]]></default>
+        <docblock line="82">
+          <description><![CDATA[Priority of the message.]]></description>
+          <long-description><![CDATA[<p>Can be 0 or 1. High-priority messages override a user's "quiet hours" setting and will always be delivered any time they are received. High priority messages are highlighted in red in the Android and iOS clients.</p>]]></long-description>
+          <tag line="82" name="var" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="private" line="94" namespace="global" package="Default">
+        <name>$_url</name>
+        <default><![CDATA[]]></default>
+        <docblock line="89">
+          <description><![CDATA[Include a Supplementary URL (up to 200 characters)]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="89" name="var" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="private" line="101" namespace="global" package="Default">
+        <name>$_url_title</name>
+        <default><![CDATA[]]></default>
+        <docblock line="96">
+          <description><![CDATA[Title of the included URL (up to 50 characters)]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="96" name="var" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="112" package="Php-Pushover">
+        <name>setToken</name>
+        <full_name>setToken</full_name>
+        <docblock line="105">
+          <description><![CDATA[Set API token]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="105" name="param" description="Your app API key." type="string" variable="$token">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="105" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="112">
+          <name>$token</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="121" package="Php-Pushover">
+        <name>getToken</name>
+        <full_name>getToken</full_name>
+        <docblock line="116">
+          <description><![CDATA[Get API token]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="116" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="132" package="Php-Pushover">
+        <name>setUser</name>
+        <full_name>setUser</full_name>
+        <docblock line="125">
+          <description><![CDATA[Set API user]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="125" name="param" description="The user's API key." type="string" variable="$user">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="125" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="132">
+          <name>$user</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="141" package="Php-Pushover">
+        <name>getUser</name>
+        <full_name>getUser</full_name>
+        <docblock line="136">
+          <description><![CDATA[Get API user]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="136" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="152" package="Php-Pushover">
+        <name>setTitle</name>
+        <full_name>setTitle</full_name>
+        <docblock line="145">
+          <description><![CDATA[Set message title]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="145" name="param" description="Title of push notification." type="string" variable="$title">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="145" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="152">
+          <name>$title</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="161" package="Php-Pushover">
+        <name>getTitle</name>
+        <full_name>getTitle</full_name>
+        <docblock line="156">
+          <description><![CDATA[Get message title]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="156" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="172" package="Php-Pushover">
+        <name>setMessage</name>
+        <full_name>setMessage</full_name>
+        <docblock line="165">
+          <description><![CDATA[Set message]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="165" name="param" description="Message of push notification." type="string" variable="$msg">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="165" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="172">
+          <name>$msg</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="181" package="Php-Pushover">
+        <name>getMessage</name>
+        <full_name>getMessage</full_name>
+        <docblock line="176">
+          <description><![CDATA[Get message]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="176" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="192" package="Php-Pushover">
+        <name>setDevice</name>
+        <full_name>setDevice</full_name>
+        <docblock line="185">
+          <description><![CDATA[Set device]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="185" name="param" description="Leave this empty if you want to send to all user's devices. This can be user specific!" type="string" variable="$device">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="185" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="192">
+          <name>$device</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="201" package="Php-Pushover">
+        <name>getDevice</name>
+        <full_name>getDevice</full_name>
+        <docblock line="196">
+          <description><![CDATA[Get device]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="196" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="214" package="Php-Pushover">
+        <name>setTimestamp</name>
+        <full_name>setTimestamp</full_name>
+        <docblock line="205">
+          <description><![CDATA[Set timestamp]]></description>
+          <long-description><![CDATA[<p>Messages are stored on the Pushover servers with a timestamp of when they were initially received through the API. This timestamp is sent to and shown on client devices, and messages are listed in order of these timestamps. In most cases, this default timestamp is acceptable. This is not for scheduling!</p>]]></long-description>
+          <tag line="205" name="param" description="dispaly time on device" type="int" variable="$time">
+            <type by_reference="false">int</type>
+          </tag>
+          <tag line="205" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="214">
+          <name>$time</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="223" package="Php-Pushover">
+        <name>getTimestamp</name>
+        <full_name>getTimestamp</full_name>
+        <docblock line="218">
+          <description><![CDATA[Get timestamp]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="218" name="return" description="" type="int">
+            <type by_reference="false">int</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="234" package="Php-Pushover">
+        <name>setPriority</name>
+        <full_name>setPriority</full_name>
+        <docblock line="227">
+          <description><![CDATA[Set priority (0 or 1)]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="227" name="param" description="Default = 0, if 1 the user's quiet hours will be ignored + messages displayed in red." type="int" variable="$priority">
+            <type by_reference="false">int</type>
+          </tag>
+          <tag line="227" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="234">
+          <name>$priority</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="243" package="Php-Pushover">
+        <name>getPriority</name>
+        <full_name>getPriority</full_name>
+        <docblock line="238">
+          <description><![CDATA[Get priority]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="238" name="return" description="" type="int">
+            <type by_reference="false">int</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="254" package="Php-Pushover">
+        <name>setUrl</name>
+        <full_name>setUrl</full_name>
+        <docblock line="247">
+          <description><![CDATA[Set url]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="247" name="param" description="Add an url to your notification." type="string" variable="$url">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="247" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="254">
+          <name>$url</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="263" package="Php-Pushover">
+        <name>getUrl</name>
+        <full_name>getUrl</full_name>
+        <docblock line="258">
+          <description><![CDATA[Get url]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="258" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="274" package="Php-Pushover">
+        <name>setUrlTitle</name>
+        <full_name>setUrlTitle</full_name>
+        <docblock line="267">
+          <description><![CDATA[Set url title]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="267" name="param" description="A title if you want to show a text instead of the actual url." type="string" variable="$url_title">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="267" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="274">
+          <name>$url_title</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="283" package="Php-Pushover">
+        <name>getUrlTitle</name>
+        <full_name>getUrlTitle</full_name>
+        <docblock line="278">
+          <description><![CDATA[Get url title]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="278" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="294" package="Php-Pushover">
+        <name>setDebug</name>
+        <full_name>setDebug</full_name>
+        <docblock line="287">
+          <description><![CDATA[Set debug mode]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="287" name="param" description="Enable this to receive detailed input and output info." type="bool" variable="$debug">
+            <type by_reference="false">bool</type>
+          </tag>
+          <tag line="287" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="294">
+          <name>$debug</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="303" package="Php-Pushover">
+        <name>isDebug</name>
+        <full_name>isDebug</full_name>
+        <docblock line="298">
+          <description><![CDATA[Get debug mode]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="298" name="return" description="" type="boolean">
+            <type by_reference="false">boolean</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="312" package="Php-Pushover">
+        <name>send</name>
+        <full_name>send</full_name>
+        <docblock line="307">
+          <description><![CDATA[Send message to Pushover API]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="307" name="return" description="" type="bool">
+            <type by_reference="false">bool</type>
+          </tag>
+        </docblock>
+      </method>
+    </class>
+  </file>
+  <file path="classes/Deployer.php" hash="1cbbb4cc795cd4ec2aee8c6aad814577" package="Nedstars\Deployer">
+    <docblock line="2">
+      <description><![CDATA[Deployer class, main deploy boject.]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="project" description="NedStars Deployer"/>
+      <tag line="2" name="category" description="Convenience_Class"/>
+      <tag line="2" name="package" description="Nedstars_Deployer"/>
+      <tag line="2" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+      <tag line="2" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="21" package="Nedstars\Deployer">
+      <extends/>
+      <name>Deployer</name>
+      <full_name>\Deployer</full_name>
+      <docblock line="12">
+        <description><![CDATA[Deployer class, main deploy boject.]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="12" name="project" description="NedStars Deployer"/>
+        <tag line="12" name="category" description="Convenience_Class"/>
+        <tag line="12" name="package" description="Nedstars_Deployer"/>
+        <tag line="12" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+        <tag line="12" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+      </docblock>
+      <constant namespace="global" line="26" package="Nedstars\Deployer">
+        <name>VERSION</name>
+        <full_name>VERSION</full_name>
+        <value><![CDATA['1.1']]></value>
+        <docblock line="23">
+          <description><![CDATA[Script version]]></description>
+          <long-description><![CDATA[]]></long-description>
+        </docblock>
+      </constant>
+      <property final="false" static="false" visibility="private" line="32" namespace="global" package="Default">
+        <name>$_config</name>
+        <default><![CDATA[null]]></default>
+        <docblock line="27">
+          <description><![CDATA[Configuration object]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="27" name="var" description="Configuration object" type="\DeployConfig">
+            <type by_reference="false">\DeployConfig</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="true" visibility="public" line="39" namespace="global" package="Default">
+        <name>$input_option_array</name>
+        <default><![CDATA[array('debug' => array('short' => 'd', 'long' => 'debug', 'type' => '::'), 'verbose' => array('short' => 'v', 'long' => 'verbose', 'type' => '::'), 'config' => array('short' => 'c', 'long' => 'config', 'type' => ':'), 'tag' => array('short' => 't', 'long' => 'tag', 'type' => ':'), 'branch' => array('short' => 'b', 'long' => 'branch', 'type' => ':'), 'version' => array('short' => 's', 'long' => 'version', 'type' => ''))]]></default>
+        <docblock line="34">
+          <description><![CDATA[PHP CLI arguments array.]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="34" name="var" description="argument array used for NedStars_Arguments" type="Array">
+            <type by_reference="false">Array</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="private" line="77" namespace="global" package="Default">
+        <name>$_lock</name>
+        <default><![CDATA[null]]></default>
+        <docblock line="72">
+          <description><![CDATA[Contains the lock resources.]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="72" name="var" description="socket stream for locking" type="resource">
+            <type by_reference="false">resource</type>
+          </tag>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="96" package="Nedstars\Deployer">
+        <name>__construct</name>
+        <full_name>__construct</full_name>
+        <docblock line="79">
+          <description><![CDATA[Constructor]]></description>
+          <long-description><![CDATA[<p>1) Parse arguments (done outside of the object)
+2) set lock to prevent multiple instances
+3) Load config
+4) Init log level and set start msg
+5) Check if required binairies exist
+6) Check for free disk space
+7) Sanity_info: check if all configuration options are filled in
+    Check if user is root
+    Check if mysql and git credentials are present</p>]]></long-description>
+          <tag line="79" name="param" description="set options" type="Array" variable="$options">
+            <type by_reference="false">Array</type>
+          </tag>
+          <tag line="79" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="96">
+          <name>$options</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="128" package="Nedstars\Deployer">
+        <name>__destruct</name>
+        <full_name>__destruct</full_name>
+        <docblock line="123">
+          <description><![CDATA[Clean up locks]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="123" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="138" package="Nedstars\Deployer">
+        <name>printUsage</name>
+        <full_name>printUsage</full_name>
+        <docblock line="133">
+          <description><![CDATA[Print info on how to use the class]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="133" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="162" package="Nedstars\Deployer">
+        <name>printVersion</name>
+        <full_name>printVersion</full_name>
+        <docblock line="157">
+          <description><![CDATA[Print version info to terminal]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="157" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="private" namespace="global" line="176" package="Nedstars\Deployer">
+        <name>_setLock</name>
+        <full_name>_setLock</full_name>
+        <docblock line="167">
+          <description><![CDATA[Set lock to prevent multiple instances on the same server]]></description>
+          <long-description><![CDATA[<p>Uses stream socket server op port 12345 to lock</p>]]></long-description>
+          <tag line="167" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+          <tag line="167" name="throws" description="when lock is allready set" type="\Exception">
+            <type by_reference="false">\Exception</type>
+          </tag>
+          <tag line="167" name="throws" description="when a other proces has the lock" type="\Exception">
+            <type by_reference="false">\Exception</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="private" namespace="global" line="193" package="Nedstars\Deployer">
+        <name>_unsetLock</name>
+        <full_name>_unsetLock</full_name>
+        <docblock line="188">
+          <description><![CDATA[Relase the locking mechanism if set]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="188" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="private" namespace="global" line="210" package="Nedstars\Deployer">
+        <name>_startLog</name>
+        <full_name>_startLog</full_name>
+        <docblock line="201">
+          <description><![CDATA[Make start log msg and set log level
+NedStars_Log::setLogLevel($display_level);
+NedStars_Log::startLog($start_msg);]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="201" name="param" description="set of options, tag, branch, verbose" type="Array" variable="$options">
+            <type by_reference="false">Array</type>
+          </tag>
+          <tag line="201" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="210">
+          <name>$options</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="private" namespace="global" line="235" package="Nedstars\Deployer">
+        <name>_verifyMysqlCredentials</name>
+        <full_name>_verifyMysqlCredentials</full_name>
+        <docblock line="230">
+          <description><![CDATA[Verify MySQL credentials by making a connection to database]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="230" name="return" description="true" type="boolean">
+            <type by_reference="false">boolean</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="private" namespace="global" line="262" package="Nedstars\Deployer">
+        <name>_checkConfigurationValues</name>
+        <full_name>_checkConfigurationValues</full_name>
+        <docblock line="257">
+          <description><![CDATA[Check if configuration values are present and correct]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="257" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="private" namespace="global" line="291" package="Nedstars\Deployer">
+        <name>_loadConfigFile</name>
+        <full_name>_loadConfigFile</full_name>
+        <docblock line="283">
+          <description><![CDATA[Load specified config file
+Default config file is "deploy.conf.php"]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="283" name="param" description="set of posible overrides: branch, tag, config, debug" type="array" variable="$options">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="283" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="291">
+          <name>$options</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="328" package="Nedstars\Deployer">
+        <name>preserveData</name>
+        <full_name>preserveData</full_name>
+        <docblock line="323">
+          <description><![CDATA[Logic for preserving  data]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="323" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="387" package="Nedstars\Deployer">
+        <name>clearData</name>
+        <full_name>clearData</full_name>
+        <docblock line="382">
+          <description><![CDATA[Logic for clearing data from new installation]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="382" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="414" package="Nedstars\Deployer">
+        <name>backupMysql</name>
+        <full_name>backupMysql</full_name>
+        <docblock line="409">
+          <description><![CDATA[Backup MySQL into tar in live dir]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="409" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="430" package="Nedstars\Deployer">
+        <name>backupLive</name>
+        <full_name>backupLive</full_name>
+        <docblock line="425">
+          <description><![CDATA[Backup live dir into tar]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="425" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="443" package="Nedstars\Deployer">
+        <name>switchLive</name>
+        <full_name>switchLive</full_name>
+        <docblock line="436">
+          <description><![CDATA[Clear temp_old dir
+Copy current live to temp_old dir.]]></description>
+          <long-description><![CDATA[<p>Copy new live from temp_new dir to live</p>]]></long-description>
+          <tag line="436" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="460" package="Nedstars\Deployer">
+        <name>sendNotifications</name>
+        <full_name>sendNotifications</full_name>
+        <docblock line="455">
+          <description><![CDATA[Send notification when backup is done]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="455" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="483" package="Nedstars\Deployer">
+        <name>getGitSource</name>
+        <full_name>getGitSource</full_name>
+        <docblock line="478">
+          <description><![CDATA[Get data from Git]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="478" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="498" package="Nedstars\Deployer">
+        <name>setFolderPermisions</name>
+        <full_name>setFolderPermisions</full_name>
+        <docblock line="493">
+          <description><![CDATA[Set permisions to apache]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="493" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="private" namespace="global" line="514" package="Nedstars\Deployer">
+        <name>_verifyRootUser</name>
+        <full_name>_verifyRootUser</full_name>
+        <docblock line="509">
+          <description><![CDATA[Verify if exec user is root]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="509" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="527" package="Nedstars\Deployer">
+        <name>purgeOldBackups</name>
+        <full_name>purgeOldBackups</full_name>
+        <docblock line="522">
+          <description><![CDATA[Delete old backups after N days]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="522" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="private" namespace="global" line="541" package="Nedstars\Deployer">
+        <name>_checkFreeDiskSpace</name>
+        <full_name>_checkFreeDiskSpace</full_name>
+        <docblock line="536">
+          <description><![CDATA[Check if there is 4 times the used diskpace free]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="536" name="return" description="" type="Boolean">
+            <type by_reference="false">Boolean</type>
+          </tag>
+        </docblock>
+      </method>
+    </class>
+  </file>
+  <file path="classes/Notification.php" hash="7dffce54eac34c5898b63f6c8f49c92a" package="Nedstars\Deployer">
+    <docblock line="2">
+      <description><![CDATA[Notification class.]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="project" description="NedStars Deployer"/>
+      <tag line="2" name="category" description="Convenience_Class"/>
+      <tag line="2" name="package" description="Nedstars_Deployer"/>
+      <tag line="2" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+      <tag line="2" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="22" package="Nedstars\Deployer">
+      <extends/>
+      <name>Notification</name>
+      <full_name>\Notification</full_name>
+      <docblock line="12">
+        <description><![CDATA[Notification class.]]></description>
+        <long-description><![CDATA[<p>Facade for sending notifications. support for email, notifo and pushove</p>]]></long-description>
+        <tag line="12" name="project" description="NedStars Deployer"/>
+        <tag line="12" name="category" description="Convenience_Class"/>
+        <tag line="12" name="package" description="Nedstars_Deployer"/>
+        <tag line="12" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+        <tag line="12" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+      </docblock>
+      <constant namespace="global" line="42" package="Nedstars\Deployer">
+        <name>EMAIL</name>
+        <full_name>EMAIL</full_name>
+        <value><![CDATA['email_addresses']]></value>
+      </constant>
+      <constant namespace="global" line="43" package="Nedstars\Deployer">
+        <name>NOTIFO</name>
+        <full_name>NOTIFO</full_name>
+        <value><![CDATA['notifo_users']]></value>
+      </constant>
+      <constant namespace="global" line="44" package="Nedstars\Deployer">
+        <name>PUSHOVER</name>
+        <full_name>PUSHOVER</full_name>
+        <value><![CDATA['pushover_users']]></value>
+      </constant>
+      <property final="false" static="true" visibility="private" line="28" namespace="global" package="Default">
+        <name>$_pushoverToken</name>
+        <default><![CDATA['10hXML7F6wL4eKnV2pP8XY9hcWULWV']]></default>
+        <docblock line="24">
+          <description><![CDATA[Pushover API token]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="24" name="var" description="Pushover API token" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="true" visibility="private" line="34" namespace="global" package="Default">
+        <name>$_notifoUser</name>
+        <default><![CDATA['ns_gitlab']]></default>
+        <docblock line="30">
+          <description><![CDATA[Notifo API user]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="30" name="var" description="Notifo API user" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="true" visibility="private" line="40" namespace="global" package="Default">
+        <name>$_notifoSecret</name>
+        <default><![CDATA['00154dc34ffbd172c4f0da5eca55f4c0d93e8fe7']]></default>
+        <docblock line="36">
+          <description><![CDATA[Notifo API secret]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="36" name="var" description="Notifo API secret" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="55" package="Nedstars\Deployer">
+        <name>notify</name>
+        <full_name>notify</full_name>
+        <docblock line="46">
+          <description><![CDATA[Send notifications]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="46" name="param" description="Display title" type="String" variable="$title">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="46" name="param" description="Message to display" type="String" variable="$message">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="46" name="param" description="Array continaing recipients per key" type="Array" variable="$recipients">
+            <type by_reference="false">Array</type>
+          </tag>
+          <tag line="46" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="55">
+          <name>$title</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="55">
+          <name>$message</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="55">
+          <name>$recipients</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="private" namespace="global" line="87" package="Nedstars\Deployer">
+        <name>_prepapreRecipients</name>
+        <full_name>_prepapreRecipients</full_name>
+        <docblock line="79">
+          <description><![CDATA[Helper function to convert recipients into one array per type]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="79" name="param" description="set of recipients grouped by key" type="Array" variable="$recipients">
+            <type by_reference="false">Array</type>
+          </tag>
+          <tag line="79" name="param" description="group identifier" type="String" variable="$type">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="79" name="return" description="set of recipients for one type" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+        <argument line="87">
+          <name>$recipients</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="87">
+          <name>$type</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="protected" namespace="global" line="113" package="Nedstars\Deployer">
+        <name>notifyPushover</name>
+        <full_name>notifyPushover</full_name>
+        <docblock line="104">
+          <description><![CDATA[Notify one Pushover user]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="104" name="param" description="Display title" type="String" variable="$title">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="104" name="param" description="Message to display" type="String" variable="$message">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="104" name="param" description="Unique user identifyer" type="String" variable="$user_token">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="104" name="return" description="succes" type="Boolean">
+            <type by_reference="false">Boolean</type>
+          </tag>
+        </docblock>
+        <argument line="113">
+          <name>$title</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="113">
+          <name>$message</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="113">
+          <name>$user_token</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="protected" namespace="global" line="133" package="Nedstars\Deployer">
+        <name>notifyNotifo</name>
+        <full_name>notifyNotifo</full_name>
+        <docblock line="124">
+          <description><![CDATA[Notify one Notifo user]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="124" name="param" description="Display title" type="String" variable="$title">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="124" name="param" description="Message to display" type="String" variable="$message">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="124" name="param" description="Unique user identifyer" type="String" variable="$user">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="124" name="return" description="succes" type="Boolean">
+            <type by_reference="false">Boolean</type>
+          </tag>
+        </docblock>
+        <argument line="133">
+          <name>$title</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="133">
+          <name>$message</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="133">
+          <name>$user</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="protected" namespace="global" line="165" package="Nedstars\Deployer">
+        <name>notifyEmail</name>
+        <full_name>notifyEmail</full_name>
+        <docblock line="156">
+          <description><![CDATA[Notify one email address]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="156" name="param" description="Display title" type="String" variable="$title">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="156" name="param" description="Message to display" type="String" variable="$message">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="156" name="param" description="Unique user identifyer" type="String" variable="$email_address">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="156" name="return" description="succes" type="Boolean">
+            <type by_reference="false">Boolean</type>
+          </tag>
+        </docblock>
+        <argument line="165">
+          <name>$title</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="165">
+          <name>$message</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="165">
+          <name>$email_address</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+  </file>
+  <file path="classes/DeployConfig.php" hash="d7fab791db335aa51d6b9993dced1d6a" package="Nedstars\Deployer">
+    <docblock line="2">
+      <description><![CDATA[Deploy config class.]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="project" description="NedStars Deployer"/>
+      <tag line="2" name="category" description="Nedstars_Config"/>
+      <tag line="2" name="package" description="Nedstars_Deployer"/>
+      <tag line="2" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+      <tag line="2" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="21" package="Nedstars\Deployer">
+      <extends/>
+      <name>DeployConfig</name>
+      <full_name>\DeployConfig</full_name>
+      <docblock line="12">
+        <description><![CDATA[Deploy config object.]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="12" name="project" description="NedStars Deployer"/>
+        <tag line="12" name="category" description="Nedstars_Config"/>
+        <tag line="12" name="package" description="Nedstars_Deployer"/>
+        <tag line="12" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+        <tag line="12" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="30" package="Nedstars\Deployer">
+        <name>newNode</name>
+        <full_name>newNode</full_name>
+        <docblock line="23">
+          <description><![CDATA[Create a new node if not existing]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="23" name="param" description="node name" type="String" variable="$name">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="23" name="return" description="for convenience" type="\DeployConfig">
+            <type by_reference="false">\DeployConfig</type>
+          </tag>
+        </docblock>
+        <argument line="30">
+          <name>$name</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="47" package="Nedstars\Deployer">
+        <name>checkLine</name>
+        <full_name>checkLine</full_name>
+        <docblock line="38">
+          <description><![CDATA[Adds single line value to config if value is set
+Last node in xPath is the name of the configuration value]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="38" name="param" description="xpath to value in xml" type="String" variable="$xpath">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="38" name="param" description="Simple xml object" type="Resource" variable="$oXml">
+            <type by_reference="false">Resource</type>
+          </tag>
+          <tag line="38" name="return" description="Value of element, could be preset by higher config." type="Mixed">
+            <type by_reference="false">Mixed</type>
+          </tag>
+        </docblock>
+        <argument line="47">
+          <name>$xpath</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="47">
+          <name>$oXml</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="91" package="Nedstars\Deployer">
+        <name>checkArray</name>
+        <full_name>checkArray</full_name>
+        <docblock line="81">
+          <description><![CDATA[Adds array lines to config if values are set
+Last node in xPath is repeating element.]]></description>
+          <long-description><![CDATA[<p>node before that is the name of the configuration value</p>]]></long-description>
+          <tag line="81" name="param" description="xpath to value in xml" type="String" variable="$xpath">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="81" name="param" description="Simple xml object" type="Resource" variable="$oXml">
+            <type by_reference="false">Resource</type>
+          </tag>
+          <tag line="81" name="return" description="Value of element, could be preset by higher config." type="Mixed">
+            <type by_reference="false">Mixed</type>
+          </tag>
+        </docblock>
+        <argument line="91">
+          <name>$xpath</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="91">
+          <name>$oXml</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="128" package="Nedstars\Deployer">
+        <name>loadDbFromFile</name>
+        <full_name>loadDbFromFile</full_name>
+        <docblock line="120">
+          <description><![CDATA[Load databse info from local.xml for magento]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="120" name="param" description="Ablsolute path to file" type="String" variable="$file_path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="120" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+          <tag line="120" name="throws" description="When $file_path is not readable" type="\DeployerException">
+            <type by_reference="false">\DeployerException</type>
+          </tag>
+        </docblock>
+        <argument line="128">
+          <name>$file_path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="155" package="Nedstars\Deployer">
+        <name>parseData</name>
+        <full_name>parseData</full_name>
+        <docblock line="146">
+          <description><![CDATA[Parse a configuration file for data]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="146" name="param" description="&amp;$config Config object to fill" type="\DeployConfig" variable="$config">
+            <type by_reference="false">\DeployConfig</type>
+          </tag>
+          <tag line="146" name="param" description="Ablsolute path to file" type="String" variable="$file_path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="146" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+          <tag line="146" name="throws" description="When $file_path is not readable" type="\DeployerException">
+            <type by_reference="false">\DeployerException</type>
+          </tag>
+        </docblock>
+        <argument line="155">
+          <name>$config</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="155">
+          <name>$file_path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+  </file>
+  <file path="classes/NedStars/GitException.php" hash="9f94002ae19fb44817909ca0a7160dee" package="Nedstars\PHPlib">
+    <docblock line="2">
+      <description><![CDATA[Git Exception class]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="project" description="NedStars PHPlib"/>
+      <tag line="2" name="category" description="Nedstars_Tools"/>
+      <tag line="2" name="package" description="Nedstars_PHPlib"/>
+      <tag line="2" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+      <tag line="2" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="21" package="Nedstars\PHPlib">
+      <extends>\NedStars_Exception</extends>
+      <name>NedStars_GitException</name>
+      <full_name>\NedStars_GitException</full_name>
+      <docblock line="12">
+        <description><![CDATA[Git Exception class, Logs msg via NedStars_Log]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="12" name="project" description="NedStars PHPlib"/>
+        <tag line="12" name="category" description="Nedstars_Tools"/>
+        <tag line="12" name="package" description="Nedstars_PHPlib"/>
+        <tag line="12" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+        <tag line="12" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+      </docblock>
+      <constant namespace="global" line="23" package="Nedstars\PHPlib">
+        <name>EMPTY_BRANCH</name>
+        <full_name>EMPTY_BRANCH</full_name>
+        <value><![CDATA[1]]></value>
+      </constant>
+      <constant namespace="global" line="24" package="Nedstars\PHPlib">
+        <name>EMPTY_REPOSITORY</name>
+        <full_name>EMPTY_REPOSITORY</full_name>
+        <value><![CDATA[2]]></value>
+      </constant>
+      <constant namespace="global" line="25" package="Nedstars\PHPlib">
+        <name>INVALID_PATH</name>
+        <full_name>INVALID_PATH</full_name>
+        <value><![CDATA[3]]></value>
+      </constant>
+      <constant namespace="global" line="26" package="Nedstars\PHPlib">
+        <name>EMPTY_REVISION</name>
+        <full_name>EMPTY_REVISION</full_name>
+        <value><![CDATA[4]]></value>
+      </constant>
+      <constant namespace="global" line="27" package="Nedstars\PHPlib">
+        <name>ARCHIVE_FAIL</name>
+        <full_name>ARCHIVE_FAIL</full_name>
+        <value><![CDATA[5]]></value>
+      </constant>
+      <constant namespace="global" line="28" package="Nedstars\PHPlib">
+        <name>CLONE_FAIL</name>
+        <full_name>CLONE_FAIL</full_name>
+        <value><![CDATA[6]]></value>
+      </constant>
+    </class>
+  </file>
+  <file path="classes/NedStars/ArgumentsException.php" hash="039f248ac3f9f9e9d464b8aa3f09e4cf" package="Nedstars\PHPlib">
+    <docblock line="2">
+      <description><![CDATA[Arguments Exception class]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="project" description="NedStars PHPlib"/>
+      <tag line="2" name="category" description="Nedstars_Tools"/>
+      <tag line="2" name="package" description="Nedstars_PHPlib"/>
+      <tag line="2" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+      <tag line="2" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="21" package="Nedstars\PHPlib">
+      <extends>\NedStars_Exception</extends>
+      <name>NedStars_ArgumentsException</name>
+      <full_name>\NedStars_ArgumentsException</full_name>
+      <docblock line="12">
+        <description><![CDATA[Arguments Exception class, Logs msg via NedStars_Log]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="12" name="project" description="NedStars PHPlib"/>
+        <tag line="12" name="category" description="Nedstars_Tools"/>
+        <tag line="12" name="package" description="Nedstars_PHPlib"/>
+        <tag line="12" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+        <tag line="12" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+      </docblock>
+      <constant namespace="global" line="23" package="Nedstars\PHPlib">
+        <name>DOUBLE_ARGUMENTS</name>
+        <full_name>DOUBLE_ARGUMENTS</full_name>
+        <value><![CDATA[1]]></value>
+      </constant>
+      <constant namespace="global" line="24" package="Nedstars\PHPlib">
+        <name>NO_ARGUMENTS_FOUND</name>
+        <full_name>NO_ARGUMENTS_FOUND</full_name>
+        <value><![CDATA[2]]></value>
+      </constant>
+    </class>
+  </file>
+  <file path="classes/NedStars/Git.php" hash="a6da93e41af523656e1ccc9902e80953" package="Nedstars\PHPlib">
+    <docblock line="2">
+      <description><![CDATA[Git functions]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="project" description="NedStars PHPlib"/>
+      <tag line="2" name="category" description="Nedstars_Tools"/>
+      <tag line="2" name="package" description="Nedstars_PHPlib"/>
+      <tag line="2" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+      <tag line="2" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="21" package="Nedstars\PHPlib">
+      <extends/>
+      <name>NedStars_Git</name>
+      <full_name>\NedStars_Git</full_name>
+      <docblock line="12">
+        <description><![CDATA[Git functions]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="12" name="project" description="NedStars PHPlib"/>
+        <tag line="12" name="category" description="Nedstars_Tools"/>
+        <tag line="12" name="package" description="Nedstars_PHPlib"/>
+        <tag line="12" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+        <tag line="12" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+      </docblock>
+      <constant namespace="global" line="25" package="Nedstars\PHPlib">
+        <name>EMPTY_SHA1</name>
+        <full_name>EMPTY_SHA1</full_name>
+        <value><![CDATA['0000000000000000000000000000000000000000']]></value>
+        <docblock line="22">
+          <description><![CDATA[Git lab send a string of zero's if there is no SHA1 for the afther or before branch]]></description>
+          <long-description><![CDATA[]]></long-description>
+        </docblock>
+      </constant>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="37" package="Nedstars\PHPlib">
+        <name>getArchive</name>
+        <full_name>getArchive</full_name>
+        <docblock line="27">
+          <description><![CDATA[Get git export into folder]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="27" name="param" description="ssh repository string" type="String" variable="$repository">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="27" name="param" description="name of the branch or tag to export" type="String" variable="$branch">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="27" name="param" description="absolute path to destination folder" type="String" variable="$destination_path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="27" name="param" description="subfolder in git project to get" type="String" variable="$subfolder">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="27" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="37">
+          <name>$repository</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="37">
+          <name>$branch</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="37">
+          <name>$destination_path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="37">
+          <name>$subfolder</name>
+          <default><![CDATA[null]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="79" package="Nedstars\PHPlib">
+        <name>verifyCredentials</name>
+        <full_name>verifyCredentials</full_name>
+        <docblock line="71">
+          <description><![CDATA[Verify credentials and branch by git ls-remote]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="71" name="param" description="ssh repository string" type="String" variable="$repository">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="71" name="param" description="name of the branch or tag" type="String" variable="$branch">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="71" name="return" description="true is credentials are ok" type="Boolean">
+            <type by_reference="false">Boolean</type>
+          </tag>
+        </docblock>
+        <argument line="79">
+          <name>$repository</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="79">
+          <name>$branch</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="107" package="Nedstars\PHPlib">
+        <name>doCheckout</name>
+        <full_name>doCheckout</full_name>
+        <docblock line="99">
+          <description><![CDATA[Update to latest version for a existing project]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="99" name="param" description="Absolute path to project dir" type="String" variable="$poject_path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="99" name="param" description="the revision to go to" type="String" variable="$revision">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="99" name="return" description="exec result" type="Mixed">
+            <type by_reference="false">Mixed</type>
+          </tag>
+        </docblock>
+        <argument line="107">
+          <name>$poject_path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="107">
+          <name>$revision</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="131" package="Nedstars\PHPlib">
+        <name>doFetch</name>
+        <full_name>doFetch</full_name>
+        <docblock line="124">
+          <description><![CDATA[Get latest meta info	for existing project]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="124" name="param" description="Absolute path to project dir" type="String" variable="$poject_path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="124" name="return" description="exec result" type="Mixed">
+            <type by_reference="false">Mixed</type>
+          </tag>
+        </docblock>
+        <argument line="131">
+          <name>$poject_path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="152" package="Nedstars\PHPlib">
+        <name>makeClone</name>
+        <full_name>makeClone</full_name>
+        <docblock line="143">
+          <description><![CDATA[Make a Git clone in base project dir]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="143" name="param" description="path to base folder, a sub folder will be create in this dir." type="String" variable="$base_dir">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="143" name="param" description="server name without git@, e.g. example.com" type="String" variable="$server">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="143" name="param" description="repro name on server" type="String" variable="$project_name">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="143" name="return" description="true" type="Boolean">
+            <type by_reference="false">Boolean</type>
+          </tag>
+        </docblock>
+        <argument line="152">
+          <name>$base_dir</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="152">
+          <name>$server</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="152">
+          <name>$project_name</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="183" package="Nedstars\PHPlib">
+        <name>getPreviouseRevision</name>
+        <full_name>getPreviouseRevision</full_name>
+        <docblock line="176">
+          <description><![CDATA[Get the revision where the current branch is branched off from.]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="176" name="param" description="Absolute path to project" type="String" variable="$poject_path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="176" name="return" description="short sha1 hash." type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+        <argument line="183">
+          <name>$poject_path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+  </file>
+  <file path="classes/NedStars/FileSystem.php" hash="0528f263c29098c70a55bd95c6132d52" package="Nedstars\PHPlib">
+    <docblock line="2">
+      <description><![CDATA[FileSystem functions]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="project" description="NedStars PHPlib"/>
+      <tag line="2" name="category" description="Nedstars_Tools"/>
+      <tag line="2" name="package" description="Nedstars_PHPlib"/>
+      <tag line="2" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+      <tag line="2" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="21" package="Nedstars\PHPlib">
+      <extends/>
+      <name>NedStars_FileSystem</name>
+      <full_name>\NedStars_FileSystem</full_name>
+      <docblock line="12">
+        <description><![CDATA[FileSystem functions]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="12" name="project" description="NedStars PHPlib"/>
+        <tag line="12" name="category" description="Nedstars_Tools"/>
+        <tag line="12" name="package" description="Nedstars_PHPlib"/>
+        <tag line="12" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+        <tag line="12" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+      </docblock>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="31" package="Nedstars\PHPlib">
+        <name>copyFile</name>
+        <full_name>copyFile</full_name>
+        <docblock line="23">
+          <description><![CDATA[Copy file fronm location x to y for backup]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="23" name="param" description="absoulte path to origin file" type="String" variable="$old_file_path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="23" name="param" description="absolute path to destination file" type="String" variable="$new_file_path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="23" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="31">
+          <name>$old_file_path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="31">
+          <name>$new_file_path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="51" package="Nedstars\PHPlib">
+        <name>copyDir</name>
+        <full_name>copyDir</full_name>
+        <docblock line="43">
+          <description><![CDATA[Copy dir fronm location x to y]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="43" name="param" description="absoulte path to origin dir" type="String" variable="$old_path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="43" name="param" description="absoulte path to destination dir" type="String" variable="$new_path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="43" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="51">
+          <name>$old_path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="51">
+          <name>$new_path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="69" package="Nedstars\PHPlib">
+        <name>copyFilesByRegEx</name>
+        <full_name>copyFilesByRegEx</full_name>
+        <docblock line="59">
+          <description><![CDATA[Find files by regext in folder x and move them with same file name to folder y
+Function is not recursive]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="59" name="param" description="reg ex patern, e.g. '/^google(.*).htm/i'" type="String" variable="$regex">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="59" name="param" description="absoulte path to origin dir" type="String" variable="$old_path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="59" name="param" description="absoulte path to destination dir" type="String" variable="$new_path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="59" name="return" description="list of change files" type="Array">
+            <type by_reference="false">Array</type>
+          </tag>
+        </docblock>
+        <argument line="69">
+          <name>$regex</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="69">
+          <name>$old_path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="69">
+          <name>$new_path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="101" package="Nedstars\PHPlib">
+        <name>hasBinary</name>
+        <full_name>hasBinary</full_name>
+        <docblock line="94">
+          <description><![CDATA[Check if a binary can be found on the file system.]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="94" name="param" description="name of the binary, e.g. 'mysqldump'" type="String" variable="$binary_name">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="94" name="return" description="false if binairy could not be found" type="Boolean">
+            <type by_reference="false">Boolean</type>
+          </tag>
+        </docblock>
+        <argument line="101">
+          <name>$binary_name</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="121" package="Nedstars\PHPlib">
+        <name>hasBinaries</name>
+        <full_name>hasBinaries</full_name>
+        <docblock line="113">
+          <description><![CDATA[Check if a binaries can be found on the file system.]]></description>
+          <long-description><![CDATA[<p>Alias for hasBinary</p>]]></long-description>
+          <tag line="113" name="param" description="set of binary names, e.g. array('mysqldump', 'git')" type="Array" variable="$binary_names">
+            <type by_reference="false">Array</type>
+          </tag>
+          <tag line="113" name="return" description="false if one of the binairyies could not be found." type="Boolean">
+            <type by_reference="false">Boolean</type>
+          </tag>
+        </docblock>
+        <argument line="121">
+          <name>$binary_names</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="155" package="Nedstars\PHPlib">
+        <name>chownDir</name>
+        <full_name>chownDir</full_name>
+        <docblock line="145">
+          <description><![CDATA[Chown a directory and its sub directory]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="145" name="param" description="Absoulte path of folder to chown" type="String" variable="$path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="145" name="param" description="New user" type="String" variable="$user">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="145" name="param" description="New group" type="String" variable="$group">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="145" name="param" description="True for sub folders (default = true)" type="Boolean" variable="$recursive">
+            <type by_reference="false">Boolean</type>
+          </tag>
+          <tag line="145" name="return" description="" type="Boolean">
+            <type by_reference="false">Boolean</type>
+          </tag>
+        </docblock>
+        <argument line="155">
+          <name>$path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="155">
+          <name>$user</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="155">
+          <name>$group</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="155">
+          <name>$recursive</name>
+          <default><![CDATA[true]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="176" package="Nedstars\PHPlib">
+        <name>chmodDir</name>
+        <full_name>chmodDir</full_name>
+        <docblock line="167">
+          <description><![CDATA[Chmod  a directory and its sub directory]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="167" name="param" description="Absoulte path of folder to chmod" type="String" variable="$path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="167" name="param" description="New right level" type="String" variable="$mode">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="167" name="param" description="True for sub folders (default = true)" type="Boolean" variable="$recursive">
+            <type by_reference="false">Boolean</type>
+          </tag>
+          <tag line="167" name="return" description="" type="Boolean">
+            <type by_reference="false">Boolean</type>
+          </tag>
+        </docblock>
+        <argument line="176">
+          <name>$path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="176">
+          <name>$mode</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="176">
+          <name>$recursive</name>
+          <default><![CDATA[true]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="195" package="Nedstars\PHPlib">
+        <name>backupDir</name>
+        <full_name>backupDir</full_name>
+        <docblock line="187">
+          <description><![CDATA[Backup a folder by making a Tar file of it.]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="187" name="param" description="absoulte path of folder to archive" type="String" variable="$path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="187" name="param" description="absoulte path to destination file, e.g. /var/backup/backup201210261760.tar" type="String" variable="$dest_file_path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="187" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="195">
+          <name>$path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="195">
+          <name>$dest_file_path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="211" package="Nedstars\PHPlib">
+        <name>relocateDir</name>
+        <full_name>relocateDir</full_name>
+        <docblock line="202">
+          <description><![CDATA[Switch dir x into y if neeed backup into z]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="202" name="param" description="absoulte path of current data folder, this data will be swaped out for new data" type="String" variable="$folder_path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="202" name="param" description="absoulte path of new data location" type="String" variable="$new_data_path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="202" name="param" description="if absoulte path provided the current data will be moved to here." type="String" variable="$backup_path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="202" name="return" description="if success" type="Boolean">
+            <type by_reference="false">Boolean</type>
+          </tag>
+        </docblock>
+        <argument line="211">
+          <name>$folder_path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="211">
+          <name>$new_data_path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="211">
+          <name>$backup_path</name>
+          <default><![CDATA[false]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="239" package="Nedstars\PHPlib">
+        <name>deleteDir</name>
+        <full_name>deleteDir</full_name>
+        <docblock line="232">
+          <description><![CDATA[Delete given dir recursive]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="232" name="param" description="absoulte path of folder to delete" type="String" variable="$path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="232" name="return" description="" type="Boolean">
+            <type by_reference="false">Boolean</type>
+          </tag>
+        </docblock>
+        <argument line="239">
+          <name>$path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="253" package="Nedstars\PHPlib">
+        <name>getFilePermisions</name>
+        <full_name>getFilePermisions</full_name>
+        <docblock line="246">
+          <description><![CDATA[Return unxi file permissions]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="246" name="param" description="absoulte filen path to get permission from" type="String" variable="$file_path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="246" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="253">
+          <name>$file_path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="269" package="Nedstars\PHPlib">
+        <name>deleteOldFiles</name>
+        <full_name>deleteOldFiles</full_name>
+        <docblock line="261">
+          <description><![CDATA[Delete files older than N day's]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="261" name="param" description="absoulte path of folder from wich files should be cleared." type="String" variable="$path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="261" name="param" description="number of day's that a file should be kept" type="integer" variable="$days_to_keep">
+            <type by_reference="false">integer</type>
+          </tag>
+          <tag line="261" name="return" description="Description" type="\Type">
+            <type by_reference="false">\Type</type>
+          </tag>
+        </docblock>
+        <argument line="269">
+          <name>$path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="269">
+          <name>$days_to_keep</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="private" namespace="global" line="294" package="Nedstars\PHPlib">
+        <name>_getValidatedDir</name>
+        <full_name>_getValidatedDir</full_name>
+        <docblock line="286">
+          <description><![CDATA[Make path correct for line ending and check is dir exists]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="286" name="param" description="Absolute path" type="String" variable="$path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="286" name="return" description="Absolute path with trailing DIRECTORY_SEPARATOR" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="286" name="throws" description="When directory is not valid." type="\NedStars_FileSystemException">
+            <type by_reference="false">\NedStars_FileSystemException</type>
+          </tag>
+        </docblock>
+        <argument line="294">
+          <name>$path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="312" package="Nedstars\PHPlib">
+        <name>getNiceDir</name>
+        <full_name>getNiceDir</full_name>
+        <docblock line="305">
+          <description><![CDATA[Get path with line ending DIRECTORY_SEPARATOR]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="305" name="param" description="Absolute path" type="String" variable="$path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="305" name="return" description="Absolute path with trailing DIRECTORY_SEPARATOR" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+        <argument line="312">
+          <name>$path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="328" package="Nedstars\PHPlib">
+        <name>getDirectorySize</name>
+        <full_name>getDirectorySize</full_name>
+        <docblock line="321">
+          <description><![CDATA[Get Disk size of a directory]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="321" name="param" description="Absolute path" type="String" variable="$path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="321" name="return" description="Size of folder on disk in bytes" type="Int">
+            <type by_reference="false">Int</type>
+          </tag>
+        </docblock>
+        <argument line="328">
+          <name>$path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="354" package="Nedstars\PHPlib">
+        <name>getSymbolByQuantity</name>
+        <full_name>getSymbolByQuantity</full_name>
+        <docblock line="347">
+          <description><![CDATA[Get humal readably file size back e.g.]]></description>
+          <long-description><![CDATA[<p>1.9 MiB</p>]]></long-description>
+          <tag line="347" name="param" description="size in bytes to reformat." type="int" variable="$bytes">
+            <type by_reference="false">int</type>
+          </tag>
+          <tag line="347" name="return" description="formated file / folder size" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+        <argument line="354">
+          <name>$bytes</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="369" package="Nedstars\PHPlib">
+        <name>popDir</name>
+        <full_name>popDir</full_name>
+        <docblock line="361">
+          <description><![CDATA[Pops off the last folder from a given path]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="361" name="param" description="Absolute or releative path" type="String" variable="$path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="361" name="param" description="Directory seperator to look for" type="String" variable="$separator">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="361" name="return" description="reformated path" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+        <argument line="369">
+          <name>$path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="369">
+          <name>$separator</name>
+          <default><![CDATA[DIRECTORY_SEPARATOR]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="389" package="Nedstars\PHPlib">
+        <name>createDirIfNeeded</name>
+        <full_name>createDirIfNeeded</full_name>
+        <docblock line="381">
+          <description><![CDATA[Create a dir if not existing]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="381" name="param" description="Absolute or releative path" type="String" variable="$path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="381" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+          <tag line="381" name="throws" description="When directory could not be created." type="\NedStars_FileSystemException">
+            <type by_reference="false">\NedStars_FileSystemException</type>
+          </tag>
+        </docblock>
+        <argument line="389">
+          <name>$path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+  </file>
+  <file path="classes/NedStars/Arguments.php" hash="cc4e76f7f77b273f2c6b559bbf1cfae5" package="Nedstars\PHPlib">
+    <docblock line="2">
+      <description><![CDATA[Argument Parser]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="project" description="NedStars PHPlib"/>
+      <tag line="2" name="category" description="Nedstars_Tools"/>
+      <tag line="2" name="package" description="Nedstars_PHPlib"/>
+      <tag line="2" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+      <tag line="2" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="21" package="Nedstars\PHPlib">
+      <extends/>
+      <name>NedStars_Arguments</name>
+      <full_name>\NedStars_Arguments</full_name>
+      <docblock line="12">
+        <description><![CDATA[Argument Parser]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="12" name="project" description="NedStars PHPlib"/>
+        <tag line="12" name="category" description="Nedstars_Tools"/>
+        <tag line="12" name="package" description="Nedstars_PHPlib"/>
+        <tag line="12" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+        <tag line="12" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+      </docblock>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="39" package="Nedstars\PHPlib">
+        <name>parse</name>
+        <full_name>parse</full_name>
+        <docblock line="23">
+          <description><![CDATA[Parse arguments via PHP getOpt() function but picks the one that is given for short or long variable.]]></description>
+          <long-description><![CDATA[<p>if short argument is given als boolean, it will output true.</p>
+
+<p>array(
+    'debug' => array(
+        'short' => 'd',
+        'long'  => 'debug',
+        'type'  => '::',
+    )
+)</p>]]></long-description>
+          <tag line="23" name="param" description="key is return key, value is array with optional keys -&gt; short, long, type" type="array" variable="$option_array">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="23" name="return" description="" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+        <argument line="39">
+          <name>$option_array</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="private" namespace="global" line="100" package="Nedstars\PHPlib">
+        <name>_convertBooleans</name>
+        <full_name>_convertBooleans</full_name>
+        <docblock line="92">
+          <description><![CDATA[Convert PHP boolean input to real booleans
+If no boolean found return value]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="92" name="param" description="value that may be a boolean" type="mixed" variable="$value">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="92" name="return" description="value" type="mixed">
+            <type by_reference="false">mixed</type>
+          </tag>
+        </docblock>
+        <argument line="100">
+          <name>$value</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="private" namespace="global" line="119" package="Nedstars\PHPlib">
+        <name>_buildShortOptions</name>
+        <full_name>_buildShortOptions</full_name>
+        <docblock line="112">
+          <description><![CDATA[Build the string that getOpt() needs for SHORT based on the argumt array]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="112" name="param" description="a valid argument parser array" type="array" variable="$option_array">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="112" name="return" description="valid getOpt() SHORT input string" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+        <argument line="119">
+          <name>$option_array</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="private" namespace="global" line="131" package="Nedstars\PHPlib">
+        <name>_buildLongOptions</name>
+        <full_name>_buildLongOptions</full_name>
+        <docblock line="124">
+          <description><![CDATA[Build the array that getOpt() needs for LONG based on the argumt array]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="124" name="param" description="a valid argument parser array" type="array" variable="$option_array">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="124" name="return" description="valid getOpt() LONG input array" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+        <argument line="131">
+          <name>$option_array</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="private" namespace="global" line="144" package="Nedstars\PHPlib">
+        <name>_buildOptions</name>
+        <full_name>_buildOptions</full_name>
+        <docblock line="136">
+          <description><![CDATA[Build the array that getOpt() needs for $type based on the argumt array]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="136" name="param" description="a valid argument parser array" type="array" variable="$option_array">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="136" name="param" description="short or long depending on the type" type="String" variable="$type">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="136" name="return" description="valid getOpt()" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+        <argument line="144">
+          <name>$option_array</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="144">
+          <name>$type</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+  </file>
+  <file path="classes/NedStars/Execution.php" hash="8442e4a1f4d0593dc85061fc2a7d15a9" package="Nedstars\PHPlib">
+    <docblock line="2">
+      <description><![CDATA[Execution functions]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="project" description="NedStars PHPlib"/>
+      <tag line="2" name="category" description="Nedstars_Tools"/>
+      <tag line="2" name="package" description="Nedstars_PHPlib"/>
+      <tag line="2" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+      <tag line="2" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="21" package="Nedstars\PHPlib">
+      <extends/>
+      <name>NedStars_Execution</name>
+      <full_name>\NedStars_Execution</full_name>
+      <docblock line="12">
+        <description><![CDATA[Execution functions]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="12" name="project" description="NedStars PHPlib"/>
+        <tag line="12" name="category" description="Nedstars_Tools"/>
+        <tag line="12" name="package" description="Nedstars_PHPlib"/>
+        <tag line="12" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+        <tag line="12" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+      </docblock>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="31" package="Nedstars\PHPlib">
+        <name>run</name>
+        <full_name>run</full_name>
+        <docblock line="23">
+          <description><![CDATA[Run a shell exec command with debugging]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="23" name="param" description="The command" type="String" variable="$cmd">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="23" name="param" description="If true the shell_exec result will be given." type="Boolean" variable="$getExitValue">
+            <type by_reference="false">Boolean</type>
+          </tag>
+          <tag line="23" name="return" description="String or Boolean" type="Mixed">
+            <type by_reference="false">Mixed</type>
+          </tag>
+        </docblock>
+        <argument line="31">
+          <name>$cmd</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="31">
+          <name>$getExitValue</name>
+          <default><![CDATA[false]]></default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+  </file>
+  <file path="classes/NedStars/Log.php" hash="813e58bf5d5068e64c603ba09e106232" package="Nedstars\PHPlib">
+    <docblock line="2">
+      <description><![CDATA[Loging class, write loging to file and or display depening level]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="project" description="NedStars PHPlib"/>
+      <tag line="2" name="category" description="Nedstars_Tools"/>
+      <tag line="2" name="package" description="Nedstars_PHPlib"/>
+      <tag line="2" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+      <tag line="2" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="21" package="Nedstars\PHPlib">
+      <extends/>
+      <name>NedStars_Log</name>
+      <full_name>\NedStars_Log</full_name>
+      <docblock line="12">
+        <description><![CDATA[Loging class, write loging to file and or display depening level]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="12" name="project" description="NedStars PHPlib"/>
+        <tag line="12" name="category" description="Nedstars_Tools"/>
+        <tag line="12" name="package" description="Nedstars_PHPlib"/>
+        <tag line="12" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+        <tag line="12" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+      </docblock>
+      <constant namespace="global" line="23" package="Nedstars\PHPlib">
+        <name>LVL_EXCEPTION</name>
+        <full_name>LVL_EXCEPTION</full_name>
+        <value><![CDATA['Exception']]></value>
+      </constant>
+      <constant namespace="global" line="24" package="Nedstars\PHPlib">
+        <name>LVL_WARNING</name>
+        <full_name>LVL_WARNING</full_name>
+        <value><![CDATA['Warning']]></value>
+      </constant>
+      <constant namespace="global" line="25" package="Nedstars\PHPlib">
+        <name>LVL_MESSAGE</name>
+        <full_name>LVL_MESSAGE</full_name>
+        <value><![CDATA['Message']]></value>
+      </constant>
+      <constant namespace="global" line="26" package="Nedstars\PHPlib">
+        <name>LVL_DEBUG</name>
+        <full_name>LVL_DEBUG</full_name>
+        <value><![CDATA['Debug']]></value>
+      </constant>
+      <property final="false" static="true" visibility="private" line="33" namespace="global" package="Default">
+        <name>$_log_level</name>
+        <default><![CDATA[self::LVL_MESSAGE]]></default>
+        <docblock line="28">
+          <description><![CDATA[Log level to witch level should messages be displayed, high to low -> exception, warning, message, debug]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="28" name="var" description="" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="true" visibility="private" line="40" namespace="global" package="Default">
+        <name>$_log_file_path</name>
+        <default><![CDATA['log.txt']]></default>
+        <docblock line="35">
+          <description><![CDATA[Relative or absolute Path of log file.]]></description>
+          <long-description><![CDATA[<p>default is log.txt</p>]]></long-description>
+          <tag line="35" name="var" description="" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="true" visibility="private" line="47" namespace="global" package="Default">
+        <name>$_module</name>
+        <default><![CDATA[null]]></default>
+        <docblock line="42">
+          <description><![CDATA[Module name (if system uses modues in log)]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="42" name="var" description="" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="true" visibility="private" line="54" namespace="global" package="Default">
+        <name>$_stdOut</name>
+        <default><![CDATA[null]]></default>
+        <docblock line="49">
+          <description><![CDATA[Output resource]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="49" name="var" description="" type="Resource">
+            <type by_reference="false">Resource</type>
+          </tag>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="63" package="Nedstars\PHPlib">
+        <name>setModule</name>
+        <full_name>setModule</full_name>
+        <docblock line="56">
+          <description><![CDATA[Sets the name of the current module that uses the log]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="56" name="param" description="module name" type="String" variable="$module">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="56" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="63">
+          <name>$module</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="74" package="Nedstars\PHPlib">
+        <name>setLogFile</name>
+        <full_name>setLogFile</full_name>
+        <docblock line="67">
+          <description><![CDATA[Set path to the log file]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="67" name="param" description="absolute path to file" type="String" variable="$log_file_path">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="67" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="74">
+          <name>$log_file_path</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="96" package="Nedstars\PHPlib">
+        <name>setLogLevel</name>
+        <full_name>setLogLevel</full_name>
+        <docblock line="88">
+          <description><![CDATA[Set log level]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="88" name="param" description="valid log level, e.g. &quot;Exception&quot;, &quot;Warning&quot;, &quot;Message&quot;, &quot;Debug&quot;, null" type="String" variable="$log_level">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="88" name="exception" description="Exception when log level is not valid"/>
+          <tag line="88" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="96">
+          <name>$log_level</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="private" namespace="global" line="113" package="Nedstars\PHPlib">
+        <name>_isLogLevel</name>
+        <full_name>_isLogLevel</full_name>
+        <docblock line="106">
+          <description><![CDATA[Check is provided string is a valid dislay level]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="106" name="param" description="string to compare to available log levels" type="String" variable="$log_level">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="106" name="return" description="" type="Boolean">
+            <type by_reference="false">Boolean</type>
+          </tag>
+        </docblock>
+        <argument line="113">
+          <name>$log_level</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="private" namespace="global" line="132" package="Nedstars\PHPlib">
+        <name>_writeMessage</name>
+        <full_name>_writeMessage</full_name>
+        <docblock line="123">
+          <description><![CDATA[Write log message to file
+Show log message depanding on log level]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="123" name="param" description="log message" type="String" variable="$line">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="123" name="param" description="type of message" type="String" variable="$type">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="123" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="132">
+          <name>$line</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="132">
+          <name>$type</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="160" package="Nedstars\PHPlib">
+        <name>warning</name>
+        <full_name>warning</full_name>
+        <docblock line="153">
+          <description><![CDATA[Log warning message]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="153" name="param" description="warning" type="String" variable="$message">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="153" name="return" description="logged message" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+        <argument line="160">
+          <name>$message</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="175" package="Nedstars\PHPlib">
+        <name>exception</name>
+        <full_name>exception</full_name>
+        <docblock line="168">
+          <description><![CDATA[Log exception message]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="168" name="param" description="exception" type="String" variable="$message">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="168" name="return" description="logged message" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+        <argument line="175">
+          <name>$message</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="191" package="Nedstars\PHPlib">
+        <name>message</name>
+        <full_name>message</full_name>
+        <docblock line="184">
+          <description><![CDATA[Log message message]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="184" name="param" description="message" type="String" variable="$message">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="184" name="return" description="logged message" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+        <argument line="191">
+          <name>$message</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="207" package="Nedstars\PHPlib">
+        <name>debug</name>
+        <full_name>debug</full_name>
+        <docblock line="200">
+          <description><![CDATA[Log debug message]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="200" name="param" description="debug" type="String" variable="$message">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="200" name="return" description="logged message" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+        <argument line="207">
+          <name>$message</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="private" namespace="global" line="223" package="Nedstars\PHPlib">
+        <name>_shouldBeLogged</name>
+        <full_name>_shouldBeLogged</full_name>
+        <docblock line="216">
+          <description><![CDATA[Determine if log level should be logged based on self::log_level.]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="216" name="param" description="log type" type="String" variable="$type">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="216" name="return" description="true if log type should be logged based on log level" type="\Bolean">
+            <type by_reference="false">\Bolean</type>
+          </tag>
+        </docblock>
+        <argument line="223">
+          <name>$type</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="256" package="Nedstars\PHPlib">
+        <name>startLog</name>
+        <full_name>startLog</full_name>
+        <docblock line="249">
+          <description><![CDATA[Log start message]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="249" name="param" description="start message" type="String" variable="$message">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="249" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="256">
+          <name>$message</name>
+          <default><![CDATA[null]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="275" package="Nedstars\PHPlib">
+        <name>endLog</name>
+        <full_name>endLog</full_name>
+        <docblock line="268">
+          <description><![CDATA[Log end message]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="268" name="param" description="end message" type="String" variable="$message">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="268" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="275">
+          <name>$message</name>
+          <default><![CDATA[null]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="private" namespace="global" line="292" package="Nedstars\PHPlib">
+        <name>_checkFileDescriptors</name>
+        <full_name>_checkFileDescriptors</full_name>
+        <docblock line="287">
+          <description><![CDATA[Determine output stream]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="287" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+      </method>
+    </class>
+  </file>
+  <file path="classes/NedStars/FileSystemException.php" hash="69aa9d3d12a53b17e0e819cc6874e43c" package="Nedstars\PHPlib">
+    <docblock line="2">
+      <description><![CDATA[FileSystem Exception class]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="project" description="NedStars PHPlib"/>
+      <tag line="2" name="category" description="Nedstars_Tools"/>
+      <tag line="2" name="package" description="Nedstars_PHPlib"/>
+      <tag line="2" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+      <tag line="2" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="21" package="Nedstars\PHPlib">
+      <extends>\NedStars_Exception</extends>
+      <name>NedStars_FileSystemException</name>
+      <full_name>\NedStars_FileSystemException</full_name>
+      <docblock line="12">
+        <description><![CDATA[FileSystem Exception class, Logs msg via NedStars_Log]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="12" name="project" description="NedStars PHPlib"/>
+        <tag line="12" name="category" description="Nedstars_Tools"/>
+        <tag line="12" name="package" description="Nedstars_PHPlib"/>
+        <tag line="12" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+        <tag line="12" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+      </docblock>
+      <constant namespace="global" line="23" package="Nedstars\PHPlib">
+        <name>COPY_FAILED</name>
+        <full_name>COPY_FAILED</full_name>
+        <value><![CDATA[1]]></value>
+      </constant>
+      <constant namespace="global" line="24" package="Nedstars\PHPlib">
+        <name>FILE_NOT_FOUND</name>
+        <full_name>FILE_NOT_FOUND</full_name>
+        <value><![CDATA[2]]></value>
+      </constant>
+      <constant namespace="global" line="25" package="Nedstars\PHPlib">
+        <name>DIR_NOT_FOUND</name>
+        <full_name>DIR_NOT_FOUND</full_name>
+        <value><![CDATA[3]]></value>
+      </constant>
+      <constant namespace="global" line="26" package="Nedstars\PHPlib">
+        <name>BIN_INVALID</name>
+        <full_name>BIN_INVALID</full_name>
+        <value><![CDATA[4]]></value>
+      </constant>
+    </class>
+  </file>
+  <file path="classes/NedStars/LogException.php" hash="75c53011991c1301f3e3076415c77c26" package="Nedstars\PHPlib">
+    <docblock line="2">
+      <description><![CDATA[Log Exception class]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="project" description="NedStars PHPlib"/>
+      <tag line="2" name="category" description="Nedstars_Tools"/>
+      <tag line="2" name="package" description="Nedstars_PHPlib"/>
+      <tag line="2" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+      <tag line="2" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="21" package="Nedstars\PHPlib">
+      <extends>\Exception</extends>
+      <name>NedStars_LogException</name>
+      <full_name>\NedStars_LogException</full_name>
+      <docblock line="12">
+        <description><![CDATA[Log Exception class, Logs msg via NedStars_Log]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="12" name="project" description="NedStars PHPlib"/>
+        <tag line="12" name="category" description="Nedstars_Tools"/>
+        <tag line="12" name="package" description="Nedstars_PHPlib"/>
+        <tag line="12" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+        <tag line="12" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+      </docblock>
+      <constant namespace="global" line="23" package="Nedstars\PHPlib">
+        <name>EMPTY_PATH</name>
+        <full_name>EMPTY_PATH</full_name>
+        <value><![CDATA[1]]></value>
+      </constant>
+      <constant namespace="global" line="24" package="Nedstars\PHPlib">
+        <name>INVALID_LEVEL</name>
+        <full_name>INVALID_LEVEL</full_name>
+        <value><![CDATA[2]]></value>
+      </constant>
+    </class>
+  </file>
+  <file path="classes/NedStars/Exception.php" hash="c29a713a9ef919b48d01944f2b4145a0" package="Nedstars\PHPlib">
+    <docblock line="2">
+      <description><![CDATA[Base Exception class]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="project" description="NedStars PHPlib"/>
+      <tag line="2" name="category" description="Nedstars_Tools"/>
+      <tag line="2" name="package" description="Nedstars_PHPlib"/>
+      <tag line="2" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+      <tag line="2" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="21" package="Nedstars\PHPlib">
+      <extends>\Exception</extends>
+      <name>NedStars_Exception</name>
+      <full_name>\NedStars_Exception</full_name>
+      <docblock line="12">
+        <description><![CDATA[Base Exception class, Logs msg via NedStars_Log]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="12" name="project" description="NedStars PHPlib"/>
+        <tag line="12" name="category" description="Nedstars_Tools"/>
+        <tag line="12" name="package" description="Nedstars_PHPlib"/>
+        <tag line="12" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+        <tag line="12" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+      </docblock>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="32" package="Nedstars\PHPlib">
+        <name>__construct</name>
+        <full_name>__construct</full_name>
+        <docblock line="23">
+          <description><![CDATA[Constructor]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="23" name="param" description="Exception msg" type="String" variable="$message">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="23" name="param" description="Exception code" type="Int" variable="$code">
+            <type by_reference="false">Int</type>
+          </tag>
+          <tag line="23" name="param" description="previouse exception" type="\Exception" variable="$previous">
+            <type by_reference="false">\Exception</type>
+          </tag>
+          <tag line="23" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="32">
+          <name>$message</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="32">
+          <name>$code</name>
+          <default><![CDATA[0]]></default>
+          <type/>
+        </argument>
+        <argument line="32">
+          <name>$previous</name>
+          <default><![CDATA[null]]></default>
+          <type>\Exception</type>
+        </argument>
+      </method>
+    </class>
+  </file>
+  <file path="classes/Notifo/API.php" hash="4610e4fd7dc9d6caecb1d23d60692289" package="Notifo">
+    <docblock line="2">
+      <description><![CDATA[Notifo facade]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="project" description="Notifo"/>
+      <tag line="2" name="category" description="Notifications"/>
+      <tag line="2" name="package" description="Notifo"/>
+      <tag line="2" name="author" description="Notifo &lt;info@notifo.com&gt;"/>
+      <tag line="2" name="see" description="\https://github.com/notifo/Notifo-API-Libraries" refers="\https://github.com/notifo/Notifo-API-Libraries"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="21" package="Notifo">
+      <extends/>
+      <name>Notifo_API</name>
+      <full_name>\Notifo_API</full_name>
+      <docblock line="12">
+        <description><![CDATA[Notifo facade]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="12" name="project" description="Notifo"/>
+        <tag line="12" name="category" description="Notifications"/>
+        <tag line="12" name="package" description="Notifo"/>
+        <tag line="12" name="author" description="Notifo &lt;info@notifo.com&gt;"/>
+        <tag line="12" name="see" description="\global\https://github.com/notifo/Notifo-API-Libraries" refers="\global\https://github.com/notifo/Notifo-API-Libraries"/>
+      </docblock>
+      <constant namespace="global" line="23" package="Notifo">
+        <name>API_ROOT</name>
+        <full_name>API_ROOT</full_name>
+        <value><![CDATA['https://api.notifo.com/']]></value>
+      </constant>
+      <constant namespace="global" line="24" package="Notifo">
+        <name>API_VER</name>
+        <full_name>API_VER</full_name>
+        <value><![CDATA['v1']]></value>
+      </constant>
+      <property final="false" static="false" visibility="protected" line="31" namespace="global" package="Default">
+        <name>$apiUsername</name>
+        <default><![CDATA[]]></default>
+        <docblock line="26">
+          <description><![CDATA[Notifo API username]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="26" name="var" description="Notifo API username" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="protected" line="38" namespace="global" package="Default">
+        <name>$apiSecret</name>
+        <default><![CDATA[]]></default>
+        <docblock line="33">
+          <description><![CDATA[Notifo API secret]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="33" name="var" description="Notifo API secret" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="48" package="Notifo">
+        <name>__construct</name>
+        <full_name>__construct</full_name>
+        <docblock line="40">
+          <description><![CDATA[API constructor]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="40" name="param" description="Notifo API username" type="String" variable="$apiUsername">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="40" name="param" description="Notifo API secret" type="String" variable="$apiSecret">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="40" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="48">
+          <name>$apiUsername</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="48">
+          <name>$apiSecret</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="60" package="Notifo">
+        <name>setApiUsername</name>
+        <full_name>setApiUsername</full_name>
+        <docblock line="53">
+          <description><![CDATA[Set API username]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="53" name="param" description="Notifo API username" type="String" variable="$val">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="53" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="60">
+          <name>$val</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="71" package="Notifo">
+        <name>setApiSecret</name>
+        <full_name>setApiSecret</full_name>
+        <docblock line="64">
+          <description><![CDATA[Set API c]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="64" name="param" description="Notifo API ApiSecret" type="String" variable="$val">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="64" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="71">
+          <name>$val</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="84" package="Notifo">
+        <name>sendNotification</name>
+        <full_name>sendNotification</full_name>
+        <docblock line="75">
+          <description><![CDATA[Send notification to Notifo]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="75" name="param" description="an associative array of parameters to send to the Notifo API. These can be any of the following: to, msg, label, title, uri" type="array" variable="$params">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="75" name="see" description="\global\https://api.notifo.com/" refers="\global\https://api.notifo.com/"/>
+          <tag line="75" name="return" description="Json decoded request result" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+        <argument line="84">
+          <name>$params</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="97" package="Notifo">
+        <name>sendMessage</name>
+        <full_name>sendMessage</full_name>
+        <docblock line="90">
+          <description><![CDATA[Send message to Notifo]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="90" name="param" description="an associative array of parameters to send to the Notifo API. These can be any of the following: to, msg" type="array" variable="$params">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="90" name="return" description="Json decoded request result" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+        <argument line="97">
+          <name>$params</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="110" package="Notifo">
+        <name>subscribeUser</name>
+        <full_name>subscribeUser</full_name>
+        <docblock line="103">
+          <description><![CDATA[Subscribe a user to this services]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="103" name="param" description="the username to subscribe to your Notifo service" type="String" variable="$username">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="103" name="return" description="Json decoded request result" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+        <argument line="110">
+          <name>$username</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="private" namespace="global" line="124" package="Notifo">
+        <name>_sendRequest</name>
+        <full_name>_sendRequest</full_name>
+        <docblock line="115">
+          <description><![CDATA[Helper function to send the requests]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="115" name="param" description="Name of remote method to call" type="String" variable="$method">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="115" name="param" description="HTTP method (GET, POST, etc)" type="String" variable="$type">
+            <type by_reference="false">String</type>
+          </tag>
+          <tag line="115" name="param" description="Array with arguments for remote method" type="Array" variable="$data">
+            <type by_reference="false">Array</type>
+          </tag>
+          <tag line="115" name="return" description="Json decoded request result" type="String">
+            <type by_reference="false">String</type>
+          </tag>
+        </docblock>
+        <argument line="124">
+          <name>$method</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="124">
+          <name>$type</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+        <argument line="124">
+          <name>$data</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+  </file>
+  <file path="includes/bootstrap.php" hash="305cffc8105298c5c9d2bcbf81c575d8" package="Nedstars\Deployer">
+    <docblock line="2">
+      <description><![CDATA[Bootstrap code to take care of the initial application initialization]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="2" name="project" description="NedStars Deployer"/>
+      <tag line="2" name="category" description="Bootstrap"/>
+      <tag line="2" name="package" description="Nedstars_Deployer"/>
+      <tag line="2" name="author" description="Bas Peters, Nedstars &lt;bas.peters@nedstars.nl&gt;"/>
+      <tag line="2" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+      <tag line="2" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+    </docblock>
+    <include line="27" type="Include Once" package="Default">
+      <name/>
+    </include>
+    <constant namespace="global" line="13" package="Nedstars\Deployer">
+      <name>ROOT</name>
+      <full_name>\ROOT</full_name>
+      <value><![CDATA[realpath((dirname(__FILE__) . '/..')) . '/']]></value>
+    </constant>
+    <constant namespace="global" line="14" package="Nedstars\Deployer">
+      <name>CLASSES</name>
+      <full_name>\CLASSES</full_name>
+      <value><![CDATA[(ROOT . 'classes') . '/']]></value>
+    </constant>
+    <function namespace="global" line="26" package="Nedstars\Deployer">
+      <name>autoloadHandler</name>
+      <full_name>\autoloadHandler</full_name>
+      <docblock line="19">
+        <description><![CDATA[Autoload handler]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="19" name="param" description="The class name to autoload" type="String" variable="$className">
+          <type by_reference="false">String</type>
+        </tag>
+        <tag line="19" name="return" description="" type="void">
+          <type by_reference="false">void</type>
+        </tag>
+      </docblock>
+      <argument line="26">
+        <name>$className</name>
+        <default><![CDATA[]]></default>
+        <type/>
+      </argument>
+    </function>
+    <function namespace="global" line="40" package="Nedstars\Deployer">
+      <name>errorHandler</name>
+      <full_name>\errorHandler</full_name>
+      <docblock line="30">
+        <description><![CDATA[Error Handler]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="30" name="param" description="Error number" type="Int" variable="$errorNumber">
+          <type by_reference="false">Int</type>
+        </tag>
+        <tag line="30" name="param" description="Error description" type="String" variable="$errorString">
+          <type by_reference="false">String</type>
+        </tag>
+        <tag line="30" name="param" description="Filename where the error occurred" type="String" variable="$errorFile">
+          <type by_reference="false">String</type>
+        </tag>
+        <tag line="30" name="param" description="Line number where the error occurred" type="Int" variable="$errorLine">
+          <type by_reference="false">Int</type>
+        </tag>
+        <tag line="30" name="return" description="true when the error is considered handled and not cascaded" type="Bool">
+          <type by_reference="false">Bool</type>
+        </tag>
+      </docblock>
+      <argument line="40">
+        <name>$errorNumber</name>
+        <default><![CDATA[]]></default>
+        <type/>
+      </argument>
+      <argument line="40">
+        <name>$errorString</name>
+        <default><![CDATA[]]></default>
+        <type/>
+      </argument>
+      <argument line="40">
+        <name>$errorFile</name>
+        <default><![CDATA[]]></default>
+        <type/>
+      </argument>
+      <argument line="40">
+        <name>$errorLine</name>
+        <default><![CDATA[]]></default>
+        <type/>
+      </argument>
+    </function>
+  </file>
+  <file path="deploy.php" hash="f67b3b8016417e0029f57757f65781ef" package="Nedstars\Deployer">
+    <docblock line="3">
+      <description><![CDATA[Deploy a git source to environment]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="3" name="project" description="NedStars Deployer"/>
+      <tag line="3" name="category" description="Instance"/>
+      <tag line="3" name="package" description="Nedstars_Deployer"/>
+      <tag line="3" name="author" description="Alain Lecluse, Nedstars &lt;alain@nedstars.nl&gt;"/>
+      <tag line="3" name="copyright" description="2012  Nedstars &lt;info@nedstars.nl&gt;"/>
+    </docblock>
+    <include line="13" type="Require Once" package="Default">
+      <name>includes/bootstrap.php</name>
+    </include>
+    <markers>
+      <todo line="32">Maintanance page</todo>
+    </markers>
+  </file>
+  <package name="Default" full_name="Default"/>
+  <package name="Nedstars" full_name="Nedstars">
+    <package name="Deployer" full_name="Nedstars\Deployer"/>
+    <package name="PHPlib" full_name="Nedstars\PHPlib"/>
+  </package>
+  <package name="Notifo" full_name="Notifo"/>
+  <package name="Php-Pushover" full_name="Php-Pushover"/>
+  <namespace name="global" full_name="global"/>
+  <marker count="1">todo</marker>
+  <marker count="0">fixme</marker>
+  <deprecated count="0"/>
+</project>

@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<config version="1.1">
+	<include_profile></include_profile>
+	<is_debug_modus>n</is_debug_modus> <!-- pre set -->
+	
+    <database>
+		<database_config_file>app/etc/local.xml</database_config_file><!-- <magento local.xml -->
+		<read_from_config>y</read_from_config>
+		<host>localhost</host> <!-- localhost -->
+		<username></username> <!-- root -->
+		<password></password>
+		<dbname></dbname> <!-- project db name -->
+	</database>
+	
+	<git>
+		<repo></repo> <!-- git@github.com:nedstars/Deploy-Script.git -->
+		<branch></branch> <!-- Only when always the same -->
+		<source_folder>web</source_folder> <!-- only if sub folder contains web root -->
+	</git>
+	
+	<notifications>
+		<email_addresses>
+			<address></address><!-- pre set e.g. example@example.com -->
+		</email_addresses>
+		<!-- <notifo_users>   
+			<user></user>
+		</notifo_users> -->
+		<!-- <pushover_users>
+			<user></user>
+			<user></user>
+		</pushover_users> -->
+	</notifications>
+	
+	<paths>
+		<web_live_path></web_live_path> <!-- /var/projects/www/staging  -->
+		<temp_new_path></temp_new_path> <!-- /var/projects/www/staging.new.tmp  -->
+		<temp_old_path></temp_old_path> <!-- /var/projects/www/staging.old.tmp  -->
+	</paths>
+	<backup>
+		<folder></folder> <!-- /var/projects/www/backup -->
+		<retention_days>30</retention_days> <!-- 30 -->
+	</backup>
+	<preserve_data>
+		<folders> <!-- pre set -->
+			<folder>files</folder>
+		</folders>
+		<files> <!-- pre set -->
+			<file>sitemap.xml</file>
+			<file>config/site.php</file>
+			<file>config/site_post.php</file>
+		</files>
+		<google_files>y</google_files><!-- pre set -->
+	</preserve_data>
+	<clear_data>
+		<folders> <!-- pre set -->
+			<folder>var/cache</folder>
+			<folder>var/session</folder>
+		</folders>
+		<files> <!-- pre set -->
+		</files>
+	</clear_data>
+	<permisions>
+		<user>apache</user> <!-- pre set -->
+		<group>apache</group> <!-- pre set -->
+	</permisions>
+</config>

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<config version="1.1">
+	<include_profile>sources/concrete5.xml</include_profile>
+	
+    <database>
+		<read_from_config>n</read_from_config>
+		<host>localhost</host> <!-- localhost -->
+		<username></username> <!-- root -->
+		<password></password>
+		<dbname></dbname>
+	</database>
+	
+	<git>
+		<repo></repo>
+	</git>
+	
+	<notifications>
+		<email_addresses>
+			<address></address>
+		</email_addresses>
+		<notifo_users>
+			<user></user>
+		</notifo_users>
+		<pushover_users>
+			<user></user>
+		</pushover_users>
+	</notifications>
+	
+	<paths>
+		<web_live_path></web_live_path>
+		<temp_new_path></temp_new_path> <!-- /staging.new.tmp -->
+		<temp_old_path></temp_old_path> <!-- /staging.old.tmp -->
+	</paths>
+	<backup>
+		<folder></folder>
+	</backup>
+</config>
