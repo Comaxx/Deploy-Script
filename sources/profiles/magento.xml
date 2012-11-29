@@ -44,12 +44,10 @@
 	</backup>
 	<preserve_data>
 		<folders> <!-- pre set -->
-			<folder>files</folder>
+			<folder>media</folder>
 		</folders>
 		<files> <!-- pre set -->
-			<file>sitemap.xml</file>
-			<file>config/site.php</file>
-			<file>config/site_post.php</file>
+			<file>app/etc/local.xml</file> <!-- config file -->
 		</files>
 		<google_files>y</google_files><!-- pre set -->
 	</preserve_data>
