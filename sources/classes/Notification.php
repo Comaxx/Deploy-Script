@@ -111,6 +111,10 @@ class  Notification {
 	 * @return Boolean succes
 	 */
 	protected static function notifyPushover($title, $message, $user_token) {
+		if (empty($user_token)) {
+			return false;
+		}
+		
 		$push = new Pushover_API();
 		$push->setToken(self::$_pushoverToken);
 		$push->setUser($user_token);
@@ -131,6 +135,10 @@ class  Notification {
 	 * @return Boolean succes
 	 */
 	protected  static function notifyNotifo($title, $message, $user) {
+		if (empty($user)) {
+			return false;
+		}
+		
 		/* create a new "notifo" object */
 		$notifo = new Notifo_API(self::$_notifoUser, self::$_notifoSecret);
 		

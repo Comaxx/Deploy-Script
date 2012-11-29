@@ -30,6 +30,9 @@ class Deployer {
 	 * @var DeployConfig Configuration object
 	 */
 	private $_config = null;
+	
+	
+	private $_time_start = null;
 
 	/**
 	 * PHP CLI arguments array.
@@ -93,7 +96,9 @@ class Deployer {
 	 * 
 	 * @return void
 	 */
-	function __construct($options) {		
+	function __construct($options) {
+		$this->_time_start = microtime(true);
+		
 		// 2) set lock to prevent multiple instances
 		$this->_setLock();
 		
@@ -475,8 +480,9 @@ class Deployer {
 			$title = 'Deploy: '.$project;
 			$message = '';
 			$message .= 'Deployment made to for: '.$branch_name."\n";
-			$message .= 'Host: '.php_uname('n')."\n";
-			$message .= 'Path: '.$this->_config->paths->web_live_path."\n";
+			$message .= 'Host		: '.php_uname('n')."\n";
+			$message .= 'Path		: '.$this->_config->paths->web_live_path."\n";
+			$message .= 'Duration	: '.round((microtime(true) - $this->_time_start), 4)." seconds\n";
 			
 			Notification::notify($title, $message, $this->_config->notifications);
 			NedStars_Log::message('Notifications send.');
