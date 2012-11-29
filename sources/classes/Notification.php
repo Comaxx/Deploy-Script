@@ -163,9 +163,9 @@ class  Notification {
 	 * @return Boolean succes
 	 */
 	protected  static function notifyEmail($title, $message, $email_address) {
-		$to_email = $email_address; 
-		$from = 'deploy@'.php_uname('n') 
-		$subject = $title;
+		$to_email 	= $email_address; 
+		$from 		= 'deploy@'.php_uname('n');
+		$subject 	= $title;
 		
 		$headers  = "From: $from\r\n"; 
 		$headers .= "Content-type: text/html\r\n";
