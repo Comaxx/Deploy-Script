@@ -163,6 +163,10 @@ class  Notification {
 	 * @return Boolean succes
 	 */
 	protected  static function notifyEmail($title, $message, $email_address) {
+		if (empty($email_address)) {
+			return false;
+		}
+		
 		$to_email 	= $email_address; 
 		$from 		= 'deploy@'.php_uname('n');
 		$subject 	= $title;
@@ -173,6 +177,6 @@ class  Notification {
 		$message = '<pre>'.$message.'</pre>';
 		
 		// now lets send the email. 
-		mail($to_email, $subject, $message, $headers); 
+		return mail($to_email, $subject, $message, $headers);
 	}
 }

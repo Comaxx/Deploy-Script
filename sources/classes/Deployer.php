@@ -387,21 +387,23 @@ class Deployer {
 	public function clearData() {
 		NedStars_Log::message('Clearing out tmp data.');
 		
-		// clear out dir
+		// clear out dir in temp new folder. 
 		foreach ($this->_config->clear_data->folders as $dir_path) {
-			if (is_dir($this->_config->paths->web_live_path.'/'.$dir_path)) {
-				NedStars_FileSystem::deleteDir($this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.'/'.$dir_path.'/.');
+			$temp_path = $this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.'/'.$dir_path;
+			if (is_dir($temp_path)) {
+				NedStars_FileSystem::deleteDirContent($temp_path);
 			} else {
-				NedStars_Log::warning('Folder not found: '.$this->_config->paths->web_live_path.'/'.$dir_path);
+				NedStars_Log::warning('Folder not found: '.$temp_path);
 			}
 		}
 	
-		// clear out files
+		// clear out files in temp new folder. 
 		foreach ($this->_config->clear_data->files as $file_path) {
-			if (is_file($this->_config->paths->web_live_path.'/'.$file_path)) {
-				unlink($this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.'/'.$file_path);
+			$temp_file = $this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.'/'.$file_path;
+			if (is_file($temp_file)) {
+				unlink($temp_file);
 			} else {
-				NedStars_Log::warning('File not found: '.$this->_config->paths->web_live_path.'/'.$file_path);
+				NedStars_Log::warning('File not found: '.$temp_file);
 			}
 		}
 	}
