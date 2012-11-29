@@ -53,8 +53,6 @@
 	</preserve_data>
 	<clear_data>
 		<folders> <!-- pre set -->
-			<folder>var/cache</folder>
-			<folder>var/session</folder>
 		</folders>
 		<files> <!-- pre set -->
 		</files>
