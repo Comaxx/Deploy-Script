@@ -412,14 +412,18 @@ class Deployer {
 	 * @return void
 	 */
 	public function backupMysql() {
-		NedStars_Log::message('Start MySQL backup via mysqldump to: '.escapeshellarg($this->_config->paths->web_live_path."/database.sql"));
-		$command = "mysqldump -u".($this->_config->database->username);
-		$command .= " -p".($this->_config->database->password);
-		$command .= " -h".($this->_config->database->host);
-		$command .= " --databases ".escapeshellarg($this->_config->database->dbname);
-		$command .= " --result-file=".escapeshellarg($this->_config->paths->web_live_path."/database.sql");
-		NedStars_Execution::run($command);
 		
+		if ($this->_config->backup->make_database_backup) {
+			NedStars_Log::message('Start MySQL backup via mysqldump to: '.escapeshellarg($this->_config->paths->web_live_path."/database.sql"));
+			$command = "mysqldump -u".($this->_config->database->username);
+			$command .= " -p".($this->_config->database->password);
+			$command .= " -h".($this->_config->database->host);
+			$command .= " --databases ".escapeshellarg($this->_config->database->dbname);
+			$command .= " --result-file=".escapeshellarg($this->_config->paths->web_live_path."/database.sql");
+			NedStars_Execution::run($command);
+		} else {
+			NedStars_Log::message('MySQL backup Skipped (Config value)');
+		}
 	}
 	
 	/**
@@ -428,9 +432,13 @@ class Deployer {
 	 * @return void 
 	 */
 	public function backupLive() {
-		$destination_file = $this->_config->backup->folder.'/backup_'.date('Ymd_Hi').'.tar.gz';
-		NedStars_Log::message('Start backup live to : '.escapeshellarg($destination_file));
-		NedStars_FileSystem::backupDir($this->_config->paths->web_live_path, $destination_file);
+		if ($this->_config->backup->make_file_backup) {
+			$destination_file = $this->_config->backup->folder.'/backup_'.date('Ymd_Hi').'.tar.gz';
+			NedStars_Log::message('Start backup live to : '.escapeshellarg($destination_file));
+			NedStars_FileSystem::backupDir($this->_config->paths->web_live_path, $destination_file);
+		} else {
+			NedStars_Log::message('File backup Skipped (Config value)');
+		}
 	}
 	
 	/**
