@@ -45,9 +45,9 @@ class Deployer {
 				'long'	=> 'debug',
 				'type'	=> '::',
 				),
-			'verbose' => array(
-				'short' => 'v',
-				'long'	=> 'verbose',
+			'quiet' => array(
+				'short' => 'q',
+				'long'	=> 'quiet',
 				'type'	=> '::',
 				),
 			'config' => array(
@@ -208,7 +208,7 @@ class Deployer {
 	 * NedStars_Log::setLogLevel($display_level);
 	 * NedStars_Log::startLog($start_msg);
 	 * 
-	 * @param Array $options set of options, tag, branch, verbose
+	 * @param Array $options set of options, tag, branch, quiet
 	 *
 	 * @return void 
 	 */
@@ -221,12 +221,12 @@ class Deployer {
 			$start_msg .= '  '.$options['branch'];
 		}
 		
-		if (isset($options['verbose']) && $options['verbose']) {
-			$display_level = 'Warning';
+		if (isset($options['quiet']) && $options['quiet']) {
+			$display_level = NedStars_Log::LVL_WARNING;
 		} elseif ($this->_config->is_debug_modus) {
-			$display_level = 'Debug';
+			$display_level = NedStars_Log::LVL_DEBUG;
 		} else {
-			$display_level = 'Message';
+			$display_level = NedStars_Log::LVL_MESSAGE;
 		}
 		
 		NedStars_Log::setLogLevel($display_level);

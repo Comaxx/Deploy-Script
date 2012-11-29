@@ -17,12 +17,12 @@ Available subcommands are:
   		-t <tag #>			Alias for --tag.
   		-b <branch>			Alias for --branch.
   		-d					Alias for --debug.
-  		-v					Alias for --verbose.
+  		-q					Alias for --quiet.
   		--config <name>		Will set file deploy.<name>.conf.php. default file: deploy.conf.php.
   		--tag <tag #>		Tag to be deployed.
   		--branch <branch>	Branch to be deployed.
   		--debug				Debug modes: default = false.
-  		--verbose			Verbose modes, only output warning and exceptions: default = false.
+  		--quiet				Quiet modes, only output warning and exceptions: default = false.
   		--version			Shows version information of Oink.
 
 Installation
