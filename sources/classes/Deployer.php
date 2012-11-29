@@ -291,9 +291,9 @@ class Deployer {
 	private function _loadConfigFile($options) {
 		
 		if (isset($options['config'])) {
-			$config_file = $options['config'].".conf.xml";
+			$config_file = $options['config'].'.conf.xml';
 		} else {
-			$config_file = "deploy.conf.xml";
+			$config_file = 'deploy.conf.xml';
 		}
 		
 		// Main Configuration object
@@ -465,7 +465,7 @@ class Deployer {
 			$title = 'Deploy: '.$project;
 			$message = '';
 			$message .= 'Deployment made to for: '.$branch_name."\n";
-			$message .= 'Host: '.$_SERVER['HOSTNAME']."\n";
+			$message .= 'Host: '.php_uname('n')."\n";
 			$message .= 'Path: '.$this->_config->paths->web_live_path."\n";
 			
 			Notification::notify($title, $message, $this->_config->notifications);

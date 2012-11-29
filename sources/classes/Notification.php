@@ -164,7 +164,7 @@ class  Notification {
 	 */
 	protected  static function notifyEmail($title, $message, $email_address) {
 		$to_email = $email_address; 
-		$from = 'deploy@'.$_SERVER['HOSTNAME']; 
+		$from = 'deploy@'.php_uname('n') 
 		$subject = $title;
 		
 		$headers  = "From: $from\r\n"; 
