@@ -21,6 +21,10 @@
 class DeployConfig {
 	
 	/**
+	 * Configuration object version
+	 */
+	const VERSION = 1.2;
+	/**
 	 * Create a new node if not existing
 	 * 
 	 * @param String $name node name
@@ -158,6 +162,12 @@ class DeployConfig {
 		}
 		
 		$oXml = simplexml_load_file($file_path, 'SimpleXMLElement', LIBXML_NOCDATA);
+		
+		// check if configuration file is for current version
+		if(strval($oXml['version']) != self::VERSION) {
+			throw new DeployerException('Cofniguration version incorrect for: '.$file_path, DeployerException::CONFIG_FAIL);
+		}
+		
 		// check if we have a base profile.
 		// everything below will be over writen
 		$profile = strval($oXml->include_profile);
@@ -201,6 +211,8 @@ class DeployConfig {
 		$config->newNode('backup');
 		$config->backup->checkLine('//backup/folder', $oXml);
 		$config->backup->checkLine('//backup/retention_days', $oXml);
+		$config->backup->checkLine('//backup/make_database_backup', $oXml);
+		$config->backup->checkLine('//backup/make_file_backup', $oXml);
 		
 		// preserve_data
 		$config->newNode('preserve_data');
