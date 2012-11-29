@@ -22,7 +22,7 @@ Available subcommands are:
   		--tag <tag #>		Tag to be deployed.
   		--branch <branch>	Branch to be deployed.
   		--debug				Debug modes: default = false.
-  		--quiet				Quiet modes, only output warning and exceptions: default = false.
+  		--quiet				Quiet modes, only output warning and exception, only if debug is not given: default = false.
   		--version			Shows version information of Oink.
 
 Installation

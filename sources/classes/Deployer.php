@@ -149,12 +149,12 @@ class Deployer {
 		echo "   -t <tag #>			Alias for --tag.\n";
 		echo "   -b <branch>			Alias for --branch.\n";
 		echo "   -d 				Alias for --debug.\n";
-		echo "   -v				Alias for --verbose.\n";
+		echo "   -q					quiet for --verbose.\n";
 		echo "   --config <name>		will set file deploy.<name>.conf.php.\n";
 		echo "   --tag <tag #>		Tag to be deployed.\n";
 		echo "   --branch <branch>		Branch to be deployed.\n";
 		echo "   --debug 			Debug modes: default = false.\n";
-		echo "   --verbose			Verbose modes, only output warning and exceptions: default = false.\n";
+		echo "   --quiet			Quiet modes, only output warning and exceptions, only if debug is not given: default = false.\n";
 		echo "   --version    		Shows version information of Deploy.\n";
 		echo "\n";
 	}
@@ -221,10 +221,10 @@ class Deployer {
 			$start_msg .= '  '.$options['branch'];
 		}
 		
-		if (isset($options['quiet']) && $options['quiet']) {
-			$display_level = NedStars_Log::LVL_WARNING;
-		} elseif ($this->_config->is_debug_modus) {
+		if ($this->_config->is_debug_modus) {
 			$display_level = NedStars_Log::LVL_DEBUG;
+		} elseif (isset($options['quiet']) && $options['quiet']) {
+			$display_level = NedStars_Log::LVL_WARNING;
 		} else {
 			$display_level = NedStars_Log::LVL_MESSAGE;
 		}
