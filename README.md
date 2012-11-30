@@ -3,7 +3,8 @@ Deploy Script
 
 The deploy script is a tool to easily deploy updates for your web base software.
 It's goal is is to grab the new code from versioning system en safly deploy it to a (live) environment.
-functions include things like
+functions include things like:
+
 - Databse backup.
 - File backup
 - Send notifications

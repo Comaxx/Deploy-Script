@@ -1,6 +1,22 @@
 Deploy Script 
 ========
 
+Deploy Script 1.2
+--------
+
+- Added sub folder for profiles 
+- Added wordpress profile (Wouter daan)
+- Updated Magento profile
+- Changed inner workings of verbose to quiet #6
+- Replaced `$_SERVER['HOSTNAME']` with `php_uname('n')` #1
+- Added script timer #2
+- Added configuration option to make backups optional #3
+- Fixed profile include recursion #4
+- Fixed error when sending notifications with no receiver #7
+- Fixed `clearData()` function to work properly #8
+- Removed auto generated phpdoc
+
+
 Deploy Script 1.1
 --------
 

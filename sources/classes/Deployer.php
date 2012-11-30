@@ -23,7 +23,7 @@ class Deployer {
 	/**
 	 * Script version
 	 */
-	const VERSION = '1.2-pre'; 
+	const VERSION = '1.2'; 
 	/**
 	 * Configuration object
 	 * 
