@@ -111,6 +111,10 @@ class  Notification {
 	 * @return Boolean succes
 	 */
 	protected static function notifyPushover($title, $message, $user_token) {
+		if (empty($user_token)) {
+			return false;
+		}
+		
 		$push = new Pushover_API();
 		$push->setToken(self::$_pushoverToken);
 		$push->setUser($user_token);
@@ -131,6 +135,10 @@ class  Notification {
 	 * @return Boolean succes
 	 */
 	protected  static function notifyNotifo($title, $message, $user) {
+		if (empty($user)) {
+			return false;
+		}
+		
 		/* create a new "notifo" object */
 		$notifo = new Notifo_API(self::$_notifoUser, self::$_notifoSecret);
 		
@@ -163,9 +171,13 @@ class  Notification {
 	 * @return Boolean succes
 	 */
 	protected  static function notifyEmail($title, $message, $email_address) {
-		$to_email = $email_address; 
-		$from = 'deploy@'.$_SERVER['HOSTNAME']; 
-		$subject = $title;
+		if (empty($email_address)) {
+			return false;
+		}
+		
+		$to_email 	= $email_address; 
+		$from 		= 'deploy@'.php_uname('n');
+		$subject 	= $title;
 		
 		$headers  = "From: $from\r\n"; 
 		$headers .= "Content-type: text/html\r\n";
@@ -173,6 +185,6 @@ class  Notification {
 		$message = '<pre>'.$message.'</pre>';
 		
 		// now lets send the email. 
-		mail($to_email, $subject, $message, $headers); 
+		return mail($to_email, $subject, $message, $headers);
 	}
 }

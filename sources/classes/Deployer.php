@@ -23,13 +23,16 @@ class Deployer {
 	/**
 	 * Script version
 	 */
-	const VERSION = '1.1'; 
+	const VERSION = '1.2'; 
 	/**
 	 * Configuration object
 	 * 
 	 * @var DeployConfig Configuration object
 	 */
 	private $_config = null;
+	
+	
+	private $_time_start = null;
 
 	/**
 	 * PHP CLI arguments array.
@@ -42,9 +45,9 @@ class Deployer {
 				'long'	=> 'debug',
 				'type'	=> '::',
 				),
-			'verbose' => array(
-				'short' => 'v',
-				'long'	=> 'verbose',
+			'quiet' => array(
+				'short' => 'q',
+				'long'	=> 'quiet',
 				'type'	=> '::',
 				),
 			'config' => array(
@@ -93,7 +96,9 @@ class Deployer {
 	 * 
 	 * @return void
 	 */
-	function __construct($options) {		
+	function __construct($options) {
+		$this->_time_start = microtime(true);
+		
 		// 2) set lock to prevent multiple instances
 		$this->_setLock();
 		
@@ -144,12 +149,12 @@ class Deployer {
 		echo "   -t <tag #>			Alias for --tag.\n";
 		echo "   -b <branch>			Alias for --branch.\n";
 		echo "   -d 				Alias for --debug.\n";
-		echo "   -v				Alias for --verbose.\n";
+		echo "   -q					quiet for --verbose.\n";
 		echo "   --config <name>		will set file deploy.<name>.conf.php.\n";
 		echo "   --tag <tag #>		Tag to be deployed.\n";
 		echo "   --branch <branch>		Branch to be deployed.\n";
 		echo "   --debug 			Debug modes: default = false.\n";
-		echo "   --verbose			Verbose modes, only output warning and exceptions: default = false.\n";
+		echo "   --quiet			Quiet modes, only output warning and exceptions, only if debug is not given: default = false.\n";
 		echo "   --version    		Shows version information of Deploy.\n";
 		echo "\n";
 	}
@@ -203,7 +208,7 @@ class Deployer {
 	 * NedStars_Log::setLogLevel($display_level);
 	 * NedStars_Log::startLog($start_msg);
 	 * 
-	 * @param Array $options set of options, tag, branch, verbose
+	 * @param Array $options set of options, tag, branch, quiet
 	 *
 	 * @return void 
 	 */
@@ -216,12 +221,12 @@ class Deployer {
 			$start_msg .= '  '.$options['branch'];
 		}
 		
-		if (isset($options['verbose']) && $options['verbose']) {
-			$display_level = 'Warning';
-		} elseif ($this->_config->is_debug_modus) {
-			$display_level = 'Debug';
+		if ($this->_config->is_debug_modus) {
+			$display_level = NedStars_Log::LVL_DEBUG;
+		} elseif (isset($options['quiet']) && $options['quiet']) {
+			$display_level = NedStars_Log::LVL_WARNING;
 		} else {
-			$display_level = 'Message';
+			$display_level = NedStars_Log::LVL_MESSAGE;
 		}
 		
 		NedStars_Log::setLogLevel($display_level);
@@ -291,9 +296,9 @@ class Deployer {
 	private function _loadConfigFile($options) {
 		
 		if (isset($options['config'])) {
-			$config_file = $options['config'].".conf.xml";
+			$config_file = $options['config'].'.conf.xml';
 		} else {
-			$config_file = "deploy.conf.xml";
+			$config_file = 'deploy.conf.xml';
 		}
 		
 		// Main Configuration object
@@ -387,21 +392,23 @@ class Deployer {
 	public function clearData() {
 		NedStars_Log::message('Clearing out tmp data.');
 		
-		// clear out dir
+		// clear out dir in temp new folder. 
 		foreach ($this->_config->clear_data->folders as $dir_path) {
-			if (is_dir($this->_config->paths->web_live_path.'/'.$dir_path)) {
-				NedStars_FileSystem::deleteDir($this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.'/'.$dir_path.'/.');
+			$temp_path = $this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.'/'.$dir_path;
+			if (is_dir($temp_path)) {
+				NedStars_FileSystem::deleteDirContent($temp_path);
 			} else {
-				NedStars_Log::warning('Folder not found: '.$this->_config->paths->web_live_path.'/'.$dir_path);
+				NedStars_Log::warning('Folder not found: '.$temp_path);
 			}
 		}
 	
-		// clear out files
+		// clear out files in temp new folder. 
 		foreach ($this->_config->clear_data->files as $file_path) {
-			if (is_file($this->_config->paths->web_live_path.'/'.$file_path)) {
-				unlink($this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.'/'.$file_path);
+			$temp_file = $this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.'/'.$file_path;
+			if (is_file($temp_file)) {
+				unlink($temp_file);
 			} else {
-				NedStars_Log::warning('File not found: '.$this->_config->paths->web_live_path.'/'.$file_path);
+				NedStars_Log::warning('File not found: '.$temp_file);
 			}
 		}
 	}
@@ -412,14 +419,18 @@ class Deployer {
 	 * @return void
 	 */
 	public function backupMysql() {
-		NedStars_Log::message('Start MySQL backup via mysqldump to: '.escapeshellarg($this->_config->paths->web_live_path."/database.sql"));
-		$command = "mysqldump -u".($this->_config->database->username);
-		$command .= " -p".($this->_config->database->password);
-		$command .= " -h".($this->_config->database->host);
-		$command .= " --databases ".escapeshellarg($this->_config->database->dbname);
-		$command .= " --result-file=".escapeshellarg($this->_config->paths->web_live_path."/database.sql");
-		NedStars_Execution::run($command);
 		
+		if ($this->_config->backup->make_database_backup) {
+			NedStars_Log::message('Start MySQL backup via mysqldump to: '.escapeshellarg($this->_config->paths->web_live_path."/database.sql"));
+			$command = "mysqldump -u".($this->_config->database->username);
+			$command .= " -p".($this->_config->database->password);
+			$command .= " -h".($this->_config->database->host);
+			$command .= " --databases ".escapeshellarg($this->_config->database->dbname);
+			$command .= " --result-file=".escapeshellarg($this->_config->paths->web_live_path."/database.sql");
+			NedStars_Execution::run($command);
+		} else {
+			NedStars_Log::message('MySQL backup Skipped (Config value)');
+		}
 	}
 	
 	/**
@@ -428,9 +439,13 @@ class Deployer {
 	 * @return void 
 	 */
 	public function backupLive() {
-		$destination_file = $this->_config->backup->folder.'/backup_'.date('Ymd_Hi').'.tar.gz';
-		NedStars_Log::message('Start backup live to : '.escapeshellarg($destination_file));
-		NedStars_FileSystem::backupDir($this->_config->paths->web_live_path, $destination_file);
+		if ($this->_config->backup->make_file_backup) {
+			$destination_file = $this->_config->backup->folder.'/backup_'.date('Ymd_Hi').'.tar.gz';
+			NedStars_Log::message('Start backup live to : '.escapeshellarg($destination_file));
+			NedStars_FileSystem::backupDir($this->_config->paths->web_live_path, $destination_file);
+		} else {
+			NedStars_Log::message('File backup Skipped (Config value)');
+		}
 	}
 	
 	/**
@@ -465,8 +480,9 @@ class Deployer {
 			$title = 'Deploy: '.$project;
 			$message = '';
 			$message .= 'Deployment made to for: '.$branch_name."\n";
-			$message .= 'Host: '.$_SERVER['HOSTNAME']."\n";
-			$message .= 'Path: '.$this->_config->paths->web_live_path."\n";
+			$message .= 'Host		: '.php_uname('n')."\n";
+			$message .= 'Path		: '.$this->_config->paths->web_live_path."\n";
+			$message .= 'Duration	: '.round((microtime(true) - $this->_time_start), 4)." seconds\n";
 			
 			Notification::notify($title, $message, $this->_config->notifications);
 			NedStars_Log::message('Notifications send.');

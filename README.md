@@ -1,6 +1,16 @@
 Deploy Script
 ===================
 
+The deploy script is a tool to easily deploy updates for your web base software.
+It's goal is is to grab the new code from versioning system en safly deploy it to a (live) environment.
+functions include things like:
+
+- Databse backup.
+- File backup
+- Send notifications
+- hot swap to new code base. 
+
+
 Available subcommands are:
 ----
 
@@ -8,12 +18,12 @@ Available subcommands are:
   		-t <tag #>			Alias for --tag.
   		-b <branch>			Alias for --branch.
   		-d					Alias for --debug.
-  		-v					Alias for --verbose.
+  		-q					Alias for --quiet.
   		--config <name>		Will set file deploy.<name>.conf.php. default file: deploy.conf.php.
   		--tag <tag #>		Tag to be deployed.
   		--branch <branch>	Branch to be deployed.
   		--debug				Debug modes: default = false.
-  		--verbose			Verbose modes, only output warning and exceptions: default = false.
+  		--quiet				Quiet modes, only output warning and exception, only if debug is not given: default = false.
   		--version			Shows version information of Oink.
 
 Installation

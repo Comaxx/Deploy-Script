@@ -1,9 +1,7 @@
 <?xml version="1.0"?>
 <config version="1.2">
-	<include_profile>sources/profiles/concrete5.xml</include_profile>
-	
+	<include_profile>sources/profiles/wordpress.xml</include_profile>
     <database>
-		<read_from_config>n</read_from_config>
 		<host>localhost</host> <!-- localhost -->
 		<username></username> <!-- root -->
 		<password></password>
@@ -34,4 +32,22 @@
 	<backup>
 		<folder></folder>
 	</backup>
+	
+	<preserve_data>
+		<folders> <!-- pre set done in profile -->
+			<!--
+			UNCOMMENT the following line if users are able to install plugins from the
+			backend interface, meaning they are not under version control
+			-->
+			<!--<folder>wp-content/plugins</folder>-->
+			
+			<!--
+			UNCOMMENT the following line if users are able to install themes from the
+			backend interface, meaning they are not under version control
+			-->
+			<!--<folder>wp-content/themes</folder>-->
+		</folders>
+		<files> <!-- pre set done in profile -->
+		</files>
+	</preserve_data>
 </config>

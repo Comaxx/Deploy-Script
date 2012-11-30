@@ -21,6 +21,10 @@
 class DeployConfig {
 	
 	/**
+	 * Configuration object version
+	 */
+	const VERSION = 1.2;
+	/**
 	 * Create a new node if not existing
 	 * 
 	 * @param String $name node name
@@ -158,6 +162,15 @@ class DeployConfig {
 		}
 		
 		$oXml = simplexml_load_file($file_path, 'SimpleXMLElement', LIBXML_NOCDATA);
+		
+		// check if configuration file is for current version
+		if (strval($oXml['version']) != self::VERSION) {
+			throw new DeployerException('Cofniguration version incorrect for: '.$file_path, DeployerException::CONFIG_FAIL);
+		}
+		
+		// Prevent double loading of profiles, so save loaded profiles
+		self::_addloadedConfigFile($config, $file_path);
+		
 		// check if we have a base profile.
 		// everything below will be over writen
 		$profile = strval($oXml->include_profile);
@@ -201,6 +214,8 @@ class DeployConfig {
 		$config->newNode('backup');
 		$config->backup->checkLine('//backup/folder', $oXml);
 		$config->backup->checkLine('//backup/retention_days', $oXml);
+		$config->backup->checkLine('//backup/make_database_backup', $oXml);
+		$config->backup->checkLine('//backup/make_file_backup', $oXml);
 		
 		// preserve_data
 		$config->newNode('preserve_data');
@@ -223,6 +238,26 @@ class DeployConfig {
 			&& !empty($config->paths->web_live_path)
 		) {
 			$config->database->LoadDbFromFile(NedStars_FileSystem::getNiceDir($config->paths->web_live_path).$config->database->database_config_file);
+		}
+	}
+	
+	/**
+	 * Prevent double loading of profiles, so save loaded profiles
+	 * 
+	 * @param DeployConfig &$config   Config object to fill
+	 * @param String       $file_path Ablsolute path to file
+	 *
+	 * @return void
+	 */
+	private static function _addloadedConfigFile(&$config, $file_path) {
+		if (!isset($config->config_files)) {
+			$config->config_files = array();
+		}
+		
+		if (isset($config->config_files[$file_path])) {
+			throw new DeployerException('Recursion detected on configuration profiles.', DeployerException::CONFIG_FAIL);
+		} else {
+			$config->config_files[$file_path] = $file_path;
 		}
 	}
 }

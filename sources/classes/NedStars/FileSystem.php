@@ -242,6 +242,19 @@ class NedStars_FileSystem {
 		
 		return NedStars_Execution::run('rm -rf '.escapeshellarg($path), true);
 	}
+	/**
+	 * Delete content of a given dir recursive
+	 * 
+	 * @param String $path absoulte path of folder to delete
+	 *
+	 * @return Boolean
+	 */
+	static public function deleteDirContent($path) {
+		// make sure path exists with line ending
+		$path = self::_getValidatedDir($path);
+		
+		return NedStars_Execution::run('rm -rf '.escapeshellarg($path.DIRECTORY_SEPARATOR), true);
+	}
 	
 	/**
 	 * Return unxi file permissions
