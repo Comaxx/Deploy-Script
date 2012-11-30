@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <config version="1.2">
-	<include_profile>sources/concrete5.xml</include_profile>
+	<include_profile>sources/profiles/concrete5.xml</include_profile>
 	
     <database>
 		<read_from_config>n</read_from_config>
