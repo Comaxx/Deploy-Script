@@ -449,9 +449,12 @@ class Deployer {
 	}
 	
 	/**
-	 * Clear temp_old dir
-	 * Copy current live to temp_old dir.
-	 * Copy new live from temp_new dir to live
+	 * Switch the live folder for the new one
+	 * 
+	 * Clear temp_old_path dir
+	 * Copy current live to temp_old_path dir.
+	 * Copy new live from temp_new_path dir to live
+	 * remove temp_new_path and temp_old_path
 	 *
 	 * @return void 
 	 */
@@ -463,7 +466,8 @@ class Deployer {
 			$this->_config->paths->temp_old_path.'/'
 		);
 		
-		NedStars_Log::message('Remove old live installation.');
+		NedStars_Log::message('Remove temporarily used directories.');
+		NedStars_FileSystem::deleteDir($this->_config->paths->temp_new_path.'/');
 		NedStars_FileSystem::deleteDir($this->_config->paths->temp_old_path.'/');
 	}
 	
