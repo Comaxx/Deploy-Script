@@ -196,7 +196,7 @@ class NedStars_FileSystem {
 		// make sure path exists with line ending
 		$path = self::_getValidatedDir($path);
 		
-		return NedStars_Execution::run('tar -czf '.escapeshellarg($dest_file_path).' '.escapeshellarg($path), true);
+		return NedStars_Execution::run('tar -czfP '.escapeshellarg($dest_file_path).' '.escapeshellarg($path), true);
 	}
 	
 	/**

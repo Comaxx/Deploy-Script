@@ -482,6 +482,7 @@ class Deployer {
 			$message .= 'Deployment made to for: '.$branch_name."\n";
 			$message .= 'Host		: '.php_uname('n')."\n";
 			$message .= 'Path		: '.$this->_config->paths->web_live_path."\n";
+			$message .= 'Version	: '.self::VERSION."\n";
 			$message .= 'Duration	: '.round((microtime(true) - $this->_time_start), 4)." seconds\n";
 			
 			Notification::notify($title, $message, $this->_config->notifications);
