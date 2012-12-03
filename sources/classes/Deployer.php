@@ -244,7 +244,10 @@ class Deployer {
 				$this->_config->database->username,
 				$this->_config->database->password
 			);
-			mysql_select_db($this->_config->database->dbname);
+			// throw exception if database could not be selected
+			if (!mysql_select_db($this->_config->database->dbname)) {
+				throw new Exception('Databse connection failed on dbname');
+			}
 			
 			// close connection after test
 			mysql_close($connection);
@@ -254,7 +257,6 @@ class Deployer {
 			// register exception and rethrow.
 			throw new DeployerException($exception->getMessage(), DeployerException::MYSQL_FAIL);
 		}
-		
 		
 		return true;
 	}
