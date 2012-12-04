@@ -1,6 +1,9 @@
 Deploy Script 
 ========
 
+- Added no password or ask password for MySQL
+- Refactored config class
+
 Deploy Script 1.2
 --------
 
