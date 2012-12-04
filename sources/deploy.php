@@ -28,37 +28,37 @@ try {
 	}
 
 	$deployer = new Deployer($options);
-	
+
 	// TODO: Maintanance page
-	
+
 	// Get git source
-	$deployer->getGitSource();
-	
+	$deployer->getSource();
+
 	// Backup mysql data
 	$deployer->backupMysql();
-	
+
 	// Backup live data to tar
 	$deployer->backupLive();
-	
+
 	// Move the non versioned files to source dir.
 	$deployer->preserveData();
-	
+
 	// Clear out tmp data like session and cache
 	$deployer->clearData();
-	
+
 	// Apply correct permissions
 	$deployer->setFolderPermisions();
-	
+
 	// Switch folders so that everything is live
 	$deployer->switchLive();
-	
+
 	// Inform subscribers
 	$deployer->sendNotifications();
-	
+
 	// Remove old files
 	$deployer->purgeOldBackups();
 
-	
+
 } catch (DeployerException $exception) {
 	// set exit code
 	$exit_code = 100;
@@ -79,7 +79,7 @@ try {
 	// set exit code
 	$exit_code = 104;
 	$exception_message = strval($exception);
-	
+
 } catch (Exception $exception) {
 	// set exit code
 	$exit_code = 99;

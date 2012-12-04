@@ -519,7 +519,7 @@ class Deployer {
 	 *
 	 * @return void
 	 */
-	public function getGitSource() {
+	public function getSource() {
 		NedStars_Log::message('Get archive from git.');
 		NedStars_Git::getArchive(
 			$this->_config->git->repo,
