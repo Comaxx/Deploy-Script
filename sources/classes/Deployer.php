@@ -19,24 +19,24 @@
  * @copyright 2012  Nedstars <info@nedstars.nl>
  */
 class Deployer {
-	
+
 	/**
 	 * Script version
 	 */
-	const VERSION = '1.2'; 
+	const VERSION = '1.2';
 	/**
 	 * Configuration object
-	 * 
+	 *
 	 * @var DeployConfig Configuration object
 	 */
 	private $_config = null;
-	
-	
+
+
 	private $_time_start = null;
 
 	/**
 	 * PHP CLI arguments array.
-	 * 
+	 *
 	 * @var Array argument array used for NedStars_Arguments
 	 */
 	public static $input_option_array = array(
@@ -71,14 +71,14 @@ class Deployer {
 				'type'	=> '',
 				),
 		);
-	
+
 	/**
-	 * Contains the lock resources. 
+	 * Contains the lock resources.
 	 *
 	 * @var resource socket stream for locking
 	 */
 	private $_lock = null;
-	
+
 	/**
 	 * Constructor
 	 *
@@ -93,38 +93,38 @@ class Deployer {
 	 *    	Check if mysql and git credentials are present
 	 *
 	 * @param Array $options set options
-	 * 
+	 *
 	 * @return void
 	 */
 	function __construct($options) {
 		$this->_time_start = microtime(true);
-		
+
 		// 2) set lock to prevent multiple instances
 		$this->_setLock();
-		
-		
+
+
 		// 3) Load config file and override with option values if needed
 		$this->_loadConfigFile($options);
-	
+
 		// 4) Init log level and set start msg
 		$this->_startLog($options);
-		
+
 		// 5) Check if required binairies exist
 		$not_found_bin = NedStars_FileSystem::hasBinaries(array('git','mysqldump'));
 		if ($not_found_bin) {
 			throw new DeployerException('Binaries '.implode(', ', $not_found_bin).' are not found.', DeployerException::BINARY_MISSING);
 		}
-		
+
 		// 6) Check for free disk space
 		$this->_checkFreeDiskSpace();
-		
+
 		// 7) Sanity_info: check if all configuration options are filled in
 		$this->_checkConfigurationValues();
-		
+
 		// Start is ok
 		NedStars_Log::message('Deployer input is correct.');
 	}
-	
+
 	/**
 	 * Clean up locks
 	 *
@@ -134,7 +134,7 @@ class Deployer {
 		// release lock if any
 		$this->_unsetLock();
 	}
-	
+
 	/**
 	 * Print info on how to use the class
 	 *
@@ -158,7 +158,7 @@ class Deployer {
 		echo "   --version    		Shows version information of Deploy.\n";
 		echo "\n";
 	}
-	
+
 	/**
 	 * Print version info to terminal
 	 *
@@ -168,7 +168,7 @@ class Deployer {
 		$message = 'Deploy script, Version: '.self::VERSION;
 		printf("\033[0;32m%s\033[0m".PHP_EOL, $message);
 	}
-	
+
 	/**
 	 * Set lock to prevent multiple instances on the same server
 	 *
@@ -182,18 +182,18 @@ class Deployer {
 		if ($this->_lock !== null) {
 			throw new DeployerException('Lock is already set.', DeployerException::NO_LOCK);
 		}
-		
+
 		try {
 			$this->_lock = stream_socket_server("tcp://0.0.0.0:12345");
 		} catch (Exception $e) {
 			throw new DeployerException('Could not get lock! Is the proces allready running on this server?', DeployerException::NO_LOCK);
 		}
 	}
-	
+
 	/**
 	 * Relase the locking mechanism if set
 	 *
-	 * @return void 
+	 * @return void
 	 */
 	private function _unsetLock() {
 		if ($this->_lock !== null) {
@@ -201,16 +201,16 @@ class Deployer {
 			$this->_lock = null;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Make start log msg and set log level
 	 * NedStars_Log::setLogLevel($display_level);
 	 * NedStars_Log::startLog($start_msg);
-	 * 
+	 *
 	 * @param Array $options set of options, tag, branch, quiet
 	 *
-	 * @return void 
+	 * @return void
 	 */
 	private function _startLog($options) {
 		$start_msg = 'Start Deployment';
@@ -220,7 +220,7 @@ class Deployer {
 		if (isset($options['branch'])) {
 			$start_msg .= '  '.$options['branch'];
 		}
-		
+
 		if ($this->_config->is_debug_modus) {
 			$display_level = NedStars_Log::LVL_DEBUG;
 		} elseif (isset($options['quiet']) && $options['quiet']) {
@@ -228,7 +228,7 @@ class Deployer {
 		} else {
 			$display_level = NedStars_Log::LVL_MESSAGE;
 		}
-		
+
 		NedStars_Log::setLogLevel($display_level);
 		NedStars_Log::startLog($start_msg);
 	}
@@ -238,29 +238,40 @@ class Deployer {
 	 * @return boolean true
 	 */
 	private function _verifyMysqlCredentials() {
+
+		$config_database = $this->_config->database;
+
+		if (empty($config_database->password)) {
+			$password = NedStars_Execution::prompt('Enter MySQL password (' . $config_database->username . '@' . $config_database->host . ':' . $config_database->dbname . '): ', true);
+			if (empty($password)) {
+				$password = false;
+			}
+			$config_database->password = $password;
+		}
+
 		try {
 			$connection = mysql_connect(
-				$this->_config->database->host,
-				$this->_config->database->username,
-				$this->_config->database->password
+				$config_database->host,
+				$config_database->username,
+				$config_database->password
 			);
 			// throw exception if database could not be selected
-			if (!mysql_select_db($this->_config->database->dbname)) {
-				throw new Exception('Databse connection failed on dbname');
+			if (!mysql_select_db($config_database->dbname)) {
+				throw new Exception('Database connection failed on dbname');
 			}
-			
+
 			// close connection after test
 			mysql_close($connection);
 			unset($connection);
-			
+
 		} catch (Exception $exception) {
 			// register exception and rethrow.
 			throw new DeployerException($exception->getMessage(), DeployerException::MYSQL_FAIL);
 		}
-		
+
 		return true;
 	}
-		
+
 	/**
 	 * Check if configuration values are present and correct
 	 *
@@ -272,61 +283,61 @@ class Deployer {
 		NedStars_FileSystem::createDirIfNeeded($this->_config->paths->temp_new_path);
 		NedStars_FileSystem::createDirIfNeeded($this->_config->paths->temp_old_path);
 		NedStars_FileSystem::createDirIfNeeded($this->_config->backup->folder);
-		
+
 		// check if mysql credentials are ok.
 		// make db connection to test
 		$this->_verifyMysqlCredentials();
-		
+
 		// check if user is root
 		$this->_verifyRootUser();
-		
+
 		// Check if git credentials are ok.
 		if (!NedStars_Git::verifyCredentials($this->_config->git->repo, $this->_config->git->branch)) {
 			throw new DeployerException('Git credentials or branch are incorrect', DeployerException::GIT_CREDENTIALS);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Load specified config file
 	 * Default config file is "deploy.conf.php"
-	 * 
+	 *
 	 * @param array $options set of posible overrides: branch, tag, config, debug
 	 *
 	 * @return void
 	 */
 	private function _loadConfigFile($options) {
-		
+
 		if (isset($options['config'])) {
 			$config_file = $options['config'].'.conf.xml';
 		} else {
 			$config_file = 'deploy.conf.xml';
 		}
-		
+
 		// Main Configuration object
-		$config = new DeployConfig();	
-		
+		$config = new DeployConfig();
+
 		DeployConfig::parseData($config, $config_file);
-		
+
 		// Override config values with given options
 		// Branch
 		if (isset($options['branch'])) {
 			$config->git->branch = 'heads/'.$options['branch'];
 		}
-		
+
 		// Tag
 		if (isset($options['tag'])) {
 			$config->git->branch = 'tags/'.$options['tag'];
 		}
-		
+
 		// Debug
 		if (isset($options['debug'])) {
 			$config->is_debug_modus = $options['debug'];
 		}
-		
+
 		$this->_config = $config;
 	}
-	
+
 	/**
 	 * Logic for preserving  data
 	 *
@@ -339,7 +350,7 @@ class Deployer {
 		foreach ($this->_config->preserve_data->folders as $dir_path) {
 			$current_path = NedStars_FileSystem::getNiceDir($this->_config->paths->web_live_path.'/'.$dir_path);
 			$new_path = NedStars_FileSystem::getNiceDir($this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.'/'.$dir_path);
-			
+
 			if (is_dir($current_path)) {
 				if (!is_dir($new_path)) {
 					// try to make dir.
@@ -348,8 +359,8 @@ class Deployer {
 					}
 					NedStars_Log::debug('Created dir: '.$new_path);
 				}
-				
-				// move the files. 
+
+				// move the files.
 				// strip out the last folder. where creating it with the move command.
 				NedStars_FileSystem::copyDir(
 					$current_path,
@@ -359,7 +370,7 @@ class Deployer {
 				NedStars_Log::warning('Folder not found: '.$current_path);
 			}
 		}
-	
+
 		// backup / preserve files
 		foreach ($this->_config->preserve_data->files as $file_path) {
 			if (is_file($this->_config->paths->web_live_path.'/'.$file_path)) {
@@ -371,7 +382,7 @@ class Deployer {
 				NedStars_Log::warning('File not found: '.$this->_config->paths->web_live_path.'/'.$file_path);
 			}
 		}
-				
+
 		//backup google*.htm file in live root.
 		if ($this->_config->preserve_data->google_files) {
 			if (is_dir($this->_config->paths->web_live_path)) {
@@ -385,7 +396,7 @@ class Deployer {
 			}
 		}
 	}
-	
+
 	/**
 	 * Logic for clearing data from new installation
 	 *
@@ -393,8 +404,8 @@ class Deployer {
 	 */
 	public function clearData() {
 		NedStars_Log::message('Clearing out tmp data.');
-		
-		// clear out dir in temp new folder. 
+
+		// clear out dir in temp new folder.
 		foreach ($this->_config->clear_data->folders as $dir_path) {
 			$temp_path = $this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.'/'.$dir_path;
 			if (is_dir($temp_path)) {
@@ -403,8 +414,8 @@ class Deployer {
 				NedStars_Log::warning('Folder not found: '.$temp_path);
 			}
 		}
-	
-		// clear out files in temp new folder. 
+
+		// clear out files in temp new folder.
 		foreach ($this->_config->clear_data->files as $file_path) {
 			$temp_file = $this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.'/'.$file_path;
 			if (is_file($temp_file)) {
@@ -414,18 +425,20 @@ class Deployer {
 			}
 		}
 	}
-	
+
 	/**
 	 * Backup MySQL into tar in live dir
 	 *
 	 * @return void
 	 */
 	public function backupMysql() {
-		
+
 		if ($this->_config->backup->make_database_backup) {
 			NedStars_Log::message('Start MySQL backup via mysqldump to: '.escapeshellarg($this->_config->paths->web_live_path."/database.sql"));
 			$command = "mysqldump -u".($this->_config->database->username);
-			$command .= " -p".($this->_config->database->password);
+			if ($this->_config->database->password !== false) {
+				$command .= " -p".($this->_config->database->password);
+			}
 			$command .= " -h".($this->_config->database->host);
 			$command .= " --databases ".escapeshellarg($this->_config->database->dbname);
 			$command .= " --result-file=".escapeshellarg($this->_config->paths->web_live_path."/database.sql");
@@ -434,11 +447,11 @@ class Deployer {
 			NedStars_Log::message('MySQL backup Skipped (Config value)');
 		}
 	}
-	
+
 	/**
 	 * Backup live dir into tar
 	 *
-	 * @return void 
+	 * @return void
 	 */
 	public function backupLive() {
 		if ($this->_config->backup->make_file_backup) {
@@ -449,16 +462,16 @@ class Deployer {
 			NedStars_Log::message('File backup Skipped (Config value)');
 		}
 	}
-	
+
 	/**
 	 * Switch the live folder for the new one
-	 * 
+	 *
 	 * Clear temp_old_path dir
 	 * Copy current live to temp_old_path dir.
 	 * Copy new live from temp_new_path dir to live
 	 * remove temp_new_path and temp_old_path
 	 *
-	 * @return void 
+	 * @return void
 	 */
 	public function switchLive() {
 		NedStars_Log::message('Switching live installation for new export.');
@@ -467,12 +480,12 @@ class Deployer {
 			$this->_config->paths->temp_new_path .'/'.$this->_config->git->source_folder.'/',
 			$this->_config->paths->temp_old_path.'/'
 		);
-		
+
 		NedStars_Log::message('Remove temporarily used directories.');
 		NedStars_FileSystem::deleteDir($this->_config->paths->temp_new_path.'/');
 		NedStars_FileSystem::deleteDir($this->_config->paths->temp_old_path.'/');
 	}
-	
+
 	/**
 	 * Send notification when backup is done
 	 *
@@ -482,7 +495,7 @@ class Deployer {
 		if (isset($this->_config->notifications) && is_object($this->_config->notifications)) {
 			$project = preg_replace('/(.*):(.*).git/', '$2', $this->_config->git->repo);
 			$branch_name = $this->_config->git->branch;
-			
+
 			$title = 'Deploy: '.$project;
 			$message = '';
 			$message .= 'Deployment made to for: '.$branch_name."\n";
@@ -490,14 +503,14 @@ class Deployer {
 			$message .= 'Path		: '.$this->_config->paths->web_live_path."\n";
 			$message .= 'Version	: '.self::VERSION."\n";
 			$message .= 'Duration	: '.round((microtime(true) - $this->_time_start), 4)." seconds\n";
-			
+
 			Notification::notify($title, $message, $this->_config->notifications);
 			NedStars_Log::message('Notifications send.');
 		} else {
 			NedStars_Log::message('No Notifications send (no recipients found).');
 		}
 	}
-	
+
 	/**
 	 * Get data from Git
 	 *
@@ -512,7 +525,7 @@ class Deployer {
 			$this->_config->git->source_folder
 		);
 	}
-	
+
 	/**
 	 * Set permisions to apache
 	 *
@@ -524,13 +537,13 @@ class Deployer {
 			$this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder,
 			$this->_config->permisions->user, $this->_config->permisions->group
 		);
-		
+
 		NedStars_Log::debug('Making live installation read-only for relocation: '.$this->_config->paths->web_live_path);
 		NedStars_FileSystem::chmodDir($this->_config->paths->web_live_path, '0400');
 	}
-	
+
 	/**
-	 * Verify if exec user is root 
+	 * Verify if exec user is root
 	 *
 	 * @return void
 	 */
@@ -541,7 +554,7 @@ class Deployer {
 			NedStars_Log::debug('User is root.');
 		}
 	}
-	
+
 	/**
 	 * Delete old backups after N days
 	 *
@@ -554,8 +567,8 @@ class Deployer {
 			$this->_config->backup->retention_days
 		);
 	}
-	
-	
+
+
 	/**
 	 * Check if there is 4 times the used diskpace free
 	 *
@@ -567,7 +580,7 @@ class Deployer {
 		$free_size_live = disk_free_space($this->_config->paths->web_live_path);
 		// backup disk (could be on a other partition then the live)
 		$free_size_backup = disk_free_space($this->_config->backup->folder);
-		
+
 		// times 4 beacuse if both on same disk then we need 3 times and a bit on margin.
 		// one for new git checkout with data
 		// one for backup (posibly on the same disk)
@@ -575,14 +588,14 @@ class Deployer {
 		if ($folder_size * 4 > $free_size_live) {
 			throw new DeployerException('Not enough free disk space on Live.', DeployerException::DISK_SPACE);
 		}
-		
-		// also check if backup disk has enough free disk space for 1 backup 
+
+		// also check if backup disk has enough free disk space for 1 backup
 		if ($folder_size > $free_size_backup) {
 			throw new DeployerException('Not enough free disk space on Backup.', DeployerException::DISK_SPACE);
 		}
-		
+
 		NedStars_Log::message('There is enough free disk space');
-		
+
 		return true;
 	}
 }
