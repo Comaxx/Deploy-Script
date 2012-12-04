@@ -1,16 +1,7 @@
 <?php
-/**
- * Git Exception class
- *
- * @project   NedStars PHPlib
- * @category  Nedstars_Tools
- * @package   Nedstars_PHPlib
- * @author    Alain Lecluse, Nedstars <alain@nedstars.nl>
- * @copyright 2012  Nedstars <info@nedstars.nl>
- */
 
 /**
- * Git Exception class, Logs msg via NedStars_Log
+ * SVN Exception class, Logs msg via NedStars_Log
  *
  * @project   NedStars PHPlib
  * @category  Nedstars_Tools

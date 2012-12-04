@@ -17,7 +17,7 @@ class NedStars_Svn {
 	 * @param String $repository       ssh repository string
 	 * @param String $branch           name of the branch or tag to export
 	 * @param String $destination_path absolute path to destination folder
-	 * @param String $subfolder        subfolder in git project to get
+	 * @param String $subfolder        subfolder in svn project to get
 	 *
 	 * @return void
 	 */
@@ -37,14 +37,14 @@ class NedStars_Svn {
 			throw new NedStars_SvnException('$destination_path is not a valid path: '. escapeshellarg($destination_path), NedStars_SvnException::INVALID_PATH);
 		}
 
-		// build command, folder in git repo is optional
+		// build command, folder in svn repo is optional
 		$command = 'svn archive --remote '.escapeshellarg($repository).' '.escapeshellarg($branch);
 		$result_path= NedStars_FileSystem::getNiceDir($destination_path);
 		if ($subfolder !== null) {
 			$command .= ' '.escapeshellarg($subfolder);
 			$result_path = NedStars_FileSystem::getNiceDir($result_path.$subfolder);
 		}
-		// extract git tar file into destination folder
+		// extract svn tar file into destination folder
 		$command .= ' | tar -x -C '.escapeshellarg($destination_path);
 
 		NedStars_Log::debug($command);
@@ -56,7 +56,7 @@ class NedStars_Svn {
 	}
 
 	/**
-	 * Verify credentials and branch by git ls-remote
+	 * Verify credentials and branch by svn ...
 	 *
 	 * @param String $repository ssh repository string
 	 * @param String $branch     name of the branch or tag
@@ -66,12 +66,12 @@ class NedStars_Svn {
 	public static function verifyCredentials($repository, $branch) {
 		// make sure input is not empty
 		if (empty($repository)) {
-			throw new NedStars_SvnException('$repository can not be empty', NedStars_GitException::EMPTY_REPOSITORY);
+			throw new NedStars_SvnException('$repository can not be empty', NedStars_SvnException::EMPTY_REPOSITORY);
 		}
 
 		// make sure input is not empty
 		if (empty($branch)) {
-			throw new NedStars_SvnException('$branch can not be empty', NedStars_GitException::EMPTY_BRANCH);
+			throw new NedStars_SvnException('$branch can not be empty', NedStars_SvnException::EMPTY_BRANCH);
 		}
 
 		// TODO check credentials
