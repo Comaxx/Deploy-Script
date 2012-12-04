@@ -285,8 +285,11 @@ class Deployer {
 		NedStars_FileSystem::createDirIfNeeded($this->_config->backup->folder);
 
 		// check if mysql credentials are ok.
-		// make db connection to test
-		$this->_verifyMysqlCredentials();
+		// setup a db connection to test credentials
+		// but only if backup should be made
+		if ($this->_config->backup->make_database_backup) {
+			$this->_verifyMysqlCredentials();
+		}
 
 		// check if user is root
 		$this->_verifyRootUser();
