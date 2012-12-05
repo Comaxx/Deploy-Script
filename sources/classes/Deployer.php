@@ -242,7 +242,7 @@ class Deployer {
 
 			foreach ($this->_config->databases as $config_database) {
 
-				if ($config_database->password !== false) {
+				if ($config_database->password === false || empty($config_database->password)) {
 					$password = NedStars_Execution::prompt('Enter MySQL password (' . $config_database->username . '@' . $config_database->host . ':' . implode(', ', $config_database->dbnames) . '): ', true);
 					if (empty($password)) {
 						$password = false;
@@ -439,11 +439,11 @@ class Deployer {
 				foreach ($config_database->dbnames as $dbname) {
 					$file = escapeshellarg($this->_config->paths->web_live_path.'/'.$config_database->host.'-'.$dbname.'.sql');
 					NedStars_Log::message('Start MySQL backup via mysqldump to: '.$file);
-					$command = "mysqldump -u".($config_database->username);
+					$command = 'mysqldump --user='.escapeshellarg($config_database->username);
 					if ($config_database->password !== false) {
-						$command .= " -p".($config_database->password);
+						$command .= ' --password='.escapeshellarg($config_database->password);
 					}
-					$command .= " -h".($config_database->host);
+					$command .= ' --host='.escapeshellarg($config_database->host);
 					$command .= " --databases ".escapeshellarg($dbname);
 					$command .= " --result-file=".$file;
 
