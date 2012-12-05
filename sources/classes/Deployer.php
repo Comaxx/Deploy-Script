@@ -257,7 +257,7 @@ class Deployer {
 			);
 			// throw exception if database could not be selected
 			if (!mysql_select_db($config_database->dbname)) {
-				throw new Exception('Database connection failed on dbname');
+				throw new Exception('Database connection failed on dbname : '.$config_database->dbname);
 			}
 
 			// close connection after test

@@ -193,10 +193,17 @@ class NedStars_FileSystem {
 	 * @return void
 	 */
 	static public function backupDir($path, $dest_file_path) {
-		// make sure path exists with line ending
+		// make sure path exists with a line ending
 		$path = self::_getValidatedDir($path);
 
-		return NedStars_Execution::run('tar -czPf '.escapeshellarg($dest_file_path).' '.escapeshellarg($path), true);
+		$return = NedStars_Execution::run('tar -czPf '.escapeshellarg($dest_file_path).' '.escapeshellarg($path), true);
+
+		// make sure the backup file is created
+		if (!file_exists($dest_file_path) ) {
+			throw new NedStars_FileSystemException('Backup file not created: '.$dest_file_path, NedStars_FileSystemException::FILE_NOT_FOUND);
+		}
+
+		return $return;
 	}
 
 	/**
