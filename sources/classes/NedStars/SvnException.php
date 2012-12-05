@@ -14,8 +14,6 @@ class NedStars_SvnException extends NedStars_Exception {
 	const EMPTY_BRANCH 		= 1;
 	const EMPTY_REPOSITORY	= 2;
 	const INVALID_PATH 		= 3;
-	const EMPTY_REVISION	= 4;
-	const ARCHIVE_FAIL		= 5;
-	const CLONE_FAIL		= 6;
+	const ARCHIVE_FAIL		= 4;
 
 }
