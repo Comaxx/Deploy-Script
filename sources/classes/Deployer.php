@@ -533,6 +533,8 @@ class Deployer {
 			NedStars_Log::message('Get archive from SVN.');
 			NedStars_Svn::getArchive(
 				$this->_config->archive->svn->repo,
+				$this->_config->archive->svn->username,
+				$this->_config->archive->svn->password,
 				$this->_config->paths->temp_new_path
 			);
 

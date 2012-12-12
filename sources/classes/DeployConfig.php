@@ -210,8 +210,8 @@ class DeployConfig {
 		// svn
 		$config->archive->_newNode('svn');
 		$config->archive->svn->_checkLine('//archive/svn/repo', $oXml);
-		$config->archive->svn->_checkLine('//archive/svn/branch', $oXml);
-		$config->archive->svn->_checkLine('//archive/svn/source_folder', $oXml);
+		$config->archive->svn->_checkLine('//archive/svn/username', $oXml);
+		$config->archive->svn->_checkLine('//archive/svn/password', $oXml);
 
 		// notifications
 		$config->_newNode('notifications');

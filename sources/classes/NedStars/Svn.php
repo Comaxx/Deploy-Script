@@ -15,11 +15,13 @@ class NedStars_Svn {
 	 * Get svn export into folder
 	 *
 	 * @param String $repository       ssh repository string
+	 * @param String $username         svn username
+	 * @param String $password         svn password
 	 * @param String $destination_path absolute path to destination folder
 	 *
 	 * @return void
 	 */
-	public static function getArchive($repository, $destination_path) {
+	public static function getArchive($repository, $username, $password, $destination_path) {
 		// make sure input is not empty
 		if (empty($repository)) {
 			throw new NedStars_SvnException('$repository can not be empty', NedStars_SvnException::EMPTY_REPOSITORY);
@@ -31,7 +33,11 @@ class NedStars_Svn {
 		}
 
 		// build command, folder in svn repo is optional
-		$command = 'svn export --force  --username alainlecluse '.escapeshellarg($repository);
+		$command = 'svn export --force  --username '.escapeshellarg($username);
+		if (!empty($password)) {
+			$command .= ' --password '.escapeshellarg($password);
+		}
+		$command .= ' '.escapeshellarg($repository);
 
 		// add destionation path
 		$result_path= NedStars_FileSystem::getNiceDir($destination_path);
