@@ -530,17 +530,12 @@ class Deployer {
 	public function getSource() {
 		switch(strtolower($this->_config->archive->type)) {
 		case 'svn' :
-
 			NedStars_Log::message('Get archive from SVN.');
-			var_dump($this->_config->archive);
 			NedStars_Svn::getArchive(
 				$this->_config->archive->svn->repo,
-				$this->_config->archive->svn->branch,
-				$this->_config->paths->temp_new_path,
-				$this->_config->archive->svn->source_folder
+				$this->_config->paths->temp_new_path
 			);
 
-			die();
 			break;
 		case 'git' :
 			NedStars_Log::message('Get archive from GIT.');

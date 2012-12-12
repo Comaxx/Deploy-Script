@@ -15,21 +15,14 @@ class NedStars_Svn {
 	 * Get svn export into folder
 	 *
 	 * @param String $repository       ssh repository string
-	 * @param String $branch           name of the branch or tag to export
 	 * @param String $destination_path absolute path to destination folder
-	 * @param String $subfolder        subfolder in svn project to get
 	 *
 	 * @return void
 	 */
-	public static function getArchive($repository, $branch, $destination_path, $subfolder = null) {
+	public static function getArchive($repository, $destination_path) {
 		// make sure input is not empty
 		if (empty($repository)) {
 			throw new NedStars_SvnException('$repository can not be empty', NedStars_SvnException::EMPTY_REPOSITORY);
-		}
-
-		// make sure input is not empty
-		if (empty($branch)) {
-			throw new NedStars_SvnException('$branch can not be empty', NedStars_SvnException::EMPTY_BRANCH);
 		}
 
 		// make sure dir is writable
@@ -38,16 +31,12 @@ class NedStars_Svn {
 		}
 
 		// build command, folder in svn repo is optional
-		$command = 'svn archive --remote '.escapeshellarg($repository).' '.escapeshellarg($branch);
-		$result_path= NedStars_FileSystem::getNiceDir($destination_path);
-		if ($subfolder !== null) {
-			$command .= ' '.escapeshellarg($subfolder);
-			$result_path = NedStars_FileSystem::getNiceDir($result_path.$subfolder);
-		}
-		// extract svn tar file into destination folder
-		$command .= ' | tar -x -C '.escapeshellarg($destination_path);
+		$command = 'svn export --force  --username alainlecluse '.escapeshellarg($repository);
 
-		NedStars_Log::debug($command);
+		// add destionation path
+		$result_path= NedStars_FileSystem::getNiceDir($destination_path);
+		$command .= ' '.escapeshellarg($destination_path);
+
 		NedStars_Execution::run($command);
 
 		if (!is_dir($result_path) ) {
@@ -59,22 +48,16 @@ class NedStars_Svn {
 	 * Verify credentials and branch by svn ...
 	 *
 	 * @param String $repository ssh repository string
-	 * @param String $branch     name of the branch or tag
 	 *
 	 * @return Boolean true is credentials are ok
 	 */
-	public static function verifyCredentials($repository, $branch) {
+	public static function verifyCredentials($repository) {
 		// make sure input is not empty
 		if (empty($repository)) {
 			throw new NedStars_SvnException('$repository can not be empty', NedStars_SvnException::EMPTY_REPOSITORY);
 		}
 
-		// make sure input is not empty
-		if (empty($branch)) {
-			throw new NedStars_SvnException('$branch can not be empty', NedStars_SvnException::EMPTY_BRANCH);
-		}
-
-		// TODO check credentials
+		// TODO: check credentials
 	}
 }
 ?>
