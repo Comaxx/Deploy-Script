@@ -198,11 +198,20 @@ class DeployConfig {
 		$config->database->_checkLine('//database/dbname', $oXml);
 		$config->database->_checkLine('//database/password', $oXml);
 
+		//archive
+		$config->_newNode('archive');
+		$config->archive->_checkLine('//archive/type', $oXml);
 		// git
-		$config->_newNode('git');
-		$config->git->_checkLine('//git/repo', $oXml);
-		$config->git->_checkLine('//git/branch', $oXml);
-		$config->git->_checkLine('//git/source_folder', $oXml);
+		$config->archive->_newNode('git');
+		$config->archive->git->_checkLine('//git/repo', $oXml);
+		$config->archive->git->_checkLine('//git/branch', $oXml);
+		$config->archive->git->_checkLine('//git/source_folder', $oXml);
+
+		// svn
+		$config->archive->_newNode('svn');
+		$config->archive->svn->_checkLine('//archive/svn/repo', $oXml);
+		$config->archive->svn->_checkLine('//archive/svn/branch', $oXml);
+		$config->archive->svn->_checkLine('//archive/svn/source_folder', $oXml);
 
 		// notifications
 		$config->_newNode('notifications');

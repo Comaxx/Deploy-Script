@@ -23,7 +23,7 @@ class Deployer {
 	/**
 	 * Script version
 	 */
-	const VERSION = '1.2';
+	const VERSION = '1.3';
 	/**
 	 * Configuration object
 	 *
@@ -295,10 +295,18 @@ class Deployer {
 		$this->_verifyRootUser();
 
 		// Check if git credentials are ok.
-		if (!NedStars_Git::verifyCredentials($this->_config->git->repo, $this->_config->git->branch)) {
-			throw new DeployerException('Git credentials or branch are incorrect', DeployerException::GIT_CREDENTIALS);
+		switch(strtolower($this->_config->archive->type)) {
+		case 'svn' :
+			break;
+		case 'git' :
+			if (!NedStars_Git::verifyCredentials($this->_config->archive->git->repo, $this->_config->archive->git->branch)) {
+				throw new DeployerException('Git credentials or branch are incorrect', DeployerException::GIT_CREDENTIALS);
+			}
+			break;
+		default:
+			throw new Exception('No archive type found: '.strtolower($this->_config->archive->type));
+			break;
 		}
-
 	}
 
 	/**
@@ -325,12 +333,12 @@ class Deployer {
 		// Override config values with given options
 		// Branch
 		if (isset($options['branch'])) {
-			$config->git->branch = 'heads/'.$options['branch'];
+			$config->archive->git->branch = 'heads/'.$options['branch'];
 		}
 
 		// Tag
 		if (isset($options['tag'])) {
-			$config->git->branch = 'tags/'.$options['tag'];
+			$config->archive->git->branch = 'tags/'.$options['tag'];
 		}
 
 		// Debug
@@ -352,7 +360,7 @@ class Deployer {
 		// copy media files from the old live to the new environment
 		foreach ($this->_config->preserve_data->folders as $dir_path) {
 			$current_path = NedStars_FileSystem::getNiceDir($this->_config->paths->web_live_path.'/'.$dir_path);
-			$new_path = NedStars_FileSystem::getNiceDir($this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.'/'.$dir_path);
+			$new_path = NedStars_FileSystem::getNiceDir($this->_config->paths->temp_new_path.'/'.$this->_config->archive->git->source_folder.'/'.$dir_path);
 
 			if (is_dir($current_path)) {
 				if (!is_dir($new_path)) {
@@ -379,7 +387,7 @@ class Deployer {
 			if (is_file($this->_config->paths->web_live_path.'/'.$file_path)) {
 				NedStars_FileSystem::copyFile(
 					$this->_config->paths->web_live_path.'/'.$file_path,
-					$this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.'/'.$file_path
+					$this->_config->paths->temp_new_path.'/'.$this->_config->archive->git->source_folder.'/'.$file_path
 				);
 			} else {
 				NedStars_Log::warning('File not found: '.$this->_config->paths->web_live_path.'/'.$file_path);
@@ -392,7 +400,7 @@ class Deployer {
 				NedStars_FileSystem::copyFilesByRegEx(
 					'/^google(.*).htm/i',
 					$this->_config->paths->web_live_path,
-					$this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder
+					$this->_config->paths->temp_new_path.'/'.$this->_config->archive->git->source_folder
 				);
 			} else {
 				NedStars_Log::warning('Google folder not found: '.$this->_config->paths->web_live_path);
@@ -410,7 +418,7 @@ class Deployer {
 
 		// clear out dir in temp new folder.
 		foreach ($this->_config->clear_data->folders as $dir_path) {
-			$temp_path = $this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.'/'.$dir_path;
+			$temp_path = $this->_config->paths->temp_new_path.'/'.$this->_config->archive->git->source_folder.'/'.$dir_path;
 			if (is_dir($temp_path)) {
 				NedStars_FileSystem::deleteDirContent($temp_path);
 			} else {
@@ -420,7 +428,7 @@ class Deployer {
 
 		// clear out files in temp new folder.
 		foreach ($this->_config->clear_data->files as $file_path) {
-			$temp_file = $this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.'/'.$file_path;
+			$temp_file = $this->_config->paths->temp_new_path.'/'.$this->_config->archive->git->source_folder.'/'.$file_path;
 			if (is_file($temp_file)) {
 				unlink($temp_file);
 			} else {
@@ -480,7 +488,7 @@ class Deployer {
 		NedStars_Log::message('Switching live installation for new export.');
 		NedStars_FileSystem::relocateDir(
 			$this->_config->paths->web_live_path.'/',
-			$this->_config->paths->temp_new_path .'/'.$this->_config->git->source_folder.'/',
+			$this->_config->paths->temp_new_path .'/'.$this->_config->archive->git->source_folder.'/',
 			$this->_config->paths->temp_old_path.'/'
 		);
 
@@ -496,8 +504,8 @@ class Deployer {
 	 */
 	public function sendNotifications() {
 		if (isset($this->_config->notifications) && is_object($this->_config->notifications)) {
-			$project = preg_replace('/(.*):(.*).git/', '$2', $this->_config->git->repo);
-			$branch_name = $this->_config->git->branch;
+			$project = preg_replace('/(.*):(.*).git/', '$2', $this->_config->archive->git->repo);
+			$branch_name = $this->_config->archive->git->branch;
 
 			$title = 'Deploy: '.$project;
 			$message = '';
@@ -520,13 +528,30 @@ class Deployer {
 	 * @return void
 	 */
 	public function getSource() {
-		NedStars_Log::message('Get archive from git.');
-		NedStars_Git::getArchive(
-			$this->_config->git->repo,
-			$this->_config->git->branch,
-			$this->_config->paths->temp_new_path,
-			$this->_config->git->source_folder
-		);
+		switch(strtolower($this->_config->archive->type)) {
+		case 'svn' :
+
+			NedStars_Log::message('Get archive from SVN.');
+			var_dump($this->_config->archive);
+			NedStars_Svn::getArchive(
+				$this->_config->archive->svn->repo,
+				$this->_config->archive->svn->branch,
+				$this->_config->paths->temp_new_path,
+				$this->_config->archive->svn->source_folder
+			);
+
+			die();
+			break;
+		case 'git' :
+			NedStars_Log::message('Get archive from GIT.');
+			NedStars_Git::getArchive(
+				$this->_config->archive->git->repo,
+				$this->_config->archive->git->branch,
+				$this->_config->paths->temp_new_path,
+				$this->_config->archive->git->source_folder
+			);
+			break;
+		}
 	}
 
 	/**
@@ -535,9 +560,9 @@ class Deployer {
 	 * @return void
 	 */
 	public function setFolderPermisions() {
-		NedStars_Log::debug('setPermisions: '.$this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.', '.$this->_config->permisions->user.', '.$this->_config->permisions->group);
+		NedStars_Log::debug('setPermisions: '.$this->_config->paths->temp_new_path.'/'.$this->_config->archive->git->source_folder.', '.$this->_config->permisions->user.', '.$this->_config->permisions->group);
 		NedStars_FileSystem::chownDir(
-			$this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder,
+			$this->_config->paths->temp_new_path.'/'.$this->_config->archive->git->source_folder,
 			$this->_config->permisions->user, $this->_config->permisions->group
 		);
 
