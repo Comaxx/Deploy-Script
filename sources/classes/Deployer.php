@@ -242,7 +242,7 @@ class Deployer {
 
 			foreach ($this->_config->databases as $config_database) {
 
-				if ($config_database->password === false || empty($config_database->password)) {
+				if ($config_database->password !== false and empty($config_database->password)) {
 					$password = NedStars_Execution::prompt('Enter MySQL password (' . $config_database->username . '@' . $config_database->host . ':' . implode(', ', $config_database->dbnames) . '): ', true);
 					if (empty($password)) {
 						$password = false;
