@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <config version="1.2">
 	<include_profile>sources/profiles/concrete5.xml</include_profile>
-	
+
     <database>
 		<read_from_config>n</read_from_config>
 		<host>localhost</host> <!-- localhost -->
@@ -9,11 +9,19 @@
 		<password></password>
 		<dbname></dbname>
 	</database>
-	
-	<git>
-		<repo></repo>
-	</git>
-	
+
+	<archive>
+		<type>git</type>
+		<git>
+			<repo></repo> <!-- git@github.com:nedstars/Deploy-Script.git -->
+		</git>
+		<svn>
+			<repo></repo>
+			<username></username>
+			<password></password>
+		</svn>
+	</archive>
+
 	<notifications>
 		<email_addresses>
 			<address></address>
@@ -25,7 +33,7 @@
 			<user></user>
 		</pushover_users>
 	</notifications>
-	
+
 	<paths>
 		<web_live_path></web_live_path>
 		<temp_new_path></temp_new_path> <!-- /staging.new.tmp -->

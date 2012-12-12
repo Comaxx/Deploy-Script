@@ -7,11 +7,19 @@
 		<password></password>
 		<dbname></dbname>
 	</database>
-	
-	<git>
-		<repo></repo>
-	</git>
-	
+
+	<archive>
+		<type>git</type>
+		<git>
+			<repo></repo> <!-- git@github.com:nedstars/Deploy-Script.git -->
+		</git>
+		<svn>
+			<repo></repo>
+			<username></username>
+			<password></password>
+		</svn>
+	</archive>
+
 	<notifications>
 		<email_addresses>
 			<address></address>
@@ -23,7 +31,7 @@
 			<user></user>
 		</pushover_users>
 	</notifications>
-	
+
 	<paths>
 		<web_live_path></web_live_path>
 		<temp_new_path></temp_new_path> <!-- /staging.new.tmp -->
@@ -32,7 +40,7 @@
 	<backup>
 		<folder></folder>
 	</backup>
-	
+
 	<preserve_data>
 		<folders> <!-- pre set done in profile -->
 			<!--
@@ -40,7 +48,7 @@
 			backend interface, meaning they are not under version control
 			-->
 			<!--<folder>wp-content/plugins</folder>-->
-			
+
 			<!--
 			UNCOMMENT the following line if users are able to install themes from the
 			backend interface, meaning they are not under version control
