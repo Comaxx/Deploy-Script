@@ -360,7 +360,7 @@ class Deployer {
 		// copy media files from the old live to the new environment
 		foreach ($this->_config->preserve_data->folders as $dir_path) {
 			$current_path = NedStars_FileSystem::getNiceDir($this->_config->paths->web_live_path.'/'.$dir_path);
-			$new_path = NedStars_FileSystem::getNiceDir($this->_config->paths->temp_new_path.'/'.$this->_config->archive->git->source_folder.'/'.$dir_path);
+			$new_path = NedStars_FileSystem::getNiceDir($this->_getSourceFolder().$dir_path);
 
 			if (is_dir($current_path)) {
 				if (!is_dir($new_path)) {
@@ -387,7 +387,7 @@ class Deployer {
 			if (is_file($this->_config->paths->web_live_path.'/'.$file_path)) {
 				NedStars_FileSystem::copyFile(
 					$this->_config->paths->web_live_path.'/'.$file_path,
-					$this->_config->paths->temp_new_path.'/'.$this->_config->archive->git->source_folder.'/'.$file_path
+					$this->_getSourceFolder().$file_path
 				);
 			} else {
 				NedStars_Log::warning('File not found: '.$this->_config->paths->web_live_path.'/'.$file_path);
@@ -397,10 +397,11 @@ class Deployer {
 		//backup google*.htm file in live root.
 		if ($this->_config->preserve_data->google_files) {
 			if (is_dir($this->_config->paths->web_live_path)) {
+				// TODO check if _getSourceFolder() works because of automated "/"
 				NedStars_FileSystem::copyFilesByRegEx(
 					'/^google(.*).htm/i',
 					$this->_config->paths->web_live_path,
-					$this->_config->paths->temp_new_path.'/'.$this->_config->archive->git->source_folder
+					$this->_getSourceFolder()
 				);
 			} else {
 				NedStars_Log::warning('Google folder not found: '.$this->_config->paths->web_live_path);
@@ -418,7 +419,7 @@ class Deployer {
 
 		// clear out dir in temp new folder.
 		foreach ($this->_config->clear_data->folders as $dir_path) {
-			$temp_path = $this->_config->paths->temp_new_path.'/'.$this->_config->archive->git->source_folder.'/'.$dir_path;
+			$temp_path = $this->_getSourceFolder().$dir_path;
 			if (is_dir($temp_path)) {
 				NedStars_FileSystem::deleteDirContent($temp_path);
 			} else {
@@ -428,7 +429,7 @@ class Deployer {
 
 		// clear out files in temp new folder.
 		foreach ($this->_config->clear_data->files as $file_path) {
-			$temp_file = $this->_config->paths->temp_new_path.'/'.$this->_config->archive->git->source_folder.'/'.$file_path;
+			$temp_file = $this->_getSourceFolder().$file_path;
 			if (is_file($temp_file)) {
 				unlink($temp_file);
 			} else {
@@ -488,12 +489,14 @@ class Deployer {
 		NedStars_Log::message('Switching live installation for new export.');
 		NedStars_FileSystem::relocateDir(
 			$this->_config->paths->web_live_path.'/',
-			$this->_config->paths->temp_new_path .'/'.$this->_config->archive->git->source_folder.'/',
+			$this->_getSourceFolder(),
 			$this->_config->paths->temp_old_path.'/'
 		);
 
 		NedStars_Log::message('Remove temporarily used directories.');
-		NedStars_FileSystem::deleteDir($this->_config->paths->temp_new_path.'/');
+		if (is_dir($this->_config->paths->temp_new_path.'/')) {
+			NedStars_FileSystem::deleteDir($this->_config->paths->temp_new_path.'/');
+		}
 		NedStars_FileSystem::deleteDir($this->_config->paths->temp_old_path.'/');
 	}
 
@@ -557,9 +560,9 @@ class Deployer {
 	 * @return void
 	 */
 	public function setFolderPermisions() {
-		NedStars_Log::debug('setPermisions: '.$this->_config->paths->temp_new_path.'/'.$this->_config->archive->git->source_folder.', '.$this->_config->permisions->user.', '.$this->_config->permisions->group);
+		NedStars_Log::debug('setPermisions: '.$this->_getSourceFolder().', '.$this->_config->permisions->user.', '.$this->_config->permisions->group);
 		NedStars_FileSystem::chownDir(
-			$this->_config->paths->temp_new_path.'/'.$this->_config->archive->git->source_folder,
+			$this->_getSourceFolder(),
 			$this->_config->permisions->user, $this->_config->permisions->group
 		);
 
@@ -622,6 +625,25 @@ class Deployer {
 		NedStars_Log::message('There is enough free disk space');
 
 		return true;
+	}
+
+	/**
+	 * Helper function to get the absoulte path for Archive source folder
+	 * paths->temp_new_path + posible source folder
+	 *
+	 * @return String Abosulte path
+	 */
+	private function _getSourceFolder() {
+		$path = null;
+		switch(strtolower($this->_config->archive->type)) {
+		case 'svn' :
+			$path = NedStars_FileSystem::getNiceDir($this->_config->paths->temp_new_path);
+			break;
+		case 'git' :
+			$path = NedStars_FileSystem::getNiceDir($this->_config->paths->temp_new_path .'/'.$this->_config->archive->git->source_folder);
+			break;
+		}
+		return $path;
 	}
 }
 ?>

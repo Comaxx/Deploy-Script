@@ -43,7 +43,7 @@ class NedStars_Svn {
 		$result_path= NedStars_FileSystem::getNiceDir($destination_path);
 		$command .= ' '.escapeshellarg($destination_path);
 
-		NedStars_Execution::run($command);
+		NedStars_Execution::run($command, true);
 
 		if (!is_dir($result_path) ) {
 			throw new NedStars_SvnException('Archive could not be created for: '.$result_path, NedStars_SvnException::ARCHIVE_FAIL);
