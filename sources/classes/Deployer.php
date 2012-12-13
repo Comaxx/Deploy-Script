@@ -270,6 +270,40 @@ class Deployer {
 	}
 
 	/**
+	 * Helper function to check archive credentials.
+	 *
+	 * @return void
+	 * @throws NedStars_Git when git credentials fail
+	 * @throws Exception if no archive type given.
+	 */
+	private function _verifyArchiveCredentials() {
+		$config_archive = $this->_config->archive;
+
+		switch(strtolower($config_archive->type)) {
+		case 'svn' :
+			if (empty($config_archive->svn->password)) {
+				$password = NedStars_Execution::prompt('Enter SVN password (' . $config_archive->svn->username . '@' . $config_archive->svn->repo . '): ', true);
+				if (empty($password)) {
+					$password = false;
+				}
+				$config_archive->svn->password = $password;
+			}
+
+			// TODO: add credential check
+			break;
+		case 'git' :
+			if (!NedStars_Git::verifyCredentials($config_archive->git->repo, $config_archive->git->branch)) {
+				throw new DeployerException('Git credentials or branch are incorrect', DeployerException::GIT_CREDENTIALS);
+			}
+			break;
+		default:
+			throw new Exception('No archive type found: '.strtolower($config_archive->type));
+			break;
+		}
+
+	}
+
+	/**
 	 * Check if configuration values are present and correct
 	 *
 	 * @return void
@@ -291,19 +325,8 @@ class Deployer {
 		// check if user is root
 		$this->_verifyRootUser();
 
-		// Check if git credentials are ok.
-		switch(strtolower($this->_config->archive->type)) {
-		case 'svn' :
-			break;
-		case 'git' :
-			if (!NedStars_Git::verifyCredentials($this->_config->archive->git->repo, $this->_config->archive->git->branch)) {
-				throw new DeployerException('Git credentials or branch are incorrect', DeployerException::GIT_CREDENTIALS);
-			}
-			break;
-		default:
-			throw new Exception('No archive type found: '.strtolower($this->_config->archive->type));
-			break;
-		}
+		// Check if archive credentials are ok.
+		$this->_verifyArchiveCredentials();
 	}
 
 	/**

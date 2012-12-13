@@ -34,7 +34,7 @@ class NedStars_Svn {
 
 		// build command, folder in svn repo is optional
 		$command = 'svn export --force --no-auth-cache --username '.escapeshellarg($username);
-		if (!empty($password)) {
+		if (!empty($password) && $password !== false) {
 			$command .= ' --password '.escapeshellarg($password);
 		}
 		$command .= ' '.escapeshellarg($repository);
