@@ -2,27 +2,29 @@
 <config version="1.2">
 	<include_profile></include_profile>
 	<is_debug_modus>n</is_debug_modus> <!-- pre set -->
-	
-    <database>
-		<database_config_file></database_config_file><!-- pre set -->
-		<read_from_config>n</read_from_config>
-		<host>localhost</host> <!-- localhost -->
-		<username></username> <!-- root -->
-		<password></password>
-		<dbname></dbname>
-	</database>
-	
+
+	<databases>
+		<database>
+			<database_config_file></database_config_file><!-- pre set -->
+			<read_from_config>n</read_from_config>
+			<host>localhost</host> <!-- localhost -->
+			<username></username> <!-- root -->
+			<password></password>
+			<dbname></dbname>
+		</database>
+	</databases>
+
 	<git>
 		<repo></repo> <!-- git@github.com:nedstars/Deploy-Script.git -->
 		<branch></branch>
 		<source_folder>web</source_folder> <!-- web -->
 	</git>
-	
+
 	<notifications>
 		<email_addresses>
 			<address></address><!-- pre set -->
 		</email_addresses>
-		<!-- <notifo_users>   
+		<!-- <notifo_users>
 			<user></user>
 		</notifo_users> -->
 		<!-- <pushover_users>
@@ -30,7 +32,7 @@
 			<user></user>
 		</pushover_users> -->
 	</notifications>
-	
+
 	<paths>
 		<web_live_path></web_live_path> <!-- /var/projects/www/staging  -->
 		<temp_new_path></temp_new_path> <!-- /var/projects/www/staging.new.tmp  -->

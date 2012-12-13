@@ -1,19 +1,21 @@
 <?xml version="1.0"?>
 <config version="1.2">
 	<include_profile>sources/profiles/concrete5.xml</include_profile>
-	
-    <database>
-		<read_from_config>n</read_from_config>
-		<host>localhost</host> <!-- localhost -->
-		<username></username> <!-- root -->
-		<password></password>
-		<dbname></dbname>
-	</database>
-	
+
+	<databases>
+		<database>
+			<read_from_config>n</read_from_config>
+			<host>localhost</host> <!-- localhost -->
+			<username></username> <!-- root -->
+			<password></password>
+			<dbname></dbname>
+		</database>
+	</databases>
+
 	<git>
 		<repo></repo>
 	</git>
-	
+
 	<notifications>
 		<email_addresses>
 			<address></address>
@@ -25,7 +27,7 @@
 			<user></user>
 		</pushover_users>
 	</notifications>
-	
+
 	<paths>
 		<web_live_path></web_live_path>
 		<temp_new_path></temp_new_path> <!-- /staging.new.tmp -->

@@ -1,17 +1,20 @@
 <?xml version="1.0"?>
 <config version="1.2">
 	<include_profile>sources/profiles/wordpress.xml</include_profile>
-    <database>
-		<host>localhost</host> <!-- localhost -->
-		<username></username> <!-- root -->
-		<password></password>
-		<dbname></dbname>
-	</database>
-	
+
+	<databases>
+		<database>
+			<host>localhost</host> <!-- localhost -->
+			<username></username> <!-- root -->
+			<password></password>
+			<dbname></dbname>
+		</database>
+	</databases>
+
 	<git>
 		<repo></repo>
 	</git>
-	
+
 	<notifications>
 		<email_addresses>
 			<address></address>
@@ -23,7 +26,7 @@
 			<user></user>
 		</pushover_users>
 	</notifications>
-	
+
 	<paths>
 		<web_live_path></web_live_path>
 		<temp_new_path></temp_new_path> <!-- /staging.new.tmp -->
@@ -32,7 +35,7 @@
 	<backup>
 		<folder></folder>
 	</backup>
-	
+
 	<preserve_data>
 		<folders> <!-- pre set done in profile -->
 			<!--
@@ -40,7 +43,7 @@
 			backend interface, meaning they are not under version control
 			-->
 			<!--<folder>wp-content/plugins</folder>-->
-			
+
 			<!--
 			UNCOMMENT the following line if users are able to install themes from the
 			backend interface, meaning they are not under version control

@@ -2,27 +2,29 @@
 <config version="1.2">
 	<include_profile></include_profile>
 	<is_debug_modus>n</is_debug_modus> <!-- pre set -->
-	
-    <database>
-		<database_config_file>app/etc/local.xml</database_config_file><!-- <magento local.xml -->
-		<read_from_config>y</read_from_config>
-		<host>localhost</host> <!-- localhost -->
-		<username></username> <!-- root -->
-		<password></password>
-		<dbname></dbname> <!-- project db name -->
-	</database>
-	
+
+    <databases>
+		<database>
+			<database_config_file>app/etc/local.xml</database_config_file><!-- <magento local.xml -->
+			<read_from_config>y</read_from_config>
+			<host>localhost</host> <!-- localhost -->
+			<username></username> <!-- root -->
+			<password></password>
+			<dbname></dbname> <!-- project db name -->
+		</database>
+	</databases>
+
 	<git>
 		<repo></repo> <!-- git@github.com:nedstars/Deploy-Script.git -->
 		<branch></branch> <!-- Only when always the same -->
 		<source_folder>web</source_folder> <!-- only if sub folder contains web root -->
 	</git>
-	
+
 	<notifications>
 		<email_addresses>
 			<address></address><!-- pre set e.g. example@example.com -->
 		</email_addresses>
-		<!-- <notifo_users>   
+		<!-- <notifo_users>
 			<user></user>
 		</notifo_users> -->
 		<!-- <pushover_users>
@@ -30,7 +32,7 @@
 			<user></user>
 		</pushover_users> -->
 	</notifications>
-	
+
 	<paths>
 		<web_live_path></web_live_path> <!-- /var/projects/www/staging  -->
 		<temp_new_path></temp_new_path> <!-- /var/projects/www/staging.new.tmp  -->
