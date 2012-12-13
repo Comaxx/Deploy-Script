@@ -86,11 +86,11 @@ class Deployer {
 	 * 2) set lock to prevent multiple instances
 	 * 3) Load config
 	 * 4) Init log level and set start msg
-	 * 5) Check if required binairies exist
-	 * 6) Check for free disk space
-	 * 7) Sanity_info: check if all configuration options are filled in
+	 * 5) Sanity_info: check if all configuration options are filled in
 	 *    	Check if user is root
 	 *    	Check if mysql and git credentials are present
+	 * 6) Check if required binairies exist (config should be checked)
+	 * 7) Check for free disk space
 	 *
 	 * @param Array $options set options
 	 *
@@ -109,17 +109,14 @@ class Deployer {
 		// 4) Init log level and set start msg
 		$this->_startLog($options);
 
-		// 5) Check if required binairies exist
-		$not_found_bin = NedStars_FileSystem::hasBinaries(array('git','mysqldump'));
-		if ($not_found_bin) {
-			throw new DeployerException('Binaries '.implode(', ', $not_found_bin).' are not found.', DeployerException::BINARY_MISSING);
-		}
-
-		// 6) Check for free disk space
-		$this->_checkFreeDiskSpace();
-
-		// 7) Sanity_info: check if all configuration options are filled in
+		// 5) Sanity_info: check if all configuration options are filled in
 		$this->_checkConfigurationValues();
+
+		// 6) Check if required binairies exist
+		$this->_checkBinaries();
+
+		// 7) Check for free disk space
+		$this->_checkFreeDiskSpace();
 
 		// Start is ok
 		NedStars_Log::message('Deployer input is correct.');
@@ -644,6 +641,30 @@ class Deployer {
 			break;
 		}
 		return $path;
+	}
+
+	/**
+	 * Helper function to check if all required binaries are present.
+	 *
+	 * @return void
+	 * @throws DeployerException when binaries can not be found
+	 */
+	private function _checkBinaries() {
+		$binaries = array('mysqldump');
+
+		switch(strtolower($this->_config->archive->type)) {
+		case 'svn' :
+			$binaries[] = 'svn';
+			break;
+		case 'git' :
+			$binaries[] = 'git';
+			break;
+		}
+
+		$not_found_bin = NedStars_FileSystem::hasBinaries($binaries);
+		if ($not_found_bin) {
+			throw new DeployerException('Binaries '.implode(', ', $not_found_bin).' are not found.', DeployerException::BINARY_MISSING);
+		}
 	}
 }
 ?>
