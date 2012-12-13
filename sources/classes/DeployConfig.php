@@ -29,6 +29,7 @@ class DeployConfig {
 		$this->_checkLine();
 		$this->_checkArray();
 		$this->_loadDbFromFile();
+		$this->_checkDatabases();
 	}
 
 	/**
@@ -143,7 +144,7 @@ class DeployConfig {
 		$oXml = simplexml_load_file($file_path, 'SimpleXMLElement', LIBXML_NOCDATA);
 		$this->host		= strval($oXml->global->resources->default_setup->connection->host);
 		$this->username	= strval($oXml->global->resources->default_setup->connection->username);
-		$this->dbname	= strval($oXml->global->resources->default_setup->connection->dbname);
+		$this->dbnames	= array(strval($oXml->global->resources->default_setup->connection->dbname));
 		$this->password	= strval($oXml->global->resources->default_setup->connection->password);
 
 		NedStars_Log::message('Loaded local MySQL config from: '.escapeshellarg($file_path));
@@ -190,13 +191,7 @@ class DeployConfig {
 		$config->_checkLine('//is_debug_modus', $oXml);
 
 		// database
-		$config->_newNode('database');
-		$config->database->_checkLine('//database/database_config_file', $oXml);
-		$config->database->_checkLine('//database/read_from_config', $oXml);
-		$config->database->_checkLine('//database/host', $oXml);
-		$config->database->_checkLine('//database/username', $oXml);
-		$config->database->_checkLine('//database/dbname', $oXml);
-		$config->database->_checkLine('//database/password', $oXml);
+		$config->_checkDatabases($oXml);
 
 		// git
 		$config->_newNode('git');
@@ -239,11 +234,68 @@ class DeployConfig {
 		$config->permisions->_checkLine('//permisions/user', $oXml);
 		$config->permisions->_checkLine('//permisions/group', $oXml);
 
-		if (!empty($config->database->database_config_file)
-			&& $config->database->read_from_config === true
-			&& !empty($config->paths->web_live_path)
-		) {
-			$config->database->_loadDbFromFile(NedStars_FileSystem::getNiceDir($config->paths->web_live_path).$config->database->database_config_file);
+		foreach ($config->databases as $config_database) {
+			if (!empty($config_database->database_config_file)
+				&& $config_database->read_from_config === true
+				&& !empty($config->paths->web_live_path)
+			) {
+				$config_database->_loadDbFromFile(NedStars_FileSystem::getNiceDir($config->paths->web_live_path).$config_database->database_config_file);
+			}
+		}
+	}
+
+	/**
+	 * Loads a single database connection.
+	 *
+	 * @param SimpleXMLObject $element The database config node
+	 *
+	 * @return DeployConfig the database config/
+	 */
+	private static function _createDatabaseConfig($element) {
+		$database = new self();
+		$database->_checkLine('database_config_file', $element);
+		$database->_checkLine('read_from_config', $element);
+		$database->_checkLine('host', $element);
+		$database->_checkLine('username', $element);
+		$database->_checkLine('password', $element);
+		$database->dbnames = array();
+
+		$dbnames = $element->xpath('dbnames/dbname');
+		if (count($dbnames) > 0) {
+			//multiple db's
+			foreach ($dbnames as $dbname) {
+				array_push($database->dbnames, strval($dbname));
+			}
+		} else {
+			//single db
+			$dbname = $element->xpath('dbname');
+			array_push($database->dbnames, strval($dbname[0]));
+		}
+		return $database;
+	}
+
+	/**
+	 * Loads one or multiple connections from the config file.
+	 *
+	 * @param Resource $oXml Simple xml object.
+	 *
+	 * @return void
+	 */
+	private function _checkDatabases($oXml) {
+		$this->databases = array();
+
+		$xpath_result = $oXml->xpath('//databases/database');
+		if (count($xpath_result) > 0) {
+			//multiple connections
+			foreach ($xpath_result as $element) {
+				array_push($this->databases, self::_createDatabaseConfig($element));
+			}
+		} else {
+			//single connection
+			$xpath_result = $oXml->xpath('//database');
+			if (count($xpath_result) > 0) {
+				array_push($this->databases, self::_createDatabaseConfig($xpath_result[0]));
+			}
 		}
 	}
 

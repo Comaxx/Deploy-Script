@@ -238,31 +238,33 @@ class Deployer {
 	 * @return boolean true
 	 */
 	private function _verifyMysqlCredentials() {
-
-		$config_database = $this->_config->database;
-
-		if (empty($config_database->password)) {
-			$password = NedStars_Execution::prompt('Enter MySQL password (' . $config_database->username . '@' . $config_database->host . ':' . $config_database->dbname . '): ', true);
-			if (empty($password)) {
-				$password = false;
-			}
-			$config_database->password = $password;
-		}
-
 		try {
-			$connection = mysql_connect(
-				$config_database->host,
-				$config_database->username,
-				$config_database->password
-			);
-			// throw exception if database could not be selected
-			if (!mysql_select_db($config_database->dbname)) {
-				throw new Exception('Database connection failed on dbname');
-			}
 
-			// close connection after test
-			mysql_close($connection);
-			unset($connection);
+			foreach ($this->_config->databases as $config_database) {
+
+				if ($config_database->password !== false and empty($config_database->password)) {
+					$password = NedStars_Execution::prompt('Enter MySQL password (' . $config_database->username . '@' . $config_database->host . ':' . implode(', ', $config_database->dbnames) . '): ', true);
+					if (empty($password)) {
+						$password = false;
+					}
+					$config_database->password = $password;
+				}
+
+				$connection = mysql_connect(
+					$config_database->host,
+					$config_database->username,
+					$config_database->password
+				);
+				// throw exception if database could not be selected
+				foreach ($config_database->dbnames as $dbname) {
+					if (!mysql_select_db($dbname)) {
+						throw new Exception('Database connection failed on ' . $config_database->username . '@' . $config_database->host . ':' . $dbname . '');
+					}
+				}
+				// close connection after test
+				mysql_close($connection);
+				unset($connection);
+			}
 
 		} catch (Exception $exception) {
 			// register exception and rethrow.
@@ -435,17 +437,25 @@ class Deployer {
 	 * @return void
 	 */
 	public function backupMysql() {
-
 		if ($this->_config->backup->make_database_backup) {
-			NedStars_Log::message('Start MySQL backup via mysqldump to: '.escapeshellarg($this->_config->paths->web_live_path."/database.sql"));
-			$command = "mysqldump -u".($this->_config->database->username);
-			if ($this->_config->database->password !== false) {
-				$command .= " -p".($this->_config->database->password);
+			foreach ($this->_config->databases as $config_database) {
+				foreach ($config_database->dbnames as $dbname) {
+					$file = escapeshellarg($this->_config->paths->web_live_path.'/'.$config_database->host.'-'.$dbname.'.sql');
+					NedStars_Log::message('Start MySQL backup via mysqldump to: '.$file);
+					$command = 'mysqldump --user='.escapeshellarg($config_database->username);
+					if ($config_database->password !== false) {
+						$command .= ' --password='.escapeshellarg($config_database->password);
+					}
+					$command .= ' --host='.escapeshellarg($config_database->host);
+					$command .= " --databases ".escapeshellarg($dbname);
+					$command .= " --result-file=".$file;
+
+					//force output or the function will not return the correct value.
+					if (!NedStars_Execution::run($command." && echo 'OK'")) {
+						throw new DeployerException('MySQL backup failed ('.$config_database->username.'@'.$config_database->host.':'.$dbname.').', DeployerException::MYSQL_FAIL);
+					}
+				}
 			}
-			$command .= " -h".($this->_config->database->host);
-			$command .= " --databases ".escapeshellarg($this->_config->database->dbname);
-			$command .= " --result-file=".escapeshellarg($this->_config->paths->web_live_path."/database.sql");
-			NedStars_Execution::run($command);
 		} else {
 			NedStars_Log::message('MySQL backup Skipped (Config value)');
 		}
