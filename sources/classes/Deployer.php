@@ -578,27 +578,36 @@ class Deployer {
 	 * @return Boolean
 	 */
 	private function _checkFreeDiskSpace() {
-		$folder_size = NedStars_FileSystem::getDirectorySize($this->_config->paths->web_live_path);
-		// live disk
-		$free_size_live = disk_free_space($this->_config->paths->web_live_path);
-		// backup disk (could be on a other partition then the live)
-		$free_size_backup = disk_free_space($this->_config->backup->folder);
+		if (is_dir($this->_config->paths->web_live_path)) {
+			// curren web folder size (good indicator)
+			$folder_size = NedStars_FileSystem::getDirectorySize($this->_config->paths->web_live_path);
 
-		// times 4 beacuse if both on same disk then we need 3 times and a bit on margin.
-		// one for new git checkout with data
-		// one for backup (posibly on the same disk)
-		// one for db backup (size unknown)
-		if ($folder_size * 4 > $free_size_live) {
-			throw new DeployerException('Not enough free disk space on Live.', DeployerException::DISK_SPACE);
+			// live disk
+			$free_size_live = disk_free_space($this->_config->paths->web_live_path);
+
+			// times 4 beacuse if both on same disk then we need 3 times and a bit on margin.
+			// one for new git checkout with data
+			// one for backup (posibly on the same disk)
+			// one for db backup (size unknown)
+			if ($folder_size * 4 > $free_size_live) {
+				throw new DeployerException('Not enough free disk space on Live.', DeployerException::DISK_SPACE);
+			}
+
+			// check backup dir if found
+			if (is_dir($this->_config->backup->folder)) {
+				// backup disk (could be on a other partition then the live)
+				$free_size_backup = disk_free_space($this->_config->backup->folder);
+
+				// also check if backup disk has enough free disk space for 1 backup
+				if ($folder_size > $free_size_backup) {
+					throw new DeployerException('Not enough free disk space on Backup.', DeployerException::DISK_SPACE);
+				}
+			}
+
+			NedStars_Log::message('There is enough free disk space');
+		} else {
+			NedStars_Log::message('Disk space can not be checked');
 		}
-
-		// also check if backup disk has enough free disk space for 1 backup
-		if ($folder_size > $free_size_backup) {
-			throw new DeployerException('Not enough free disk space on Backup.', DeployerException::DISK_SPACE);
-		}
-
-		NedStars_Log::message('There is enough free disk space');
-
 		return true;
 	}
 }
