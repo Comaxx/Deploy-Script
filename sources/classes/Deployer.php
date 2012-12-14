@@ -289,11 +289,15 @@ class Deployer {
 				$config_archive->svn->password = $password;
 			}
 
+			if (!NedStars_Svn::verifyCredentials($config_archive->svn->repo, $config_archive->svn->username, $config_archive->svn->password)) {
+				throw new DeployerException('SVN credentials or branch are incorrect', DeployerException::ARCHIVE_CREDENTIALS);
+			}
+
 			// TODO: add credential check
 			break;
 		case 'git' :
 			if (!NedStars_Git::verifyCredentials($config_archive->git->repo, $config_archive->git->branch)) {
-				throw new DeployerException('Git credentials or branch are incorrect', DeployerException::GIT_CREDENTIALS);
+				throw new DeployerException('Git credentials or branch are incorrect', DeployerException::ARCHIVE_CREDENTIALS);
 			}
 			break;
 		default:

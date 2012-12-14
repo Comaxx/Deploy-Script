@@ -54,16 +54,39 @@ class NedStars_Svn {
 	 * Verify credentials and branch by svn ...
 	 *
 	 * @param String $repository ssh repository string
+	 * @param String $username   svn username
+	 * @param String $password   svn password
 	 *
 	 * @return Boolean true is credentials are ok
 	 */
-	public static function verifyCredentials($repository) {
+	public static function verifyCredentials($repository, $username, $password) {
 		// make sure input is not empty
 		if (empty($repository)) {
 			throw new NedStars_SvnException('$repository can not be empty', NedStars_SvnException::EMPTY_REPOSITORY);
 		}
 
-		// TODO: check credentials
+		// make sure input is not empty
+		if (empty($username)) {
+			throw new NedStars_SvnException('$username can not be empty', NedStars_SvnException::EMPTY_PROPERTY);
+		}
+
+		// make sure input is not empty
+		if (empty($password)) {
+			throw new NedStars_SvnException('$password can not be empty', NedStars_SvnException::EMPTY_PROPERTY);
+		}
+
+		// build command, folder in svn repo is optional
+		$command = 'svn info --no-auth-cache --username '.escapeshellarg($username);
+		if (!$password !== false) {
+			$command .= ' --password '.escapeshellarg($password);
+		}
+		$command .= ' '.escapeshellarg($repository);
+
+		$result = NedStars_Execution::run($command, true);
+		if (empty($result)) {
+			return false;
+		}
+		return true;
 	}
 }
 ?>
