@@ -320,7 +320,9 @@ class Deployer {
 		NedStars_FileSystem::createDirIfNeeded($this->_config->paths->web_live_path);
 		NedStars_FileSystem::createDirIfNeeded($this->_config->paths->temp_new_path);
 		NedStars_FileSystem::createDirIfNeeded($this->_config->paths->temp_old_path);
-		NedStars_FileSystem::createDirIfNeeded($this->_config->backup->folder);
+		if ($this->_config->backup->make_file_backup || $this->_config->backup->make_database_backup) {
+			NedStars_FileSystem::createDirIfNeeded($this->_config->backup->folder);
+		}
 
 		// check if mysql credentials are ok.
 		// setup a db connection to test credentials
