@@ -13,7 +13,7 @@ class DeployConfig {
 	/**
 	 * Configuration object version
 	 */
-	const VERSION = 1.2;
+	const VERSION = 1.3;
 
 	/**
 	 * Fix for phpmd, do not call this function.
@@ -193,11 +193,20 @@ class DeployConfig {
 		// database
 		$config->_checkDatabases($oXml);
 
+		//archive
+		$config->_newNode('archive');
+		$config->archive->_checkLine('//archive/type', $oXml);
 		// git
-		$config->_newNode('git');
-		$config->git->_checkLine('//git/repo', $oXml);
-		$config->git->_checkLine('//git/branch', $oXml);
-		$config->git->_checkLine('//git/source_folder', $oXml);
+		$config->archive->_newNode('git');
+		$config->archive->git->_checkLine('//git/repo', $oXml);
+		$config->archive->git->_checkLine('//git/branch', $oXml);
+		$config->archive->git->_checkLine('//git/source_folder', $oXml);
+
+		// svn
+		$config->archive->_newNode('svn');
+		$config->archive->svn->_checkLine('//archive/svn/repo', $oXml);
+		$config->archive->svn->_checkLine('//archive/svn/username', $oXml);
+		$config->archive->svn->_checkLine('//archive/svn/password', $oXml);
 
 		// notifications
 		$config->_newNode('notifications');

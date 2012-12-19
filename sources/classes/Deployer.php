@@ -23,7 +23,7 @@ class Deployer {
 	/**
 	 * Script version
 	 */
-	const VERSION = '1.2';
+	const VERSION = '1.3';
 	/**
 	 * Configuration object
 	 *
@@ -86,11 +86,11 @@ class Deployer {
 	 * 2) set lock to prevent multiple instances
 	 * 3) Load config
 	 * 4) Init log level and set start msg
-	 * 5) Check if required binairies exist
-	 * 6) Check for free disk space
-	 * 7) Sanity_info: check if all configuration options are filled in
+	 * 5) Sanity_info: check if all configuration options are filled in
 	 *    	Check if user is root
 	 *    	Check if mysql and git credentials are present
+	 * 6) Check if required binairies exist (config should be checked)
+	 * 7) Check for free disk space
 	 *
 	 * @param Array $options set options
 	 *
@@ -109,17 +109,14 @@ class Deployer {
 		// 4) Init log level and set start msg
 		$this->_startLog($options);
 
-		// 5) Check if required binairies exist
-		$not_found_bin = NedStars_FileSystem::hasBinaries(array('git','mysqldump'));
-		if ($not_found_bin) {
-			throw new DeployerException('Binaries '.implode(', ', $not_found_bin).' are not found.', DeployerException::BINARY_MISSING);
-		}
-
-		// 6) Check for free disk space
-		$this->_checkFreeDiskSpace();
-
-		// 7) Sanity_info: check if all configuration options are filled in
+		// 5) Sanity_info: check if all configuration options are filled in
 		$this->_checkConfigurationValues();
+
+		// 6) Check if required binairies exist
+		$this->_checkBinaries();
+
+		// 7) Check for free disk space
+		$this->_checkFreeDiskSpace();
 
 		// Start is ok
 		NedStars_Log::message('Deployer input is correct.');
@@ -264,6 +261,7 @@ class Deployer {
 				// close connection after test
 				mysql_close($connection);
 				unset($connection);
+
 			}
 
 		} catch (Exception $exception) {
@@ -272,6 +270,44 @@ class Deployer {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Helper function to check archive credentials.
+	 *
+	 * @return void
+	 * @throws NedStars_Git when git credentials fail
+	 * @throws Exception if no archive type given.
+	 */
+	private function _verifyArchiveCredentials() {
+		$config_archive = $this->_config->archive;
+
+		switch(strtolower($config_archive->type)) {
+		case 'svn' :
+			if (empty($config_archive->svn->password)) {
+				$password = NedStars_Execution::prompt('Enter SVN password (' . $config_archive->svn->username . '@' . $config_archive->svn->repo . '): ', true);
+				if (empty($password)) {
+					$password = false;
+				}
+				$config_archive->svn->password = $password;
+			}
+
+			if (!NedStars_Svn::verifyCredentials($config_archive->svn->repo, $config_archive->svn->username, $config_archive->svn->password)) {
+				throw new DeployerException('SVN credentials or branch are incorrect', DeployerException::ARCHIVE_CREDENTIALS);
+			}
+
+			// TODO: add credential check
+			break;
+		case 'git' :
+			if (!NedStars_Git::verifyCredentials($config_archive->git->repo, $config_archive->git->branch)) {
+				throw new DeployerException('Git credentials or branch are incorrect', DeployerException::ARCHIVE_CREDENTIALS);
+			}
+			break;
+		default:
+			throw new Exception('No archive type found: '.strtolower($config_archive->type));
+			break;
+		}
+
 	}
 
 	/**
@@ -296,11 +332,8 @@ class Deployer {
 		// check if user is root
 		$this->_verifyRootUser();
 
-		// Check if git credentials are ok.
-		if (!NedStars_Git::verifyCredentials($this->_config->git->repo, $this->_config->git->branch)) {
-			throw new DeployerException('Git credentials or branch are incorrect', DeployerException::GIT_CREDENTIALS);
-		}
-
+		// Check if archive credentials are ok.
+		$this->_verifyArchiveCredentials();
 	}
 
 	/**
@@ -327,12 +360,12 @@ class Deployer {
 		// Override config values with given options
 		// Branch
 		if (isset($options['branch'])) {
-			$config->git->branch = 'heads/'.$options['branch'];
+			$config->archive->git->branch = 'heads/'.$options['branch'];
 		}
 
 		// Tag
 		if (isset($options['tag'])) {
-			$config->git->branch = 'tags/'.$options['tag'];
+			$config->archive->git->branch = 'tags/'.$options['tag'];
 		}
 
 		// Debug
@@ -354,7 +387,7 @@ class Deployer {
 		// copy media files from the old live to the new environment
 		foreach ($this->_config->preserve_data->folders as $dir_path) {
 			$current_path = NedStars_FileSystem::getNiceDir($this->_config->paths->web_live_path.'/'.$dir_path);
-			$new_path = NedStars_FileSystem::getNiceDir($this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.'/'.$dir_path);
+			$new_path = NedStars_FileSystem::getNiceDir($this->_getSourceFolder().$dir_path);
 
 			if (is_dir($current_path)) {
 				if (!is_dir($new_path)) {
@@ -381,7 +414,7 @@ class Deployer {
 			if (is_file($this->_config->paths->web_live_path.'/'.$file_path)) {
 				NedStars_FileSystem::copyFile(
 					$this->_config->paths->web_live_path.'/'.$file_path,
-					$this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.'/'.$file_path
+					$this->_getSourceFolder().$file_path
 				);
 			} else {
 				NedStars_Log::warning('File not found: '.$this->_config->paths->web_live_path.'/'.$file_path);
@@ -391,10 +424,11 @@ class Deployer {
 		//backup google*.htm file in live root.
 		if ($this->_config->preserve_data->google_files) {
 			if (is_dir($this->_config->paths->web_live_path)) {
+				// TODO check if _getSourceFolder() works because of automated "/"
 				NedStars_FileSystem::copyFilesByRegEx(
 					'/^google(.*).htm/i',
 					$this->_config->paths->web_live_path,
-					$this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder
+					$this->_getSourceFolder()
 				);
 			} else {
 				NedStars_Log::warning('Google folder not found: '.$this->_config->paths->web_live_path);
@@ -412,7 +446,7 @@ class Deployer {
 
 		// clear out dir in temp new folder.
 		foreach ($this->_config->clear_data->folders as $dir_path) {
-			$temp_path = $this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.'/'.$dir_path;
+			$temp_path = $this->_getSourceFolder().$dir_path;
 			if (is_dir($temp_path)) {
 				NedStars_FileSystem::deleteDirContent($temp_path);
 			} else {
@@ -422,7 +456,7 @@ class Deployer {
 
 		// clear out files in temp new folder.
 		foreach ($this->_config->clear_data->files as $file_path) {
-			$temp_file = $this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.'/'.$file_path;
+			$temp_file = $this->_getSourceFolder().$file_path;
 			if (is_file($temp_file)) {
 				unlink($temp_file);
 			} else {
@@ -490,12 +524,14 @@ class Deployer {
 		NedStars_Log::message('Switching live installation for new export.');
 		NedStars_FileSystem::relocateDir(
 			$this->_config->paths->web_live_path.'/',
-			$this->_config->paths->temp_new_path .'/'.$this->_config->git->source_folder.'/',
+			$this->_getSourceFolder(),
 			$this->_config->paths->temp_old_path.'/'
 		);
 
 		NedStars_Log::message('Remove temporarily used directories.');
-		NedStars_FileSystem::deleteDir($this->_config->paths->temp_new_path.'/');
+		if (is_dir($this->_config->paths->temp_new_path.'/')) {
+			NedStars_FileSystem::deleteDir($this->_config->paths->temp_new_path.'/');
+		}
 		NedStars_FileSystem::deleteDir($this->_config->paths->temp_old_path.'/');
 	}
 
@@ -506,8 +542,8 @@ class Deployer {
 	 */
 	public function sendNotifications() {
 		if (isset($this->_config->notifications) && is_object($this->_config->notifications)) {
-			$project = preg_replace('/(.*):(.*).git/', '$2', $this->_config->git->repo);
-			$branch_name = $this->_config->git->branch;
+			$project = preg_replace('/(.*):(.*).git/', '$2', $this->_config->archive->git->repo);
+			$branch_name = $this->_config->archive->git->branch;
 
 			$title = 'Deploy: '.$project;
 			$message = '';
@@ -529,14 +565,28 @@ class Deployer {
 	 *
 	 * @return void
 	 */
-	public function getGitSource() {
-		NedStars_Log::message('Get archive from git.');
-		NedStars_Git::getArchive(
-			$this->_config->git->repo,
-			$this->_config->git->branch,
-			$this->_config->paths->temp_new_path,
-			$this->_config->git->source_folder
-		);
+	public function getSource() {
+		switch(strtolower($this->_config->archive->type)) {
+		case 'svn' :
+			NedStars_Log::message('Get archive from SVN.');
+			NedStars_Svn::getArchive(
+				$this->_config->archive->svn->repo,
+				$this->_config->archive->svn->username,
+				$this->_config->archive->svn->password,
+				$this->_config->paths->temp_new_path
+			);
+
+			break;
+		case 'git' :
+			NedStars_Log::message('Get archive from GIT.');
+			NedStars_Git::getArchive(
+				$this->_config->archive->git->repo,
+				$this->_config->archive->git->branch,
+				$this->_config->paths->temp_new_path,
+				$this->_config->archive->git->source_folder
+			);
+			break;
+		}
 	}
 
 	/**
@@ -545,9 +595,9 @@ class Deployer {
 	 * @return void
 	 */
 	public function setFolderPermisions() {
-		NedStars_Log::debug('setPermisions: '.$this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder.', '.$this->_config->permisions->user.', '.$this->_config->permisions->group);
+		NedStars_Log::debug('setPermisions: '.$this->_getSourceFolder().', '.$this->_config->permisions->user.', '.$this->_config->permisions->group);
 		NedStars_FileSystem::chownDir(
-			$this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder,
+			$this->_getSourceFolder(),
 			$this->_config->permisions->user, $this->_config->permisions->group
 		);
 
@@ -619,6 +669,49 @@ class Deployer {
 			NedStars_Log::message('Disk space can not be checked');
 		}
 		return true;
+	}
+
+	/**
+	 * Helper function to get the absoulte path for Archive source folder
+	 * paths->temp_new_path + posible source folder
+	 *
+	 * @return String Abosulte path
+	 */
+	private function _getSourceFolder() {
+		$path = null;
+		switch(strtolower($this->_config->archive->type)) {
+		case 'svn' :
+			$path = NedStars_FileSystem::getNiceDir($this->_config->paths->temp_new_path);
+			break;
+		case 'git' :
+			$path = NedStars_FileSystem::getNiceDir($this->_config->paths->temp_new_path .'/'.$this->_config->archive->git->source_folder);
+			break;
+		}
+		return $path;
+	}
+
+	/**
+	 * Helper function to check if all required binaries are present.
+	 *
+	 * @return void
+	 * @throws DeployerException when binaries can not be found
+	 */
+	private function _checkBinaries() {
+		$binaries = array('mysqldump');
+
+		switch(strtolower($this->_config->archive->type)) {
+		case 'svn' :
+			$binaries[] = 'svn';
+			break;
+		case 'git' :
+			$binaries[] = 'git';
+			break;
+		}
+
+		$not_found_bin = NedStars_FileSystem::hasBinaries($binaries);
+		if ($not_found_bin) {
+			throw new DeployerException('Binaries '.implode(', ', $not_found_bin).' are not found.', DeployerException::BINARY_MISSING);
+		}
 	}
 }
 ?>

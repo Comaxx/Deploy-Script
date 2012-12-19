@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<config version="1.2">
+<config version="1.3">
 	<include_profile>sources/profiles/wordpress.xml</include_profile>
 
 	<databases>
@@ -11,9 +11,18 @@
 		</database>
 	</databases>
 
-	<git>
-		<repo></repo>
-	</git>
+
+	<archive>
+		<type>git</type>
+		<git>
+			<repo></repo> <!-- git@github.com:nedstars/Deploy-Script.git -->
+		</git>
+		<svn>
+			<repo></repo>
+			<username></username>
+			<password></password>
+		</svn>
+	</archive>
 
 	<notifications>
 		<email_addresses>

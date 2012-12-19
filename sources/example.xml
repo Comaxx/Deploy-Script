@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<config version="1.2">
+<config version="1.3">
 	<include_profile></include_profile>
 	<is_debug_modus>n</is_debug_modus> <!-- pre set -->
 
@@ -14,11 +14,19 @@
 		</database>
 	</databases>
 
-	<git>
-		<repo></repo> <!-- git@github.com:nedstars/Deploy-Script.git -->
-		<branch></branch> <!-- Only when always the same -->
-		<source_folder>web</source_folder> <!-- only if sub folder contains web root -->
-	</git>
+	<archive>
+		<type>git</type>
+		<git>
+			<repo></repo> <!-- git@github.com:nedstars/Deploy-Script.git -->
+			<branch></branch>
+			<source_folder></source_folder> <!-- web -->
+		</git>
+		<svn>
+			<repo></repo>
+			<username></username>
+			<password></password>
+		</svn>
+	</archive>
 
 	<notifications>
 		<email_addresses>
