@@ -304,7 +304,7 @@ class Deployer {
 			}
 			break;
 		default:
-			throw new Exception('No archive type found: '.strtolower($config_archive->type));
+			throw new DeployerException('No archive type found: '.strtolower($config_archive->type), DeployerException::ARCHIVE_TYPE_MISSING);
 			break;
 		}
 
