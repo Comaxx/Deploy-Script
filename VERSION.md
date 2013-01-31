@@ -1,6 +1,7 @@
 Deploy Script 
 ========
 
+- Disabled Mysqldumb binary check if it is not required
 - Added no password or ask password for MySQL
 - Refactored config class
 

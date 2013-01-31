@@ -699,15 +699,19 @@ class Deployer {
 	 * @throws DeployerException when binaries can not be found
 	 */
 	private function _checkBinaries() {
-		$binaries = array('mysqldump');
+		$binaries = array();
 
-		switch(strtolower($this->_config->archive->type)) {
+		switch (strtolower($this->_config->archive->type)) {
 		case 'svn' :
 			$binaries[] = 'svn';
 			break;
 		case 'git' :
 			$binaries[] = 'git';
 			break;
+		}
+
+		if ($this->_config->backup->make_database_backup and !empty($this->_config->databases)) {
+			$binaries[] = 'mysqldump';
 		}
 
 		$not_found_bin = NedStars_FileSystem::hasBinaries($binaries);
