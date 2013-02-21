@@ -15,7 +15,6 @@
 	</databases>
 
 	<archive>
-		<type>git</type>
 		<git>
 			<repo></repo> <!-- git@github.com:nedstars/Deploy-Script.git -->
 			<branch></branch>

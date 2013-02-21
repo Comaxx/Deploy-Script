@@ -195,7 +195,7 @@ class DeployConfig {
 
 		//archive
 		$config->_newNode('archive');
-		$config->archive->_checkLine('//archive/type', $oXml);
+		$config->archive->_checkLine('//archive/type', $oXml); // can be empty
 		// git
 		$config->archive->_newNode('git');
 		$config->archive->git->_checkLine('//git/repo', $oXml);
@@ -208,6 +208,8 @@ class DeployConfig {
 		$config->archive->svn->_checkLine('//archive/svn/username', $oXml);
 		$config->archive->svn->_checkLine('//archive/svn/password', $oXml);
 
+		$config->archive->setArchiveType($config->archive); // overide type based on archive configuration, if git or svn options are given. 
+		
 		// notifications
 		$config->_newNode('notifications');
 		$config->notifications->_checkArray('//notifications/email_addresses/address', $oXml);
@@ -250,6 +252,37 @@ class DeployConfig {
 				$config_database->_loadDbFromFile(NedStars_FileSystem::getNiceDir($config->paths->web_live_path).$config_database->database_config_file);
 			}
 		}
+	}
+	
+	/**
+	 * Set Archive type if svn or git options are givven
+	 * 
+	 * @param DeployConfig &$archive Archive Config object to fill
+	 *
+	 * @return void
+	 * @throws DeployerException When both svn and git have values
+	 */
+	protected function setArchiveType(&$archive) {		
+		$new_archive_type = '';
+		// check GIT?
+		if (!empty($archive->git->repo) || !empty($archive->git->branch) || !empty($archive->git->source_folder)) {
+			$new_archive_type = 'git';
+		}
+		
+		// check SVN?
+		if (!empty($archive->svn->repo) || !empty($archive->svn->username) || !empty($archive->svn->password)) {
+			if (!empty($new_archive_type)) {
+				throw new DeployerException('Conflicting archive config found, type could not be set: '.print_r($archive, true), DeployerException::CONFIG_FAIL);
+			}
+			
+			$new_archive_type = 'svn';
+		}
+		
+		if (!empty($new_archive_type)) {
+			// set value
+			$archive->type = $new_archive_type;
+		}
+		
 	}
 
 	/**
