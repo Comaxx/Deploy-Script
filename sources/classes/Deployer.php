@@ -429,7 +429,7 @@ class Deployer {
 				NedStars_FileSystem::copyFilesByRegEx(
 					$regex,
 					$this->_config->paths->web_live_path,
-					$this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder
+					$this->_config->paths->temp_new_path.'/'.$this->_config->archive->git->source_folder
 				);
 			} else {
 				NedStars_Log::warning('Regex folder not found: '.$this->_config->paths->web_live_path);
