@@ -208,8 +208,8 @@ class DeployConfig {
 		$config->archive->svn->_checkLine('//archive/svn/username', $oXml);
 		$config->archive->svn->_checkLine('//archive/svn/password', $oXml);
 
-		$config->archive->setArchiveType($config->archive); // overide type based on archive configuration, if git or svn options are given. 
-		
+		$config->archive->setArchiveType($config->archive); // overide type based on archive configuration, if git or svn options are given.
+
 		// notifications
 		$config->_newNode('notifications');
 		$config->notifications->_checkArray('//notifications/email_addresses/address', $oXml);
@@ -232,7 +232,7 @@ class DeployConfig {
 		$config->_newNode('preserve_data');
 		$config->preserve_data->_checkArray('//preserve_data/folders/folder', $oXml);
 		$config->preserve_data->_checkArray('//preserve_data/files/file', $oXml);
-		$config->preserve_data->checkArray('//preserve_data/regexes/regex', $oXml);
+		$config->preserve_data->_checkArray('//preserve_data/regexes/regex', $oXml);
 		$config->preserve_data->_checkLine('//preserve_data/google_files', $oXml);
 
 		// clear_data
@@ -254,36 +254,36 @@ class DeployConfig {
 			}
 		}
 	}
-	
+
 	/**
 	 * Set Archive type if svn or git options are givven
-	 * 
+	 *
 	 * @param DeployConfig &$archive Archive Config object to fill
 	 *
 	 * @return void
 	 * @throws DeployerException When both svn and git have values
 	 */
-	protected function setArchiveType(&$archive) {		
+	protected function setArchiveType(&$archive) {
 		$new_archive_type = '';
 		// check GIT?
 		if (!empty($archive->git->repo) || !empty($archive->git->branch) || !empty($archive->git->source_folder)) {
 			$new_archive_type = 'git';
 		}
-		
+
 		// check SVN?
 		if (!empty($archive->svn->repo) || !empty($archive->svn->username) || !empty($archive->svn->password)) {
 			if (!empty($new_archive_type)) {
 				throw new DeployerException('Conflicting archive config found, type could not be set: '.print_r($archive, true), DeployerException::CONFIG_FAIL);
 			}
-			
+
 			$new_archive_type = 'svn';
 		}
-		
+
 		if (!empty($new_archive_type)) {
 			// set value
 			$archive->type = $new_archive_type;
 		}
-		
+
 	}
 
 	/**
