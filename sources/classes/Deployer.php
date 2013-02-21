@@ -18,7 +18,7 @@
  * @author    Alain Lecluse, Nedstars <alain@nedstars.nl>
  * @copyright 2012  Nedstars <info@nedstars.nl>
  */
-class Deployer {
+class Deployer extends DeployerObserver {
 
 	/**
 	 * Script version
@@ -97,7 +97,11 @@ class Deployer {
 	 * @return void
 	 */
 	function __construct($options) {
+		$this->attachObserver(new Hooks_Backup());
 		$this->_time_start = microtime(true);
+		
+		// trigger pre hook
+		$this->notify('Deployer_preDeployer');
 
 		// 2) set lock to prevent multiple instances
 		$this->_setLock();
@@ -474,6 +478,10 @@ class Deployer {
 	 */
 	public function backupMysql() {
 		if ($this->_config->backup->make_database_backup) {
+			
+			// trigger pre hook
+			$this->notify(__FUNCTION__.'_preBackupMysql');
+			
 			foreach ($this->_config->databases as $config_database) {
 				foreach ($config_database->dbnames as $dbname) {
 					$file = escapeshellarg($this->_config->paths->web_live_path.'/'.$config_database->host.'-'.$dbname.'.sql');
@@ -492,6 +500,10 @@ class Deployer {
 					}
 				}
 			}
+			
+			
+			// trigger pre hook
+			$this->notify(__FUNCTION__.'_postBackupMysql');
 		} else {
 			NedStars_Log::message('MySQL backup Skipped (Config value)');
 		}
