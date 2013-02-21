@@ -32,9 +32,6 @@
 		<email_addresses>
 			<address></address><!-- pre set e.g. example@example.com -->
 		</email_addresses>
-		<!-- <notifo_users>
-			<user></user>
-		</notifo_users> -->
 		<!-- <pushover_users>
 			<user></user>
 			<user></user>

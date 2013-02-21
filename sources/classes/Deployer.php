@@ -304,7 +304,7 @@ class Deployer {
 			}
 			break;
 		default:
-			throw new Exception('No archive type found: '.strtolower($config_archive->type));
+			throw new DeployerException('No archive type found: '.strtolower($config_archive->type), DeployerException::ARCHIVE_TYPE_MISSING);
 			break;
 		}
 
@@ -701,6 +701,7 @@ class Deployer {
 	private function _checkBinaries() {
 		$binaries = array();
 
+		// SVN or GIT
 		switch (strtolower($this->_config->archive->type)) {
 		case 'svn' :
 			$binaries[] = 'svn';
@@ -710,10 +711,12 @@ class Deployer {
 			break;
 		}
 
+		// MYSQL dump
 		if ($this->_config->backup->make_database_backup and !empty($this->_config->databases)) {
 			$binaries[] = 'mysqldump';
 		}
 
+		// verify binaries
 		$not_found_bin = NedStars_FileSystem::hasBinaries($binaries);
 		if ($not_found_bin) {
 			throw new DeployerException('Binaries '.implode(', ', $not_found_bin).' are not found.', DeployerException::BINARY_MISSING);

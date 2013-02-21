@@ -12,7 +12,6 @@
 	</databases>
 
 	<archive>
-		<type>git</type>
 		<git>
 			<repo></repo> <!-- git@github.com:nedstars/Deploy-Script.git -->
 			<branch></branch>
@@ -24,12 +23,9 @@
 		<email_addresses>
 			<address></address>
 		</email_addresses>
-		<notifo_users>
+		<!-- <pushover_users>
 			<user></user>
-		</notifo_users>
-		<pushover_users>
-			<user></user>
-		</pushover_users>
+		</pushover_users> -->
 	</notifications>
 
 	<paths>
