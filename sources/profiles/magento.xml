@@ -27,11 +27,7 @@
 		<email_addresses>
 			<address></address><!-- pre set -->
 		</email_addresses>
-		<!-- <notifo_users>
-			<user></user>
-		</notifo_users> -->
 		<!-- <pushover_users>
-			<user></user>
 			<user></user>
 		</pushover_users> -->
 	</notifications>

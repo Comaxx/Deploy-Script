@@ -24,12 +24,9 @@
 		<email_addresses>
 			<address></address>
 		</email_addresses>
-		<notifo_users>
+		<!-- <pushover_users>
 			<user></user>
-		</notifo_users>
-		<pushover_users>
-			<user></user>
-		</pushover_users>
+		</pushover_users> -->
 	</notifications>
 
 	<paths>

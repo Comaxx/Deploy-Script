@@ -211,7 +211,6 @@ class DeployConfig {
 		// notifications
 		$config->_newNode('notifications');
 		$config->notifications->_checkArray('//notifications/email_addresses/address', $oXml);
-		$config->notifications->_checkArray('//notifications/notifo_users/user', $oXml);
 		$config->notifications->_checkArray('//notifications/pushover_users/user', $oXml);
 
 		// paths
