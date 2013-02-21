@@ -423,6 +423,19 @@ class Deployer {
 			}
 		}
 
+		// preserve files by regex
+		foreach($this->_config->preserve_data->regexes as $regex) {
+			if (is_dir($this->_config->paths->web_live_path)) {
+				NedStars_FileSystem::copyFilesByRegEx(
+					$regex,
+					$this->_config->paths->web_live_path,
+					$this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder
+				);
+			} else {
+				NedStars_Log::warning('Regex folder not found: '.$this->_config->paths->web_live_path);
+			}
+		}
+
 		//backup google*.htm file in live root.
 		if ($this->_config->preserve_data->google_files) {
 			if (is_dir($this->_config->paths->web_live_path)) {

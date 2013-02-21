@@ -232,6 +232,7 @@ class DeployConfig {
 		$config->_newNode('preserve_data');
 		$config->preserve_data->_checkArray('//preserve_data/folders/folder', $oXml);
 		$config->preserve_data->_checkArray('//preserve_data/files/file', $oXml);
+		$config->preserve_data->checkArray('//preserve_data/regexes/regex', $oXml);
 		$config->preserve_data->_checkLine('//preserve_data/google_files', $oXml);
 
 		// clear_data
