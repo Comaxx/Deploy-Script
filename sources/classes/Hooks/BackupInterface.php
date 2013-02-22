@@ -55,6 +55,28 @@ interface Hooks_BackupInterface {
      * @return void
      */
     public function postBackupMysql(Deployer &$deployer);
+    
+    /**
+     * Pre hook function
+     * 
+     * @param Deployer &$deployer deployer object
+     *
+     * @return void
+     */
+    public function prePurgeOldBackups(Deployer &$deployer);
+    
+    /**
+     * Post hook function
+     * 
+     * @param Deployer &$deployer deployer object
+     *
+     * @return void
+     */
+    public function postPurgeOldBackups(Deployer &$deployer);
+    
+    
+    
+    
 }
 
 ?>

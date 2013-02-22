@@ -676,11 +676,18 @@ class Deployer extends DeployerObserver {
 	 * @return void
 	 */
 	public function purgeOldBackups() {
+		
+		// trigger pre hook
+		$this->notify('Backup_prePurgeOldBackups');
+		
 		NedStars_Log::message('Purging backup files older than '.$this->_config->backup->retention_days.' days: '.$this->_config->backup->folder);
 		NedStars_FileSystem::deleteOldFiles(
 			$this->_config->backup->folder.'/',
 			$this->_config->backup->retention_days
 		);
+		
+		// trigger post hook
+		$this->notify('Backup_postPurgeOldBackups');
 	}
 
 
