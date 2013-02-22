@@ -1,4 +1,3 @@
-Notifications_PostSendNotification
 <?php
 /**
  * Notifications HookInterface
