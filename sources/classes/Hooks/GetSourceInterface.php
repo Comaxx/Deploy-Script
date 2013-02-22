@@ -1,6 +1,6 @@
 <?php
 /**
- * HookInterfaces_Deployer HookInterface
+ * GetSource HookInterface
  *
  * @project   NedStars Deployer
  * @category  Interfaces
@@ -10,7 +10,7 @@
  */
 
 /**
- * HookInterfaces_Deployer HookInterface
+ * GetSource HookInterface
  *
  * @project   NedStars Deployer
  * @category  Interfaces
@@ -18,7 +18,7 @@
  * @author    Alain Lecluse, Nedstars <alain@nedstars.nl>
  * @copyright 2012  Nedstars <info@nedstars.nl>
  */
-interface HookInterfaces_Deployer {
+interface Hooks_GetSourceInterface {
     
      /**
      * Pre hook function
@@ -27,7 +27,7 @@ interface HookInterfaces_Deployer {
      *
      * @return void
      */
-    public function preDeployer(Deployer &$deployer);
+    public function preGetSource(Deployer &$deployer);
     
     /**
      * Post hook function
@@ -36,7 +36,7 @@ interface HookInterfaces_Deployer {
      *
      * @return void
      */
-    public function postDeployer(Deployer &$deployer);
+    public function postGetSource(Deployer &$deployer);
 }
 
 ?>
