@@ -331,8 +331,8 @@ class Deployer {
 			$this->_verifyMysqlCredentials();
 		}
 
-		// check if user is root
-		$this->_verifyRootUser();
+		// check if user has enought rights to deploy
+		$this->_verifyUserRights();
 
 		// Check if archive credentials are ok.
 		$this->_verifyArchiveCredentials();
@@ -429,7 +429,7 @@ class Deployer {
 				NedStars_FileSystem::copyFilesByRegEx(
 					$regex,
 					$this->_config->paths->web_live_path,
-					$this->_config->paths->temp_new_path.'/'.$this->_config->git->source_folder
+					$this->_config->paths->temp_new_path.'/'.$this->_config->archive->git->source_folder
 				);
 			} else {
 				NedStars_Log::warning('Regex folder not found: '.$this->_config->paths->web_live_path);
@@ -617,19 +617,26 @@ class Deployer {
 		);
 
 		NedStars_Log::debug('Making live installation read-only for relocation: '.$this->_config->paths->web_live_path);
-		NedStars_FileSystem::chmodDir($this->_config->paths->web_live_path, '0400');
+		NedStars_FileSystem::chmodDir($this->_config->paths->web_live_path, '0744');
 	}
 
 	/**
-	 * Verify if exec user is root
+	 * Check if the user executing this script has enough rights on the folders
 	 *
-	 * @return void
+	 * @throws DeployException
 	 */
-	private function _verifyRootUser() {
-		if (posix_geteuid() != 0) {
-			throw new DeployerException('User must be root to execute this script.', DeployerException::NO_ROOT);
-		} else {
-			NedStars_Log::debug('User is root.');
+	private function _verifyUserRights() {
+		$is_writable = array(
+			$this->_config->paths->web_live_path,
+			$this->_config->paths->temp_new_path,
+			$this->_config->paths->temp_old_path,
+			$this->_config->backup->folder,
+		);
+
+		foreach($is_writable as $path) {
+			if(!is_writeable($path)) {
+				throw new DeployerException($path.' is not writeable for this user', DeployerException::NO_USER_RIGHTS);
+			}
 		}
 	}
 
