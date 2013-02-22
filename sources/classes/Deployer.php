@@ -390,6 +390,9 @@ class Deployer extends DeployerObserver {
 	 * @return void
 	 */
 	public function preserveData() {
+		// trigger pre hook
+		$this->notify('Data_prePreserveData');
+		
 		NedStars_Log::message('Start preserving data.');
 
 		// copy media files from the old live to the new environment
@@ -442,6 +445,10 @@ class Deployer extends DeployerObserver {
 				NedStars_Log::warning('Google folder not found: '.$this->_config->paths->web_live_path);
 			}
 		}
+		
+		
+		// trigger post hook
+		$this->notify('Data_postPreserveData');
 	}
 
 	/**
@@ -450,6 +457,9 @@ class Deployer extends DeployerObserver {
 	 * @return void
 	 */
 	public function clearData() {
+		// trigger pre hook
+		$this->notify('Data_preClearData');
+		
 		NedStars_Log::message('Clearing out tmp data.');
 
 		// clear out dir in temp new folder.
@@ -471,6 +481,10 @@ class Deployer extends DeployerObserver {
 				NedStars_Log::warning('File not found: '.$temp_file);
 			}
 		}
+		
+		
+		// trigger post hook
+		$this->notify('Data_postClearData');
 	}
 
 	/**
