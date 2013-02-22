@@ -591,10 +591,14 @@ class Deployer extends DeployerObserver {
 	public function getSource() {
 		
 		// trigger pre hook
-		$this->notify(__FUNCTION__.'_preGetSource');
+		$this->notify('Source_preGetSource');
 			
 		switch(strtolower($this->_config->archive->type)) {
 		case 'svn' :
+			
+			// trigger pre hook
+			$this->notify('Source_preSvnGetSource');
+			
 			NedStars_Log::message('Get archive from SVN.');
 			NedStars_Svn::getArchive(
 				$this->_config->archive->svn->repo,
@@ -603,8 +607,15 @@ class Deployer extends DeployerObserver {
 				$this->_config->paths->temp_new_path
 			);
 
+			// trigger post hook
+			$this->notify('Source_postSvnGetSource');
+			
 			break;
 		case 'git' :
+			
+			// trigger pre hook
+			$this->notify('Source_preGitGetSource');
+			
 			NedStars_Log::message('Get archive from GIT.');
 			NedStars_Git::getArchive(
 				$this->_config->archive->git->repo,
@@ -612,12 +623,15 @@ class Deployer extends DeployerObserver {
 				$this->_config->paths->temp_new_path,
 				$this->_config->archive->git->source_folder
 			);
+
+			// trigger post hook
+			$this->notify('Source_postGitGetSource');
 			break;
 		}
 		
 		
-		// trigger pre hook
-		$this->notify(__FUNCTION__.'_postGetSource');
+		// trigger post hook
+		$this->notify('Source_postGetSource');
 	}
 
 	/**

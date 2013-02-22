@@ -18,7 +18,7 @@
  * @author    Alain Lecluse, Nedstars <alain@nedstars.nl>
  * @copyright 2012  Nedstars <info@nedstars.nl>
  */
-interface Hooks_GetSourceInterface {
+interface Hooks_SourceInterface {
     
      /**
      * Pre hook function
@@ -37,6 +37,42 @@ interface Hooks_GetSourceInterface {
      * @return void
      */
     public function postGetSource(Deployer &$deployer);
+    
+    /**
+     * Pre hook function
+     * 
+     * @param Deployer &$deployer deployer object
+     *
+     * @return void
+     */
+    public function preSvnGetSource(Deployer &$deployer);
+    
+    /**
+     * Post hook function
+     * 
+     * @param Deployer &$deployer deployer object
+     *
+     * @return void
+     */
+    public function postSvnGetSource(Deployer &$deployer);
+    
+    /**
+     * Pre hook function
+     * 
+     * @param Deployer &$deployer deployer object
+     *
+     * @return void
+     */
+    public function preGitGetSource(Deployer &$deployer);
+    
+    /**
+     * Post hook function
+     * 
+     * @param Deployer &$deployer deployer object
+     *
+     * @return void
+     */
+    public function postGitGetSource(Deployer &$deployer);
 }
 
 ?>
