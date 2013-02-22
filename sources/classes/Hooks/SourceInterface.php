@@ -1,6 +1,6 @@
 <?php
 /**
- * GetSource HookInterface
+ * Source HookInterface
  *
  * @project   NedStars Deployer
  * @category  Interfaces
@@ -10,7 +10,7 @@
  */
 
 /**
- * GetSource HookInterface
+ * Source HookInterface
  *
  * @project   NedStars Deployer
  * @category  Interfaces

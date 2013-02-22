@@ -565,6 +565,10 @@ class Deployer extends DeployerObserver {
 	 */
 	public function sendNotifications() {
 		if (isset($this->_config->notifications) && is_object($this->_config->notifications)) {
+			
+			// trigger pre hook
+			$this->notify('Notifications_preSendNotification');
+			
 			$project = preg_replace('/(.*):(.*).git/', '$2', $this->_config->archive->git->repo);
 			$branch_name = $this->_config->archive->git->branch;
 
@@ -578,6 +582,9 @@ class Deployer extends DeployerObserver {
 
 			Notification::notify($title, $message, $this->_config->notifications);
 			NedStars_Log::message('Notifications send.');
+			
+			// trigger post hook
+			$this->notify('Notifications_PostSendNotification');
 		} else {
 			NedStars_Log::message('No Notifications send (no recipients found).');
 		}
