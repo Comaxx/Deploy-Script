@@ -482,7 +482,7 @@ class Deployer extends DeployerObserver {
 		if ($this->_config->backup->make_database_backup) {
 			
 			// trigger pre hook
-			$this->notify(__FUNCTION__.'_preBackupMysql');
+			$this->notify('Backup_preBackupMysql');
 			
 			foreach ($this->_config->databases as $config_database) {
 				foreach ($config_database->dbnames as $dbname) {
@@ -505,7 +505,7 @@ class Deployer extends DeployerObserver {
 			
 			
 			// trigger pre hook
-			$this->notify(__FUNCTION__.'_postBackupMysql');
+			$this->notify('Backup_postBackupMysql');
 		} else {
 			NedStars_Log::message('MySQL backup Skipped (Config value)');
 		}
@@ -519,7 +519,7 @@ class Deployer extends DeployerObserver {
 	public function backupLive() {
 		if ($this->_config->backup->make_file_backup) {
 			// trigger pre hook
-			$this->notify(__FUNCTION__.'_preBackupLive');
+			$this->notify('Backup_preBackupLive');
 			
 			$destination_file = $this->_config->backup->folder.'/backup_'.date('Ymd_Hi').'.tar.gz';
 			NedStars_Log::message('Start backup live to : '.escapeshellarg($destination_file));
@@ -527,7 +527,7 @@ class Deployer extends DeployerObserver {
 			
 			
 			// trigger post hook
-			$this->notify(__FUNCTION__.'_postBackupLive');
+			$this->notify('Backup_postBackupLive');
 		} else {
 			NedStars_Log::message('File backup Skipped (Config value)');
 		}

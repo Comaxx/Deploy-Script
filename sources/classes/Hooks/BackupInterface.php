@@ -1,6 +1,6 @@
 <?php
 /**
- * BackupLive HookInterface
+ * Backup HookInterface
  *
  * @project   NedStars Deployer
  * @category  Interfaces
@@ -10,7 +10,7 @@
  */
 
 /**
- * BackupLive HookInterface
+ * Backup HookInterface
  *
  * @project   NedStars Deployer
  * @category  Interfaces
@@ -18,7 +18,7 @@
  * @author    Alain Lecluse, Nedstars <alain@nedstars.nl>
  * @copyright 2012  Nedstars <info@nedstars.nl>
  */
-interface Hooks_BackupLiveInterface {
+interface Hooks_BackupInterface {
     
      /**
      * Pre hook function
@@ -37,6 +37,24 @@ interface Hooks_BackupLiveInterface {
      * @return void
      */
     public function postBackupLive(Deployer &$deployer);
+    
+    /**
+     * Pre hook function
+     * 
+     * @param Deployer &$deployer deployer object
+     *
+     * @return void
+     */
+    public function preBackupMysql(Deployer &$deployer);
+    
+    /**
+     * Post hook function
+     * 
+     * @param Deployer &$deployer deployer object
+     *
+     * @return void
+     */
+    public function postBackupMysql(Deployer &$deployer);
 }
 
 ?>
