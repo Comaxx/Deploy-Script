@@ -21,7 +21,7 @@
 class DeployerException extends NedStars_Exception {
 
 	const DISK_SPACE 			= 1;
-	const NO_ROOT				= 2;
+	const NO_USER_RIGHTS		= 2;
 	const NO_LOCK				= 3;
 	const BINARY_MISSING		= 4;
 	const MYSQL_FAIL			= 5;
