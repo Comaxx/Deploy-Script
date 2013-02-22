@@ -41,11 +41,14 @@ class DeployerObserver {
      * @return void
      */
     protected function  notify($trigger) {
+        
         // seperate function and hook
         $parts = explode('_', $trigger, 2);
+        // add "HookInterfaces_" to class name because of prefixing
         $hook = "HookInterfaces_".$parts[0];        
         $function_name = $parts[1];
         
+        // TODO: make if fool proof
         foreach ($this->_observers as $obs) {
             if ($obs instanceof $hook) {
                 $obs->$function_name($this);

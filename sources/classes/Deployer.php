@@ -516,9 +516,16 @@ class Deployer extends DeployerObserver {
 	 */
 	public function backupLive() {
 		if ($this->_config->backup->make_file_backup) {
+			// trigger pre hook
+			$this->notify(__FUNCTION__.'_preBackupLive');
+			
 			$destination_file = $this->_config->backup->folder.'/backup_'.date('Ymd_Hi').'.tar.gz';
 			NedStars_Log::message('Start backup live to : '.escapeshellarg($destination_file));
 			NedStars_FileSystem::backupDir($this->_config->paths->web_live_path, $destination_file);
+			
+			
+			// trigger post hook
+			$this->notify(__FUNCTION__.'_postBackupLive');
 		} else {
 			NedStars_Log::message('File backup Skipped (Config value)');
 		}
@@ -580,6 +587,10 @@ class Deployer extends DeployerObserver {
 	 * @return void
 	 */
 	public function getSource() {
+		
+		// trigger pre hook
+		$this->notify(__FUNCTION__.'_preGetSource');
+			
 		switch(strtolower($this->_config->archive->type)) {
 		case 'svn' :
 			NedStars_Log::message('Get archive from SVN.');
@@ -601,6 +612,10 @@ class Deployer extends DeployerObserver {
 			);
 			break;
 		}
+		
+		
+		// trigger pre hook
+		$this->notify(__FUNCTION__.'_postGetSource');
 	}
 
 	/**
