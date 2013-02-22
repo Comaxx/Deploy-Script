@@ -72,4 +72,10 @@
 		<user>apache</user> <!-- pre set -->
 		<group>apache</group> <!-- pre set -->
 	</permisions>
+	
+	<hooks>
+		<files>
+			<file>hooks.php</file>
+		</files>
+	</hooks>
 </config>

@@ -243,6 +243,10 @@ class DeployConfig {
 		$config->_newNode('permisions');
 		$config->permisions->_checkLine('//permisions/user', $oXml);
 		$config->permisions->_checkLine('//permisions/group', $oXml);
+		
+		// hooks
+		$config->_newNode('hooks');
+		$config->hooks->_checkArray('//hooks/files/file', $oXml);
 
 		foreach ($config->databases as $config_database) {
 			if (!empty($config_database->database_config_file)

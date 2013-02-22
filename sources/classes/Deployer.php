@@ -97,7 +97,6 @@ class Deployer extends DeployerObserver {
 	 * @return void
 	 */
 	function __construct($options) {
-		$this->attachObserver(new Hooks_Backup());
 		$this->_time_start = microtime(true);
 		
 		// trigger pre hook
@@ -112,6 +111,9 @@ class Deployer extends DeployerObserver {
 
 		// 4) Init log level and set start msg
 		$this->_startLog($options);
+		
+		// load hook files if found in config. 
+		$this->_loadHooks();
 
 		// 5) Sanity_info: check if all configuration options are filled in
 		$this->_checkConfigurationValues();
@@ -749,5 +751,33 @@ class Deployer extends DeployerObserver {
 			throw new DeployerException('Binaries '.implode(', ', $not_found_bin).' are not found.', DeployerException::BINARY_MISSING);
 		}
 	}
+	
+	/**
+	 * Load hooks that are defined in the config. 
+	 *
+	 * @return void
+	 * @throws NedStars_FileSystemException when file could not be found.
+	 */
+	private function _loadHooks() {
+        if (isset($this->_config->hooks->files)) {
+			
+            foreach ( $this->_config->hooks->files as $file_path ) {
+				
+				if (file_exists($file_path)) {
+					$file_info = pathinfo($file_path);
+					// include the class with the hook
+					// nameing convension: filename === classname
+					include_once $file_path;
+					
+					// add hook by starting the class
+					$this->attachObserver(new $file_info['filename']);
+					
+					NedStars_Log::message('Attached Observer: '.$file_path);
+				} else {
+					throw new NedStars_FileSystemException('Hook file not found: '. escapeshellarg($file_path), NedStars_FileSystemException::FILE_NOT_FOUND);
+				}	
+            }
+        }
+    }
 }
 ?>
