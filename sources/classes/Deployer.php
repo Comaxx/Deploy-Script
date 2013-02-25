@@ -70,6 +70,11 @@ class Deployer extends DeployerObserver {
 				'long'	=> 'version',
 				'type'	=> '',
 				),
+			'initial' => array(
+				'short' => 'i',
+				'long'	=> 'initial',
+				'type'	=> '::',
+				),
 		);
 
 	/**
@@ -333,7 +338,7 @@ class Deployer extends DeployerObserver {
 		// check if mysql credentials are ok.
 		// setup a db connection to test credentials
 		// but only if backup should be made
-		if ($this->_config->backup->make_database_backup) {
+		if ($this->_config->backup->make_database_backup && !$this->_config->is_initial_modus) {
 			$this->_verifyMysqlCredentials();
 		}
 
@@ -381,6 +386,13 @@ class Deployer extends DeployerObserver {
 			$config->is_debug_modus = $options['debug'];
 		}
 
+		// initial
+		if (isset($options['initial'])) {
+			$config->is_initial_modus = $options['initial'];
+		} else {
+			$config->is_initial_modus = false;
+		}
+
 		$this->_config = $config;
 	}
 
@@ -390,6 +402,12 @@ class Deployer extends DeployerObserver {
 	 * @return void
 	 */
 	public function preserveData() {
+		// skip preservation if inital modus
+		if ($this->_config->is_initial_modus) {
+			NedStars_Log::message('Skipped preserving, initial_modus.');
+			return true;
+		}
+		
 		// trigger pre hook
 		$this->notify('Data_prePreserveData');
 
@@ -510,6 +528,13 @@ class Deployer extends DeployerObserver {
 	 * @return void
 	 */
 	public function backupMysql() {
+
+		// skip MySQL backup if inital modus
+		if ($this->_config->is_initial_modus) {
+			NedStars_Log::message('Skipped MySQL backup, initial_modus.');
+			return true;
+		}
+
 		if ($this->_config->backup->make_database_backup) {
 
 			// trigger pre hook
@@ -548,6 +573,14 @@ class Deployer extends DeployerObserver {
 	 * @return void
 	 */
 	public function backupLive() {
+
+
+		// skip MySQL backup if inital modus
+		if ($this->_config->is_initial_modus) {
+			NedStars_Log::message('Skipped file backup, initial_modus.');
+			return true;
+		}
+
 		if ($this->_config->backup->make_file_backup) {
 			// trigger pre hook
 			$this->notify('Backup_preBackupLive');
@@ -750,6 +783,12 @@ class Deployer extends DeployerObserver {
 	 * @return Boolean
 	 */
 	private function _checkFreeDiskSpace() {
+		// skip checkFreeDiskSpace if inital modus
+		if ($this->_config->is_initial_modus) {
+			NedStars_Log::message('Skipped Check for free disk pace, initial_modus.');
+			return true;
+		}
+
 		if (is_dir($this->_config->paths->web_live_path)) {
 			// curren web folder size (good indicator)
 			$folder_size = NedStars_FileSystem::getDirectorySize($this->_config->paths->web_live_path);
@@ -826,7 +865,7 @@ class Deployer extends DeployerObserver {
 		}
 
 		// MYSQL dump
-		if ($this->_config->backup->make_database_backup and !empty($this->_config->databases)) {
+		if ($this->_config->backup->make_database_backup and !empty($this->_config->databases) && !$this->_config->is_initial_modus) {
 			$binaries[] = 'mysqldump';
 		}
 
