@@ -1,32 +1,33 @@
 <?xml version="1.0"?>
-<config version="1.2">
-   <database>
-		<database_config_file></database_config_file><!-- pre set -->
-		<read_from_config>n</read_from_config>
-		<host>localhost</host> <!-- localhost -->
-		<username></username> <!-- root -->
-		<password></password>
-		<dbname></dbname>
-	</database>
-	
-	<git>
-		<repo></repo> <!-- git@github.com:nedstars/Deploy-Script.git -->
-		<branch></branch>
-		<source_folder></source_folder> <!-- web -->
-	</git>
-	
+<config version="1.3">
+	<databases>
+		<database>
+			<database_config_file></database_config_file><!-- pre set -->
+			<read_from_config>n</read_from_config>
+			<host>localhost</host> <!-- localhost -->
+			<username></username> <!-- root -->
+			<password></password>
+			<dbname></dbname>
+		</database>
+	</databases>
+
+	<archive>
+		<git>
+			<repo></repo> <!-- git@github.com:nedstars/Deploy-Script.git -->
+			<branch></branch>
+			<source_folder></source_folder> <!-- web -->
+		</git>
+	</archive>
+
 	<notifications>
 		<email_addresses>
 			<address></address>
 		</email_addresses>
-		<notifo_users>
+		<!-- <pushover_users>
 			<user></user>
-		</notifo_users>
-		<pushover_users>
-			<user></user>
-		</pushover_users>
+		</pushover_users> -->
 	</notifications>
-	
+
 	<paths>
 		<web_live_path></web_live_path>
 		<temp_new_path></temp_new_path> <!-- /staging.new.tmp -->
@@ -38,17 +39,17 @@
 		<make_database_backup>y</make_database_backup><!-- y or n-->
 		<make_file_backup>y</make_file_backup><!-- y or n-->
 	</backup>
-	
+
 	<preserve_data>
 		<folders> <!-- pre set -->
 			<folder>wp-content/uploads</folder>
-			
+
 			<!--
 			UNCOMMENT the following line if users are able to install plugins from the
 			backend interface, meaning they are not under version control
 			-->
 			<!--<folder>wp-content/plugins</folder>-->
-			
+
 			<!--
 			UNCOMMENT the following line if users are able to install themes from the
 			backend interface, meaning they are not under version control
@@ -62,7 +63,7 @@
 		</files>
 		<google_files>y</google_files><!-- pre set -->
 	</preserve_data>
-	
+
 	<permisions>
 		<user>apache</user> <!-- pre set -->
 		<group>apache</group> <!-- pre set -->

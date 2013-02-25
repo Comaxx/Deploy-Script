@@ -11,7 +11,7 @@
 
 /**
  * Notification class.
- * Facade for sending notifications. support for email, notifo and pushove
+ * Facade for sending notifications. support for email and pushove
  *
  * @project   NedStars Deployer
  * @category  Convenience_Class
@@ -27,20 +27,9 @@ class  Notification {
 	 */
 	private static $_pushoverToken = '10hXML7F6wL4eKnV2pP8XY9hcWULWV';
 	
-	/**
-	 * Notifo API user
-	 * @var String Notifo API user
-	 */
-	private static $_notifoUser = 'ns_gitlab';
 	
-	/**
-	 * Notifo API secret
-	 * @var String Notifo API secret
-	 */
-	private static $_notifoSecret = '00154dc34ffbd172c4f0da5eca55f4c0d93e8fe7';
 	
 	const EMAIL = 'email_addresses';
-	const NOTIFO = 'notifo_users';
 	const PUSHOVER = 'pushover_users';
 	
 	/**
@@ -60,14 +49,7 @@ class  Notification {
 				self::notifyEmail($title, $message, $address);
 			}
 		}
-		
-		// send Notifo notifications
-		if ($addresses = Notification::_prepapreRecipients($recipients, self::NOTIFO)) {
-			foreach ($addresses as $address) {
-				self::notifyNotifo($title, $message, $address);
-			}
-		}
-		
+			
 		// send Pushover notifications
 		if ($addresses = Notification::_prepapreRecipients($recipients, self::PUSHOVER)) {
 			foreach ($addresses as $address) {
@@ -123,42 +105,6 @@ class  Notification {
 		$push->setMessage($message);
 		
 		return  $push->send();
-	}
-	
-	/**
-	 * Notify one Notifo user
-	 * 
-	 * @param String $title   Display title
-	 * @param String $message Message to display
-	 * @param String $user    Unique user identifyer
-	 *
-	 * @return Boolean succes
-	 */
-	protected  static function notifyNotifo($title, $message, $user) {
-		if (empty($user)) {
-			return false;
-		}
-		
-		/* create a new "notifo" object */
-		$notifo = new Notifo_API(self::$_notifoUser, self::$_notifoSecret);
-		
-		/* set the notification parameters */
-		$params = array(
-			"to"	=> $user, /* "to" only used with Service accounts */
-			//"label"	=>"Dictionary", /* "label" only used with User accounts */
-			"title"	=> $title,
-			"msg"	=> $message,
-			"uri"	=> ""
-		);
-		
-		/* send the notification! */
-		$result = $notifo->sendNotification($params);
-		
-		if (isset($result->success)) {
-			return true;
-		} else {
-			return false;
-		}
 	}
 	
 	/**
