@@ -55,6 +55,45 @@ interface Hooks_DataInterface {
      * @return void
      */
     public function postPreserveData(Deployer &$deployer);
+
+    /**
+     * Pre hook function
+     *
+     * @param Deployer &$deployer deployer object
+     *
+     * @return void
+     */
+    public function preSwitchLive(Deployer &$deployer);
+
+    /**
+     * Post hook function
+     *
+     * @param Deployer &$deployer deployer object
+     *
+     * @return void
+     */
+    public function postSwitchLive(Deployer &$deployer);
+
+    /**
+     * Pre hook function
+     *
+     * @param Deployer &$deployer deployer object
+     *
+     * @return void
+     */
+    public function preSetFolderPermisions(Deployer &$deployer);
+
+    /**
+     * Post hook function
+     *
+     * @param Deployer &$deployer deployer object
+     *
+     * @return void
+     */
+    public function postSetFolderPermisions(Deployer &$deployer);
+
+
+
 }
 
 ?>

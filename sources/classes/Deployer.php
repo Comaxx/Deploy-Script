@@ -98,7 +98,7 @@ class Deployer extends DeployerObserver {
 	 */
 	function __construct($options) {
 		$this->_time_start = microtime(true);
-		
+
 		// trigger pre hook
 		$this->notify('Deployer_preDeployer');
 
@@ -111,8 +111,8 @@ class Deployer extends DeployerObserver {
 
 		// 4) Init log level and set start msg
 		$this->_startLog($options);
-		
-		// load hook files if found in config. 
+
+		// load hook files if found in config.
 		$this->_loadHooks();
 
 		// 5) Sanity_info: check if all configuration options are filled in
@@ -392,7 +392,7 @@ class Deployer extends DeployerObserver {
 	public function preserveData() {
 		// trigger pre hook
 		$this->notify('Data_prePreserveData');
-		
+
 		NedStars_Log::message('Start preserving data.');
 
 		// copy media files from the old live to the new environment
@@ -445,8 +445,8 @@ class Deployer extends DeployerObserver {
 				NedStars_Log::warning('Google folder not found: '.$this->_config->paths->web_live_path);
 			}
 		}
-		
-		
+
+
 		// trigger post hook
 		$this->notify('Data_postPreserveData');
 	}
@@ -459,7 +459,7 @@ class Deployer extends DeployerObserver {
 	public function clearData() {
 		// trigger pre hook
 		$this->notify('Data_preClearData');
-		
+
 		NedStars_Log::message('Clearing out tmp data.');
 
 		// clear out dir in temp new folder.
@@ -481,8 +481,8 @@ class Deployer extends DeployerObserver {
 				NedStars_Log::warning('File not found: '.$temp_file);
 			}
 		}
-		
-		
+
+
 		// trigger post hook
 		$this->notify('Data_postClearData');
 	}
@@ -494,10 +494,10 @@ class Deployer extends DeployerObserver {
 	 */
 	public function backupMysql() {
 		if ($this->_config->backup->make_database_backup) {
-			
+
 			// trigger pre hook
 			$this->notify('Backup_preBackupMysql');
-			
+
 			foreach ($this->_config->databases as $config_database) {
 				foreach ($config_database->dbnames as $dbname) {
 					$file = escapeshellarg($this->_config->paths->web_live_path.'/'.$config_database->host.'-'.$dbname.'.sql');
@@ -516,8 +516,8 @@ class Deployer extends DeployerObserver {
 					}
 				}
 			}
-			
-			
+
+
 			// trigger pre hook
 			$this->notify('Backup_postBackupMysql');
 		} else {
@@ -534,12 +534,12 @@ class Deployer extends DeployerObserver {
 		if ($this->_config->backup->make_file_backup) {
 			// trigger pre hook
 			$this->notify('Backup_preBackupLive');
-			
+
 			$destination_file = $this->_config->backup->folder.'/backup_'.date('Ymd_Hi').'.tar.gz';
 			NedStars_Log::message('Start backup live to : '.escapeshellarg($destination_file));
 			NedStars_FileSystem::backupDir($this->_config->paths->web_live_path, $destination_file);
-			
-			
+
+
 			// trigger post hook
 			$this->notify('Backup_postBackupLive');
 		} else {
@@ -558,6 +558,10 @@ class Deployer extends DeployerObserver {
 	 * @return void
 	 */
 	public function switchLive() {
+
+		// trigger pre hook
+		$this->notify('Data_preSwitchLive');
+
 		NedStars_Log::message('Switching live installation for new export.');
 		NedStars_FileSystem::relocateDir(
 			$this->_config->paths->web_live_path.'/',
@@ -570,6 +574,10 @@ class Deployer extends DeployerObserver {
 			NedStars_FileSystem::deleteDir($this->_config->paths->temp_new_path.'/');
 		}
 		NedStars_FileSystem::deleteDir($this->_config->paths->temp_old_path.'/');
+
+
+		// trigger post hook
+		$this->notify('Data_postSwitchLive');
 	}
 
 	/**
@@ -579,10 +587,10 @@ class Deployer extends DeployerObserver {
 	 */
 	public function sendNotifications() {
 		if (isset($this->_config->notifications) && is_object($this->_config->notifications)) {
-			
+
 			// trigger pre hook
 			$this->notify('Notifications_preSendNotification');
-			
+
 			$project = preg_replace('/(.*):(.*).git/', '$2', $this->_config->archive->git->repo);
 			$branch_name = $this->_config->archive->git->branch;
 
@@ -596,7 +604,7 @@ class Deployer extends DeployerObserver {
 
 			Notification::notify($title, $message, $this->_config->notifications);
 			NedStars_Log::message('Notifications send.');
-			
+
 			// trigger post hook
 			$this->notify('Notifications_PostSendNotification');
 		} else {
@@ -610,16 +618,16 @@ class Deployer extends DeployerObserver {
 	 * @return void
 	 */
 	public function getSource() {
-		
+
 		// trigger pre hook
 		$this->notify('Source_preGetSource');
-			
+
 		switch(strtolower($this->_config->archive->type)) {
 		case 'svn' :
-			
+
 			// trigger pre hook
 			$this->notify('Source_preSvnGetSource');
-			
+
 			NedStars_Log::message('Get archive from SVN.');
 			NedStars_Svn::getArchive(
 				$this->_config->archive->svn->repo,
@@ -630,13 +638,13 @@ class Deployer extends DeployerObserver {
 
 			// trigger post hook
 			$this->notify('Source_postSvnGetSource');
-			
+
 			break;
 		case 'git' :
-			
+
 			// trigger pre hook
 			$this->notify('Source_preGitGetSource');
-			
+
 			NedStars_Log::message('Get archive from GIT.');
 			NedStars_Git::getArchive(
 				$this->_config->archive->git->repo,
@@ -649,8 +657,8 @@ class Deployer extends DeployerObserver {
 			$this->notify('Source_postGitGetSource');
 			break;
 		}
-		
-		
+
+
 		// trigger post hook
 		$this->notify('Source_postGetSource');
 	}
@@ -661,6 +669,9 @@ class Deployer extends DeployerObserver {
 	 * @return void
 	 */
 	public function setFolderPermisions() {
+		// trigger pre hook
+		$this->notify('Data_preSetFolderPermisions');
+
 		NedStars_Log::debug('setPermisions: '.$this->_getSourceFolder().', '.$this->_config->permisions->user.', '.$this->_config->permisions->group);
 		NedStars_FileSystem::chownDir(
 			$this->_getSourceFolder(),
@@ -669,6 +680,9 @@ class Deployer extends DeployerObserver {
 
 		NedStars_Log::debug('Making live installation read-only for relocation: '.$this->_config->paths->web_live_path);
 		NedStars_FileSystem::chmodDir($this->_config->paths->web_live_path, '0400');
+
+		// trigger post hook
+		$this->notify('Data_postSetFolderPermisions');
 	}
 
 	/**
@@ -690,16 +704,16 @@ class Deployer extends DeployerObserver {
 	 * @return void
 	 */
 	public function purgeOldBackups() {
-		
+
 		// trigger pre hook
 		$this->notify('Backup_prePurgeOldBackups');
-		
+
 		NedStars_Log::message('Purging backup files older than '.$this->_config->backup->retention_days.' days: '.$this->_config->backup->folder);
 		NedStars_FileSystem::deleteOldFiles(
 			$this->_config->backup->folder.'/',
 			$this->_config->backup->retention_days
 		);
-		
+
 		// trigger post hook
 		$this->notify('Backup_postPurgeOldBackups');
 	}
@@ -793,31 +807,31 @@ class Deployer extends DeployerObserver {
 			throw new DeployerException('Binaries '.implode(', ', $not_found_bin).' are not found.', DeployerException::BINARY_MISSING);
 		}
 	}
-	
+
 	/**
-	 * Load hooks that are defined in the config. 
+	 * Load hooks that are defined in the config.
 	 *
 	 * @return void
 	 * @throws NedStars_FileSystemException when file could not be found.
 	 */
 	private function _loadHooks() {
         if (isset($this->_config->hooks->files)) {
-			
+
             foreach ( $this->_config->hooks->files as $file_path ) {
-				
+
 				if (file_exists($file_path)) {
 					$file_info = pathinfo($file_path);
 					// include the class with the hook
 					// nameing convension: filename === classname
 					include_once $file_path;
-					
+
 					// add hook by starting the class
 					$this->attachObserver(new $file_info['filename']);
-					
-					NedStars_Log::message('Attached Observer: '.$file_path);
+
+					NedStars_Log::message('Attached hook: '.$file_path);
 				} else {
 					throw new NedStars_FileSystemException('Hook file not found: '. escapeshellarg($file_path), NedStars_FileSystemException::FILE_NOT_FOUND);
-				}	
+				}
             }
         }
     }
