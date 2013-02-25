@@ -415,6 +415,9 @@ class Deployer extends DeployerObserver {
 					$current_path,
 					NedStars_FileSystem::popDir($new_path)
 				);
+
+				NedStars_Log::debug('Preserved data folder: '.escapeshellarg($current_path));
+
 			} else {
 				NedStars_Log::warning('Folder not found: '.$current_path);
 			}
@@ -427,6 +430,7 @@ class Deployer extends DeployerObserver {
 					$this->_config->paths->web_live_path.'/'.$file_path,
 					$this->_getSourceFolder().$file_path
 				);
+				NedStars_Log::debug('Preserved data file: '.escapeshellarg($this->_config->paths->web_live_path.'/'.$file_path));
 			} else {
 				NedStars_Log::warning('File not found: '.$this->_config->paths->web_live_path.'/'.$file_path);
 			}
@@ -751,7 +755,9 @@ class Deployer extends DeployerObserver {
 			$folder_size = NedStars_FileSystem::getDirectorySize($this->_config->paths->web_live_path);
 
 			// live disk
+			NedStars_Log::debug('Checking free disk page for '.escapeshellarg($this->_config->paths->web_live_path));
 			$free_size_live = disk_free_space($this->_config->paths->web_live_path);
+			NedStars_Log::debug('Finished checking free disk page for '.escapeshellarg($this->_config->paths->web_live_path));
 
 			// times 4 beacuse if both on same disk then we need 3 times and a bit on margin.
 			// one for new git checkout with data
@@ -764,7 +770,9 @@ class Deployer extends DeployerObserver {
 			// check backup dir if found
 			if (is_dir($this->_config->backup->folder)) {
 				// backup disk (could be on a other partition then the live)
+				NedStars_Log::debug('Checking free disk page for '.escapeshellarg($this->_config->backup->folder));
 				$free_size_backup = disk_free_space($this->_config->backup->folder);
+				NedStars_Log::debug('Finished checking free disk page for '.escapeshellarg($this->_config->backup->folder));
 
 				// also check if backup disk has enough free disk space for 1 backup
 				if ($folder_size > $free_size_backup) {
