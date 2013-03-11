@@ -407,7 +407,9 @@ class NedStars_FileSystem {
 	 * @throws NedStars_FileSystemException When directory could not be created.
 	 */
 	public static function createDirIfNeeded($path) {
-		if (!is_dir($path)) {
+		if (empty($path)) {
+			throw new NedStars_FileSystemException('Could not create dir, path can not be empty.', NedStars_FileSystemException::DIR_NOT_FOUND);
+		} elseif (!is_dir($path)) {
 			if (mkdir($path)) {
 				NedStars_Log::message('Directory created:'. escapeshellarg($path));
 			} else {
