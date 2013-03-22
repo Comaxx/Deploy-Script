@@ -407,7 +407,7 @@ class Deployer extends DeployerObserver {
 			NedStars_Log::message('Skipped preserving, initial_modus.');
 			return true;
 		}
-		
+
 		// trigger pre hook
 		$this->notify('Data_prePreserveData');
 
@@ -843,6 +843,16 @@ class Deployer extends DeployerObserver {
 			break;
 		}
 		return $path;
+	}
+
+	/**
+	 * Helper function to get the absoulte path for Archive source folder
+	 *
+	 * @see _getSourceFolder()
+	 * @return String Abosulte path
+	 */
+	public function getSourceFolder() {
+		return $this->_getSourceFolder();
 	}
 
 	/**
