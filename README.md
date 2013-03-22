@@ -64,7 +64,6 @@ Notifications
 There are three types of notification services:
 
 - email
-- Notifo http://notifo.com/
 - Pushover https://pushover.net/
 
 The XML looks like
@@ -73,9 +72,6 @@ The XML looks like
 		<email_addresses>
 			<address>example@example.com</address>
 		</email_addresses>
-		<notifo_users>
-			<user>example</user>
-		</notifo_users>
 		<pushover_users>
 			<user>183SSd882exampleS82</user>
 		</pushover_users>

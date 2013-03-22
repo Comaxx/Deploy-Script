@@ -1,9 +1,23 @@
 Deploy Script 
 ========
 
-- Disabled Mysqldumb binary check if it is not required
+Deploy Script 1.3
+--------
+- Added support for SVN #15, #22 and #23
+- Added support for preserving data via regex
+- Added support for multiple databases
 - Added no password or ask password for MySQL
+- Removed support for notification system "Notifo" #29
+- Changed requirement for script to run as root. Now you need to run the script with  a user that has the right to the folders #30
+- Auto fill Arhcive->type config value #28
+- Fixed checks on backups #16 and #17
+- Fixed TAR backup #14
+- Fixed a issue with cleanup #11
+- Improved notification info #13
+- Disabled Mysqldumb binary check if it is not required
 - Refactored config class
+
+
 
 Deploy Script 1.2
 --------

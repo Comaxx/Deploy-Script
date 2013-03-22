@@ -16,11 +16,15 @@ define('CLASSES', ROOT . 'classes' . '/');
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
+// change working dit to project path, thats the parent forlder for source folder.
+chdir(dirname($_SERVER['argv'][0]));
+chdir("../");
+
 /**
  * Autoload handler
- * 
+ *
  * @param String $className The class name to autoload
- * 
+ *
  * @return void
  */
 function autoloadHandler($className) {
@@ -29,12 +33,12 @@ function autoloadHandler($className) {
 
 /**
  * Error Handler
- * 
+ *
  * @param Int    $errorNumber Error number
  * @param String $errorString Error description
  * @param String $errorFile   Filename where the error occurred
  * @param Int    $errorLine   Line number where the error occurred
- * 
+ *
  * @return Bool true when the error is considered handled and not cascaded
  */
 function errorHandler($errorNumber, $errorString, $errorFile, $errorLine) {
