@@ -1,6 +1,6 @@
 <?php
 /**
- * Deployer class, main deploy boject.
+ * Deployer class, main deploy object.
  *
  * @project   NedStars Deployer
  * @category  Convenience_Class
@@ -10,7 +10,7 @@
  */
 
 /**
- * Deployer class, main deploy boject.
+ * Deployer class, main deploy object.
  *
  * @project   NedStars Deployer
  * @category  Convenience_Class
@@ -194,12 +194,12 @@ class Deployer extends DeployerObserver {
 		try {
 			$this->_lock = stream_socket_server("tcp://0.0.0.0:12345");
 		} catch (Exception $e) {
-			throw new DeployerException('Could not get lock! Is the proces allready running on this server?', DeployerException::NO_LOCK);
+			throw new DeployerException('Could not get lock! Is the process already running on this server?', DeployerException::NO_LOCK);
 		}
 	}
 
 	/**
-	 * Relase the locking mechanism if set
+	 * Release the locking mechanism if set
 	 *
 	 * @return void
 	 */
@@ -327,7 +327,7 @@ class Deployer extends DeployerObserver {
 	 * @return void
 	 */
 	private function _checkConfigurationValues() {
-		// check if dir's exist. if not create them
+		// check if dirs exist. if not create them
 		NedStars_FileSystem::createDirIfNeeded($this->_config->paths->web_live_path);
 		NedStars_FileSystem::createDirIfNeeded($this->_config->paths->temp_new_path);
 		NedStars_FileSystem::createDirIfNeeded($this->_config->paths->temp_old_path);
@@ -342,7 +342,7 @@ class Deployer extends DeployerObserver {
 			$this->_verifyMysqlCredentials();
 		}
 
-		// check if user has enought rights to deploy
+		// check if user has enough rights to deploy
 		$this->_verifyUserRights();
 
 		// Check if archive credentials are ok.
@@ -353,7 +353,7 @@ class Deployer extends DeployerObserver {
 	 * Load specified config file
 	 * Default config file is "deploy.conf.php"
 	 *
-	 * @param array $options set of posible overrides: branch, tag, config, debug
+	 * @param array $options set of possible overrides: branch, tag, config, debug
 	 *
 	 * @return void
 	 */
@@ -405,7 +405,7 @@ class Deployer extends DeployerObserver {
 		// skip preservation if inital modus
 		if ($this->_config->is_initial_modus) {
 			NedStars_Log::message('Skipped preserving, initial_modus.');
-			return true;
+			return;
 		}
 
 		// trigger pre hook
@@ -415,11 +415,10 @@ class Deployer extends DeployerObserver {
 
 		// copy media files from the old live to the new environment
 		foreach ($this->_config->preserve_data->folders as $dir_path) {
-            NedStars_Log::debug('Preserve folder: '.$dir_path);
 			$current_path = NedStars_FileSystem::getNiceDir($this->_config->paths->web_live_path.'/'.$dir_path);
 			$new_path = NedStars_FileSystem::getNiceDir($this->_getSourceFolder().$dir_path);
 
-			if (is_dir($current_path)) {
+			if (is_dir($current_path) && !NedStars_FileSystem::isSymlink($current_path)) {
 				if (!is_dir($new_path)) {
 					// try to make dir.
 					if (!mkdir($new_path)) {
@@ -444,7 +443,6 @@ class Deployer extends DeployerObserver {
 
 		// backup / preserve files
 		foreach ($this->_config->preserve_data->files as $file_path) {
-            NedStars_Log::debug('Preserve file: '.$file_path);
             if (is_file($this->_config->paths->web_live_path.'/'.$file_path)) {
 				NedStars_FileSystem::copyFile(
 					$this->_config->paths->web_live_path.'/'.$file_path,
@@ -456,9 +454,21 @@ class Deployer extends DeployerObserver {
 			}
 		}
 
+        // preserve symlinks
+        foreach ($this->_config->preserve_data->symlinks as $file_path) {
+            if (NedStars_FileSystem::isSymlink($this->_config->paths->web_live_path.'/'.$file_path)) {
+                NedStars_FileSystem::copySymlink(
+                    $this->_config->paths->web_live_path.'/'.$file_path,
+                    $this->_getSourceFolder().$file_path
+                );
+                NedStars_Log::debug('Preserved data symlink: '.escapeshellarg($this->_config->paths->web_live_path.'/'.$file_path));
+            } else {
+                NedStars_Log::warning('Symlinks not found: '.$this->_config->paths->web_live_path.'/'.$file_path);
+            }
+        }
+
 		// preserve files by regex
 		foreach ($this->_config->preserve_data->regexes as $regex) {
-            NedStars_Log::debug('Preserve regex: '.$regex);
 			if (is_dir($this->_config->paths->web_live_path)) {
 				NedStars_FileSystem::copyFilesByRegEx(
 					$regex,
@@ -484,7 +494,6 @@ class Deployer extends DeployerObserver {
 				NedStars_Log::warning('Google folder not found: '.$this->_config->paths->web_live_path);
 			}
 		}
-
 
 		// trigger post hook
 		$this->notify('Data_postPreserveData');
@@ -536,7 +545,7 @@ class Deployer extends DeployerObserver {
 		// skip MySQL backup if inital modus
 		if ($this->_config->is_initial_modus) {
 			NedStars_Log::message('Skipped MySQL backup, initial_modus.');
-			return true;
+			return;
 		}
 
 		if ($this->_config->backup->make_database_backup) {
@@ -582,7 +591,7 @@ class Deployer extends DeployerObserver {
 		// skip MySQL backup if inital modus
 		if ($this->_config->is_initial_modus) {
 			NedStars_Log::message('Skipped file backup, initial_modus.');
-			return true;
+			return;
 		}
 
 		if ($this->_config->backup->make_file_backup) {
@@ -722,26 +731,26 @@ class Deployer extends DeployerObserver {
 	 *
 	 * @return void
 	 */
-	public function setFolderPermisions() {
+	public function setFolderPermissions() {
 		// trigger pre hook
-		$this->notify('Data_preSetFolderPermisions');
+		$this->notify('Data_preSetFolderPermissions');
 
-        if ( $this->_getCurrentUser()       == $this->_config->permisions->user
-             && $this->_getCurrentUserGroup() == $this->_config->permisions->group ) {
+        if ( $this->_getCurrentUser()       == $this->_config->permissions->user
+             && $this->_getCurrentUserGroup() == $this->_config->permissions->group ) {
             NedStars_Log::debug('setPermissions: the current user and group are the same as the user to set permissions to, skipping chown.');
         }
         else {
-            NedStars_Log::debug('setPermissions: '.$this->_getSourceFolder().', '.$this->_config->permisions->user.', '.$this->_config->permisions->group);
+            NedStars_Log::debug('setPermissions: '.$this->_getSourceFolder().', '.$this->_config->permissions->user.', '.$this->_config->permissions->group);
             NedStars_FileSystem::chownDir(
                 $this->_getSourceFolder(),
-                $this->_config->permisions->user, $this->_config->permisions->group
+                $this->_config->permissions->user, $this->_config->permissions->group
             );
         }
 		NedStars_Log::debug('Making live installation read-only for relocation: '.$this->_config->paths->web_live_path);
 		NedStars_FileSystem::chmodDir($this->_config->paths->web_live_path, '0744');
 
 		// trigger post hook
-		$this->notify('Data_postSetFolderPermisions');
+		$this->notify('Data_postSetFolderPermissions');
 	}
 
 	/**
@@ -916,7 +925,7 @@ class Deployer extends DeployerObserver {
     /**
      * Helper function to get the user currently executing the deploy script.
      *
-     * @return string
+     * @return string The user name of the user executing the script.
      * @throws DeployerException
      */
     private function _getCurrentUser() {
@@ -925,7 +934,7 @@ class Deployer extends DeployerObserver {
             $userInfo = posix_getpwuid( posix_getuid() );
             $result = $userInfo['name'];
         } else {
-            $result = shell_exec('id -n -u');
+            $result = trim( shell_exec('id -n -u') );
         }
         if ( empty($result) ) {
             throw new DeployerException('Could not determine current user using "posix_getuid" or "id" via shell.', DeployerException::GET_USER_INFO);
@@ -936,7 +945,7 @@ class Deployer extends DeployerObserver {
     /**
      * Helper function to get the group of the user currently executing the deploy script.
      *
-     * @return string
+     * @return string The group name of the user executing the script.
      * @throws DeployerException
      */
     private function _getCurrentUserGroup() {
@@ -945,11 +954,12 @@ class Deployer extends DeployerObserver {
             $groupInfo = posix_getgrgid( posix_getgid() );
             $result = $groupInfo['name'];
         } else {
-            $result = shell_exec('id -n -g');
+            $result = trim( shell_exec('id -n -g') );
         }
         if ( empty($result) ) {
             throw new DeployerException('Could not determine current user using "posix_getuid" or "id" via shell.', DeployerException::GET_USER_INFO);
         }
         return $result;
     }
+
 }

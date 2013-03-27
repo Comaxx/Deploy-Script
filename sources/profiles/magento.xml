@@ -49,16 +49,18 @@
 		<files> <!-- pre set -->
 			<file>app/etc/local.xml</file> <!-- config file -->
 		</files>
+        <symlink> <!-- pre set -->
+        </symlink>
 		<google_files>y</google_files><!-- pre set -->
-	</preserve_data>
+    </preserve_data>
 	<clear_data>
 		<folders> <!-- pre set -->
 		</folders>
 		<files> <!-- pre set -->
 		</files>
 	</clear_data>
-	<permisions>
+	<permissions>
 		<user>apache</user> <!-- pre set -->
 		<group>apache</group> <!-- pre set -->
-	</permisions>
+	</permissions>
 </config>

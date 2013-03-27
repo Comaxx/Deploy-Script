@@ -57,4 +57,3 @@ class NedStars_Execution {
 		return $line;
 	}
 }
-?>

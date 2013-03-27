@@ -20,7 +20,7 @@
  */
 class NedStars_Git {
 	/**
-	 * Git lab send a string of zero's if there is no SHA1 for the afther or before branch
+	 * Git lab send a string of zero's if there is no SHA1 for the after or before branch
 	 */
 	const EMPTY_SHA1 = '0000000000000000000000000000000000000000';
 
@@ -86,7 +86,7 @@ class NedStars_Git {
 			throw new NedStars_GitException('$branch can not be empty', NedStars_GitException::EMPTY_BRANCH);
 		}
 
-		// checkif remote branch is ok.
+		// check if remote branch is ok.
 		$command= 'git ls-remote '.escapeshellarg($repository).' '.escapeshellarg($branch);
 		if (trim(NedStars_Execution::run($command, true)) != '') {
 			return true;
@@ -98,24 +98,24 @@ class NedStars_Git {
 	/**
 	 * Update to latest version for a existing project
 	 *
-	 * @param String $poject_path Absolute path to project dir
+	 * @param String $project_path Absolute path to project dir
 	 * @param String $revision    the revision to go to
 	 *
 	 * @return Mixed exec result
 	 */
-	public static function doCheckout($poject_path, $revision) {
+	public static function doCheckout($project_path, $revision) {
 		// make sure input is not empty
 		if (empty($revision)) {
 			throw new NedStars_GitException('$revision can not be empty', NedStars_GitException::EMPTY_REVISION);
 		}
 
 		// make sure dir is writable
-		$poject_path = NedStars_FileSystem::getNiceDir($poject_path);
-		if (!is_dir($poject_path)) {
-			throw new NedStars_GitException('$poject_path is not a valid path: '. escapeshellarg($poject_path), NedStars_GitException::INVALID_PATH);
+		$project_path = NedStars_FileSystem::getNiceDir($project_path);
+		if (!is_dir($project_path)) {
+			throw new NedStars_GitException('$project_path is not a valid path: '. escapeshellarg($project_path), NedStars_GitException::INVALID_PATH);
 		}
 
-		$command = "cd ".escapeshellarg($poject_path)."; git checkout ".escapeshellarg($revision);
+		$command = "cd ".escapeshellarg($project_path)."; git checkout ".escapeshellarg($revision);
 		return NedStars_Execution::run($command, true);
 
 	}
@@ -123,18 +123,18 @@ class NedStars_Git {
 	/**
 	 * Get latest meta info	for existing project
 	 *
-	 * @param String $poject_path Absolute path to project dir
+	 * @param String $project_path Absolute path to project dir
 	 *
 	 * @return Mixed exec result
 	 */
-	public static function doFetch($poject_path) {
+	public static function doFetch($project_path) {
 		// make sure dir is writable
-		$poject_path = NedStars_FileSystem::getNiceDir($poject_path);
-		if (!is_dir($poject_path)) {
-			throw new NedStars_GitException('$poject_path is not a valid path: '. escapeshellarg($poject_path), NedStars_GitException::INVALID_PATH);
+		$project_path = NedStars_FileSystem::getNiceDir($project_path);
+		if (!is_dir($project_path)) {
+			throw new NedStars_GitException('$project_path is not a valid path: '. escapeshellarg($project_path), NedStars_GitException::INVALID_PATH);
 		}
 
-		$command = "cd ".escapeshellarg($poject_path)."; git fetch";
+		$command = "cd ".escapeshellarg($project_path)."; git fetch";
 		return NedStars_Execution::run($command, true);
 
 	}
@@ -157,7 +157,7 @@ class NedStars_Git {
 
 		// check if new sub folder does not exists
 		if (is_dir(NedStars_FileSystem::getNiceDir($base_dir.$project_name))) {
-			throw new NedStars_GitException('New folder allready exists: '. escapeshellarg($base_dir.$project_name), NedStars_GitException::INVALID_PATH);
+			throw new NedStars_GitException('New folder already exists: '. escapeshellarg($base_dir.$project_name), NedStars_GitException::INVALID_PATH);
 		}
 
 		$command = 'cd '.escapeshellarg($base_dir).'; git clone '.escapeshellarg('git@'.$server.':'.$project_name.'.git');
@@ -175,12 +175,12 @@ class NedStars_Git {
 	/**
 	 * Get the revision where the current branch is branched off from.
 	 *
-	 * @param String $poject_path Absolute path to project
+	 * @param String $project_path Absolute path to project
 	 *
 	 * @return String short sha1 hash.
 	 */
-	public static function getPreviouseRevision($poject_path) {
-		$command = "cd ".escapeshellarg($poject_path)."; git log --oneline -50";
+	public static function getPreviousRevision($project_path) {
+		$command = "cd ".escapeshellarg($project_path)."; git log --oneline -50";
 		$output = explode(PHP_EOL, NedStars_Execution::run($command, true));
 
 		$previous_ref = null;
@@ -188,21 +188,21 @@ class NedStars_Git {
 			$parts = explode(' ', $line, 2);
 
 			$hash = $parts[0];
-			$command = "cd ".escapeshellarg($poject_path)."; git name-rev ".$parts[0]; // output: hash ref~history
+			$command = "cd ".escapeshellarg($project_path)."; git name-rev ".$parts[0]; // output: hash ref~history
 			$raw_branch_info = NedStars_Execution::run($command, true);
 			$branch_info = trim(str_replace($parts[0], '', $raw_branch_info));
 
 			$parts = explode('~', $branch_info, 2);
-			$referance = $parts[0];
+			$reference = $parts[0];
 
 			if ($previous_ref == null) {
 				// init ref
-				$previous_ref = $referance;
-			} elseif ($previous_ref != $referance) {
-				// found a ref thats not in the topic / branch
+				$previous_ref = $reference;
+			} elseif ($previous_ref != $reference) {
+				// found a ref that's not in the topic / branch
 				return $hash;
 			}
 		}
 	}
+
 }
-?>

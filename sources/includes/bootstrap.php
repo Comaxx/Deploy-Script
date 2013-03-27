@@ -16,7 +16,7 @@ define('CLASSES', ROOT . 'classes' . '/');
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-// change working dit to project path, thats the parent forlder for source folder.
+// change working dit to project path, that's the parent folder for source folder.
 chdir(dirname($_SERVER['argv'][0]));
 chdir("../");
 
@@ -51,4 +51,3 @@ function errorHandler($errorNumber, $errorString, $errorFile, $errorLine) {
 // register handlers
 spl_autoload_register('autoloadHandler');
 set_error_handler('errorHandler');
-?>
