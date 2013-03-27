@@ -407,7 +407,7 @@ class Deployer extends DeployerObserver {
 			NedStars_Log::message('Skipped preserving, initial_modus.');
 			return true;
 		}
-		
+
 		// trigger pre hook
 		$this->notify('Data_prePreserveData');
 
@@ -415,6 +415,7 @@ class Deployer extends DeployerObserver {
 
 		// copy media files from the old live to the new environment
 		foreach ($this->_config->preserve_data->folders as $dir_path) {
+            NedStars_Log::debug('Preserve folder: '.$dir_path);
 			$current_path = NedStars_FileSystem::getNiceDir($this->_config->paths->web_live_path.'/'.$dir_path);
 			$new_path = NedStars_FileSystem::getNiceDir($this->_getSourceFolder().$dir_path);
 
@@ -443,7 +444,8 @@ class Deployer extends DeployerObserver {
 
 		// backup / preserve files
 		foreach ($this->_config->preserve_data->files as $file_path) {
-			if (is_file($this->_config->paths->web_live_path.'/'.$file_path)) {
+            NedStars_Log::debug('Preserve file: '.$file_path);
+            if (is_file($this->_config->paths->web_live_path.'/'.$file_path)) {
 				NedStars_FileSystem::copyFile(
 					$this->_config->paths->web_live_path.'/'.$file_path,
 					$this->_getSourceFolder().$file_path
@@ -456,6 +458,7 @@ class Deployer extends DeployerObserver {
 
 		// preserve files by regex
 		foreach ($this->_config->preserve_data->regexes as $regex) {
+            NedStars_Log::debug('Preserve regex: '.$regex);
 			if (is_dir($this->_config->paths->web_live_path)) {
 				NedStars_FileSystem::copyFilesByRegEx(
 					$regex,
@@ -469,6 +472,7 @@ class Deployer extends DeployerObserver {
 
 		//backup google*.htm file in live root.
 		if ($this->_config->preserve_data->google_files) {
+            NedStars_Log::debug('Preserve Google files');
 			if (is_dir($this->_config->paths->web_live_path)) {
 				// TODO check if _getSourceFolder() works because of automated "/"
 				NedStars_FileSystem::copyFilesByRegEx(
@@ -714,7 +718,7 @@ class Deployer extends DeployerObserver {
 	}
 
 	/**
-	 * Set permisions to apache
+	 * Set permissions to apache
 	 *
 	 * @return void
 	 */
@@ -722,12 +726,17 @@ class Deployer extends DeployerObserver {
 		// trigger pre hook
 		$this->notify('Data_preSetFolderPermisions');
 
-		NedStars_Log::debug('setPermisions: '.$this->_getSourceFolder().', '.$this->_config->permisions->user.', '.$this->_config->permisions->group);
-		NedStars_FileSystem::chownDir(
-			$this->_getSourceFolder(),
-			$this->_config->permisions->user, $this->_config->permisions->group
-		);
-
+        if ( $this->_getCurrentUser()       == $this->_config->permisions->user
+             && $this->_getCurrentUserGroup() == $this->_config->permisions->group ) {
+            NedStars_Log::debug('setPermissions: the current user and group are the same as the user to set permissions to, skipping chown.');
+        }
+        else {
+            NedStars_Log::debug('setPermissions: '.$this->_getSourceFolder().', '.$this->_config->permisions->user.', '.$this->_config->permisions->group);
+            NedStars_FileSystem::chownDir(
+                $this->_getSourceFolder(),
+                $this->_config->permisions->user, $this->_config->permisions->group
+            );
+        }
 		NedStars_Log::debug('Making live installation read-only for relocation: '.$this->_config->paths->web_live_path);
 		NedStars_FileSystem::chmodDir($this->_config->paths->web_live_path, '0744');
 
@@ -903,5 +912,44 @@ class Deployer extends DeployerObserver {
             }
         }
     }
+
+    /**
+     * Helper function to get the user currently executing the deploy script.
+     *
+     * @return string
+     * @throws DeployerException
+     */
+    private function _getCurrentUser() {
+        $result = null;
+        if ( function_exists('posix_getuid') && function_exists('posix_getpwuid') ) {
+            $userInfo = posix_getpwuid( posix_getuid() );
+            $result = $userInfo['name'];
+        } else {
+            $result = shell_exec('id -n -u');
+        }
+        if ( empty($result) ) {
+            throw new DeployerException('Could not determine current user using "posix_getuid" or "id" via shell.', DeployerException::GET_USER_INFO);
+        }
+        return $result;
+    }
+
+    /**
+     * Helper function to get the group of the user currently executing the deploy script.
+     *
+     * @return string
+     * @throws DeployerException
+     */
+    private function _getCurrentUserGroup() {
+        $result = null;
+        if ( function_exists('posix_getgid') && function_exists('posix_getgrgid') ) {
+            $groupInfo = posix_getgrgid( posix_getgid() );
+            $result = $groupInfo['name'];
+        } else {
+            $result = shell_exec('id -n -g');
+        }
+        if ( empty($result) ) {
+            throw new DeployerException('Could not determine current user using "posix_getuid" or "id" via shell.', DeployerException::GET_USER_INFO);
+        }
+        return $result;
+    }
 }
-?>
