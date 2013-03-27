@@ -31,5 +31,5 @@ class DeployerException extends NedStars_Exception {
 	const LOCAL_XML_FAILED		= 9;
 	const PRINT_VERSION			= 10;
 	const ARCHIVE_TYPE_MISSING	= 11;
-
+    const GET_USER_INFO      	= 12;
 }
