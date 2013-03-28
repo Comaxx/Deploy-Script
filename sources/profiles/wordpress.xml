@@ -64,8 +64,8 @@
 		<google_files>y</google_files><!-- pre set -->
 	</preserve_data>
 
-	<permisions>
+	<permissions>
 		<user>apache</user> <!-- pre set -->
 		<group>apache</group> <!-- pre set -->
-	</permisions>
+	</permissions>
 </config>

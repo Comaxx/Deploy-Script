@@ -20,24 +20,24 @@
  * @copyright 2012  Nedstars <info@nedstars.nl>
  */
 class  Notification {
-	
+
 	/**
 	 * Pushover API token
 	 * @var String	Pushover API token
 	 */
 	private static $_pushoverToken = '10hXML7F6wL4eKnV2pP8XY9hcWULWV';
-	
-	
-	
+
+
+
 	const EMAIL = 'email_addresses';
 	const PUSHOVER = 'pushover_users';
-	
+
 	/**
 	 * Send notifications
-	 * 
+	 *
 	 * @param String $title      Display title
 	 * @param String $message    Message to display
-	 * @param Array  $recipients Array continaing recipients per key
+	 * @param Array  $recipients Array containing recipients per key
 	 *
 	 * @return void
 	 */
@@ -49,7 +49,7 @@ class  Notification {
 				self::notifyEmail($title, $message, $address);
 			}
 		}
-			
+
 		// send Pushover notifications
 		if ($addresses = Notification::_prepapreRecipients($recipients, self::PUSHOVER)) {
 			foreach ($addresses as $address) {
@@ -57,10 +57,10 @@ class  Notification {
 			}
 		}
 	}
-	
+
 	/**
 	 * Helper function to convert recipients into one array per type
-	 * 
+	 *
 	 * @param Array  $recipients set of recipients grouped by key
 	 * @param String $type       group identifier
 	 *
@@ -73,22 +73,22 @@ class  Notification {
 			} else {
 				$addresses = $recipients->$type;
 			}
-			
+
 			if (count($addresses) > 0) {
 				return $addresses;
 			}
 		}
-		
+
 		// send false back if we have not found a set of recipients for this type
 		return false;
 	}
-	
+
 	/**
 	 * Notify one Pushover user
-	 * 
+	 *
 	 * @param String $title      Display title
 	 * @param String $message    Message to display
-	 * @param String $user_token Unique user identifyer
+	 * @param String $user_token Unique user identifier
 	 *
 	 * @return Boolean succes
 	 */
@@ -96,23 +96,23 @@ class  Notification {
 		if (empty($user_token)) {
 			return false;
 		}
-		
+
 		$push = new Pushover_API();
 		$push->setToken(self::$_pushoverToken);
 		$push->setUser($user_token);
-		
+
 		$push->setTitle($title);
 		$push->setMessage($message);
-		
+
 		return  $push->send();
 	}
-	
+
 	/**
 	 * Notify one email address
-	 * 
+	 *
 	 * @param String $title         Display title
 	 * @param String $message       Message to display
-	 * @param String $email_address Unique user identifyer
+	 * @param String $email_address Unique user identifier
 	 *
 	 * @return Boolean succes
 	 */
@@ -120,17 +120,17 @@ class  Notification {
 		if (empty($email_address)) {
 			return false;
 		}
-		
-		$to_email 	= $email_address; 
+
+		$to_email 	= $email_address;
 		$from 		= 'deploy@'.php_uname('n');
 		$subject 	= $title;
-		
-		$headers  = "From: $from\r\n"; 
+
+		$headers  = "From: $from\r\n";
 		$headers .= "Content-type: text/html\r\n";
-		
+
 		$message = '<pre>'.$message.'</pre>';
-		
-		// now lets send the email. 
+
+		// now lets send the email.
 		return mail($to_email, $subject, $message, $headers);
 	}
 }

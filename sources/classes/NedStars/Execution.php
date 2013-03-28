@@ -19,7 +19,7 @@ class NedStars_Execution {
 	 * @return Mixed String or Boolean
 	 */
 	public static function run($cmd, $getExitValue = false) {
-		NedStars_Log::debug($cmd);
+		NedStars_Log::debug('run: '.$cmd);
 		$result = shell_exec($cmd);
 
 		if ($getExitValue) {
@@ -57,4 +57,3 @@ class NedStars_Execution {
 		return $line;
 	}
 }
-?>

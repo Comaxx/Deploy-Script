@@ -59,8 +59,8 @@
 		<files> <!-- pre set -->
 		</files>
 	</clear_data>
-	<permisions>
+	<permissions>
 		<user>apache</user> <!-- pre set -->
 		<group>apache</group> <!-- pre set -->
-	</permisions>
+	</permissions>
 </config>
