@@ -11,7 +11,7 @@
  * @license  BSD License
  * @version  Release: 0.1
  * @link     https://pushover.net/api
- */ 
+ */
 
 /**
  * php-pushover
@@ -25,7 +25,7 @@
  * @license  BSD License
  * @version  Release: 0.1
  * @link     https://pushover.net/api
- */ 
+ */
 class Pushover_API {
 	// api url
 	const API_URL = 'https://api.pushover.net/1/messages.xml';
@@ -63,7 +63,7 @@ class Pushover_API {
 	 *
 	 * @var string
 	 */
-	private $_message;	
+	private $_message;
 
 	/**
 	 * Timestamp in Unix timestamp format
@@ -104,7 +104,7 @@ class Pushover_API {
 
 	/**
 	 * Set API token
-	 * 
+	 *
 	 * @param string $token Your app API key.
 	 *
 	 * @return void
@@ -115,7 +115,7 @@ class Pushover_API {
 
 	/**
 	 * Get API token
-	 * 
+	 *
 	 * @return string
 	 */
     public function getToken () {
@@ -124,7 +124,7 @@ class Pushover_API {
 
 	/**
 	 * Set API user
-	 * 
+	 *
 	 * @param string $user The user's API key.
 	 *
 	 * @return void
@@ -135,7 +135,7 @@ class Pushover_API {
 
 	/**
 	 * Get API user
-	 * 
+	 *
 	 * @return string
 	 */
     public function getUser () {
@@ -144,7 +144,7 @@ class Pushover_API {
 
 	/**
 	 * Set message title
-	 * 
+	 *
 	 * @param string $title Title of push notification.
 	 *
 	 * @return void
@@ -155,7 +155,7 @@ class Pushover_API {
 
 	/**
 	 * Get message title
-	 * 
+	 *
 	 * @return string
 	 */
     public function getTitle () {
@@ -164,7 +164,7 @@ class Pushover_API {
 
 	/**
 	 * Set message
-	 * 
+	 *
 	 * @param string $msg Message of push notification.
 	 *
 	 * @return void
@@ -175,7 +175,7 @@ class Pushover_API {
 
 	/**
 	 * Get message
-	 * 
+	 *
 	 * @return string
 	 */
     public function getMessage () {
@@ -184,7 +184,7 @@ class Pushover_API {
 
 	/**
 	 * Set device
-	 * 
+	 *
 	 * @param string $device Leave this empty if you want to send to all user's devices. This can be user specific!
 	 *
 	 * @return void
@@ -195,7 +195,7 @@ class Pushover_API {
 
 	/**
 	 * Get device
-	 * 
+	 *
 	 * @return string
 	 */
     public function getDevice () {
@@ -206,7 +206,7 @@ class Pushover_API {
 	 * Set timestamp
 	 *
 	 * Messages are stored on the Pushover servers with a timestamp of when they were initially received through the API. This timestamp is sent to and shown on client devices, and messages are listed in order of these timestamps. In most cases, this default timestamp is acceptable. This is not for scheduling!
-	 * 
+	 *
 	 * @param int $time dispaly time on device
 	 *
 	 * @return void
@@ -217,7 +217,7 @@ class Pushover_API {
 
 	/**
 	 * Get timestamp
-	 * 
+	 *
 	 * @return int
 	 */
     public function getTimestamp () {
@@ -226,7 +226,7 @@ class Pushover_API {
 
 	/**
 	 * Set priority (0 or 1)
-	 * 
+	 *
 	 * @param int $priority Default = 0, if 1 the user's quiet hours will be ignored + messages displayed in red.
 	 *
 	 * @return void
@@ -237,7 +237,7 @@ class Pushover_API {
 
 	/**
 	 * Get priority
-	 * 
+	 *
 	 * @return int
 	 */
     public function getPriority () {
@@ -246,7 +246,7 @@ class Pushover_API {
 
 	/**
 	 * Set url
-	 * 
+	 *
 	 * @param string $url Add an url to your notification.
 	 *
 	 * @return void
@@ -257,7 +257,7 @@ class Pushover_API {
 
 	/**
 	 * Get url
-	 * 
+	 *
 	 * @return string
 	 */
     public function getUrl () {
@@ -266,7 +266,7 @@ class Pushover_API {
 
 	/**
 	 * Set url title
-	 * 
+	 *
 	 * @param string $url_title A title if you want to show a text instead of the actual url.
 	 *
 	 * @return void
@@ -277,7 +277,7 @@ class Pushover_API {
 
 	/**
 	 * Get url title
-	 * 
+	 *
 	 * @return string
 	 */
     public function getUrlTitle () {
@@ -286,7 +286,7 @@ class Pushover_API {
 
 	/**
 	 * Set debug mode
-	 * 
+	 *
 	 * @param bool $debug Enable this to receive detailed input and output info.
 	 *
 	 * @return void
@@ -297,7 +297,7 @@ class Pushover_API {
 
 	/**
 	 * Get debug mode
-	 * 
+	 *
 	 * @return boolean
 	 */
     public function isDebug () {
@@ -306,7 +306,7 @@ class Pushover_API {
 
 	/**
 	 * Send message to Pushover API
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function send() {
@@ -320,7 +320,7 @@ class Pushover_API {
 			curl_setopt($curl_handle, CURLOPT_HEADER, false);
 			/*
 			if possible, set CURLOPT_SSL_VERIFYPEER to true..
-			- http://www.tehuber.com/phps/cabundlegen.phps 
+			- http://www.tehuber.com/phps/cabundlegen.phps
 			*/
 			curl_setopt($curl_handle, CURLOPT_SSL_VERIFYPEER, false);
 			curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, true);
@@ -338,7 +338,7 @@ class Pushover_API {
 					'url' => $this->getUrl(),
 					'url_title' => $this->getUrlTitle()
 					)
-			);			
+			);
 
 			$response = curl_exec($curl_handle);
 			$xml = simplexml_load_string($response);
@@ -349,6 +349,7 @@ class Pushover_API {
 				return ($xml->status == 1) ? true : false;
 			}
 		}
+        return false;
 	}
+
 }
-?>

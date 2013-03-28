@@ -24,12 +24,13 @@ class DeployConfig {
 	 * @return void
 	 */
 	private function _phpmd() {
+        $xml = simplexml_load_string('');
 		$this->_phpmd();
-		$this->_newNode();
-		$this->_checkLine();
-		$this->_checkArray();
-		$this->_loadDbFromFile();
-		$this->_checkDatabases();
+		$this->_newNode('');
+		$this->_checkLine('',$xml);
+		$this->_checkArray('',$xml);
+		$this->_loadDbFromFile('');
+		$this->_checkDatabases($xml);
 	}
 
 	/**
@@ -51,8 +52,8 @@ class DeployConfig {
 	 * Adds single line value to config if value is set
 	 * Last node in xPath is the name of the configuration value
 	 *
-	 * @param String   $xpath xpath to value in xml
-	 * @param Resource $oXml  Simple xml object
+	 * @param String            $xpath xpath to value in xml
+	 * @param SimpleXMLElement  $oXml  Simple xml object
 	 *
 	 * @return Mixed Value of element, could be preset by higher config.
 	 */
@@ -95,8 +96,8 @@ class DeployConfig {
 	 * Last node in xPath is repeating element.
 	 * node before that is the name of the configuration value
 	 *
-	 * @param String   $xpath xpath to value in xml
-	 * @param Resource $oXml  Simple xml object
+	 * @param String            $xpath xpath to value in xml
+	 * @param SimpleXMLElement  $oXml  Simple xml object
 	 *
 	 * @return Mixed Value of element, could be preset by higher config.
 	 */
@@ -129,9 +130,9 @@ class DeployConfig {
 	}
 
 	/**
-	 * Load databse info from local.xml for magento
+	 * Load database info from local.xml for Magento
 	 *
-	 * @param String $file_path Ablsolute path to file
+	 * @param String $file_path Absolute path to file
 	 *
 	 * @return void
 	 * @throws DeployerException When $file_path is not readable
@@ -158,7 +159,7 @@ class DeployConfig {
 	 * Parse a configuration file for data
 	 *
 	 * @param DeployConfig &$config   Config object to fill
-	 * @param String       $file_path Ablsolute path to file
+	 * @param String       $file_path Absolute path to file
 	 *
 	 * @return void
 	 * @throws DeployerException When $file_path is not readable
@@ -172,14 +173,14 @@ class DeployConfig {
 
 		// check if configuration file is for current version
 		if (strval($oXml['version']) != self::VERSION) {
-			throw new DeployerException('Cofniguration version incorrect for: '.$file_path, DeployerException::CONFIG_FAIL);
+			throw new DeployerException('Configuration version incorrect for: '.$file_path, DeployerException::CONFIG_FAIL);
 		}
 
 		// Prevent double loading of profiles, so save loaded profiles
 		self::_addloadedConfigFile($config, $file_path);
 
 		// check if we have a base profile.
-		// everything below will be over writen
+		// everything below will be over written
 		$profile = strval($oXml->include_profile);
 
 		if (!empty($profile)) {
@@ -208,7 +209,7 @@ class DeployConfig {
 		$config->archive->svn->_checkLine('//archive/svn/username', $oXml);
 		$config->archive->svn->_checkLine('//archive/svn/password', $oXml);
 
-		$config->archive->setArchiveType($config->archive); // overide type based on archive configuration, if git or svn options are given.
+		$config->archive->setArchiveType($config->archive); // override type based on archive configuration, if git or svn options are given.
 
 		// notifications
 		$config->_newNode('notifications');
@@ -232,7 +233,8 @@ class DeployConfig {
 		$config->_newNode('preserve_data');
 		$config->preserve_data->_checkArray('//preserve_data/folders/folder', $oXml);
 		$config->preserve_data->_checkArray('//preserve_data/files/file', $oXml);
-		$config->preserve_data->_checkArray('//preserve_data/regexes/regex', $oXml);
+        $config->preserve_data->_checkArray('//preserve_data/symlinks/symlink', $oXml);
+        $config->preserve_data->_checkArray('//preserve_data/regexes/regex', $oXml);
 		$config->preserve_data->_checkLine('//preserve_data/google_files', $oXml);
 
 		// clear_data
@@ -240,11 +242,11 @@ class DeployConfig {
 		$config->clear_data->_checkArray('//clear_data/folders/folder', $oXml);
 		$config->clear_data->_checkArray('//clear_data/files/file', $oXml);
 
-		// permisions
-		$config->_newNode('permisions');
-		$config->permisions->_checkLine('//permisions/user', $oXml);
-		$config->permisions->_checkLine('//permisions/group', $oXml);
-		
+		// permissions
+		$config->_newNode('permissions');
+		$config->permissions->_checkLine('//permissions/user', $oXml);
+		$config->permissions->_checkLine('//permissions/group', $oXml);
+
 		// hooks
 		$config->_newNode('hooks');
 		$config->hooks->_checkArray('//hooks/files/file', $oXml);
@@ -260,7 +262,7 @@ class DeployConfig {
 	}
 
 	/**
-	 * Set Archive type if svn or git options are givven
+	 * Set Archive type if svn or git options are given
 	 *
 	 * @param DeployConfig &$archive Archive Config object to fill
 	 *
@@ -323,7 +325,7 @@ class DeployConfig {
 	/**
 	 * Loads one or multiple connections from the config file.
 	 *
-	 * @param Resource $oXml Simple xml object.
+	 * @param SimpleXMLElement $oXml Simple xml object.
 	 *
 	 * @return void
 	 */
@@ -349,7 +351,7 @@ class DeployConfig {
 	 * Prevent double loading of profiles, so save loaded profiles
 	 *
 	 * @param DeployConfig &$config   Config object to fill
-	 * @param String       $file_path Ablsolute path to file
+	 * @param String       $file_path Absolute path to file
 	 *
 	 * @return void
 	 */
@@ -365,5 +367,3 @@ class DeployConfig {
 		}
 	}
 }
-
-?>

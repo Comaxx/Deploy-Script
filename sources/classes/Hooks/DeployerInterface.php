@@ -19,24 +19,22 @@
  * @copyright 2012  Nedstars <info@nedstars.nl>
  */
 interface Hooks_DeployerInterface {
-    
+
      /**
      * Pre hook function
-     * 
+     *
      * @param Deployer &$deployer deployer object
      *
      * @return void
      */
     public function preDeployer(Deployer &$deployer);
-    
+
     /**
      * Post hook function
-     * 
+     *
      * @param Deployer &$deployer deployer object
      *
      * @return void
      */
     public function postDeployer(Deployer &$deployer);
 }
-
-?>

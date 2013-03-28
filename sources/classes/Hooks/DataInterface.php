@@ -81,7 +81,7 @@ interface Hooks_DataInterface {
      *
      * @return void
      */
-    public function preSetFolderPermisions(Deployer &$deployer);
+    public function preSetFolderPermissions(Deployer &$deployer);
 
     /**
      * Post hook function
@@ -90,10 +90,8 @@ interface Hooks_DataInterface {
      *
      * @return void
      */
-    public function postSetFolderPermisions(Deployer &$deployer);
+    public function postSetFolderPermissions(Deployer &$deployer);
 
 
 
 }
-
-?>
