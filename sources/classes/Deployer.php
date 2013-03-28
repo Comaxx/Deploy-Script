@@ -864,6 +864,16 @@ class Deployer extends DeployerObserver {
 	}
 
 	/**
+	 * Helper function to get the absoulte path for Archive source folder
+	 *
+	 * @see _getSourceFolder()
+	 * @return String Abosulte path
+	 */
+	public function getSourceFolder() {
+		return $this->_getSourceFolder();
+	}
+
+	/**
 	 * Helper function to check if all required binaries are present.
 	 *
 	 * @return void
