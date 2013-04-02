@@ -39,7 +39,7 @@ class NedStars_Svn {
 		}
 		$command .= ' '.escapeshellarg($repository);
 
-		// add destionation path
+		// add destination path
 		$result_path= NedStars_FileSystem::getNiceDir($destination_path);
 		$command .= ' '.escapeshellarg($destination_path);
 
@@ -90,4 +90,3 @@ class NedStars_Svn {
 		return true;
 	}
 }
-?>

@@ -1,6 +1,6 @@
 <?php
 /**
- * Loging class, write loging to file and or display depening level
+ * Logging class, write logging to file and or display depening level
  *
  * @project   NedStars PHPlib
  * @category  Nedstars_Tools
@@ -10,7 +10,7 @@
  */
 
 /**
- * Loging class, write loging to file and or display depening level
+ * Logging class, write logging to file and or display depending level
  *
  * @project   NedStars PHPlib
  * @category  Nedstars_Tools
@@ -122,12 +122,12 @@ class NedStars_Log {
 
 	/**
 	 * Write log message to file
-	 * Show log message depanding on log level
+	 * Show log message depending on log level
 	 *
 	 * @param String $line log message
 	 * @param String $type type of message
 	 *
-	 * @return void
+	 * @return String
 	 */
 	private static function _writeMessage($line, $type) {
 		// check for line ending
@@ -218,7 +218,7 @@ class NedStars_Log {
 	 *
 	 * @param String $type log type
 	 *
-	 * @return Bolean true if log type should be logged based on log level
+	 * @return Boolean true if log type should be logged based on log level
 	 */
 	private static function _shouldBeLogged($type) {
 		$log_levels = array();
@@ -258,11 +258,11 @@ class NedStars_Log {
 			$message = 'START of log on: '. date('r');
 		}
 
-		$string_lenght = strlen($message)+4;
+		$string_length = strlen($message)+4;
 
-		self::message(str_repeat('*', $string_lenght));
+		self::message(str_repeat('*', $string_length));
 		self::message('* '. $message . ' *');
-		self::message(str_repeat('*', $string_lenght));
+		self::message(str_repeat('*', $string_length));
 	}
 
 	/**
@@ -277,11 +277,11 @@ class NedStars_Log {
 			$message = 'END of log on: '. date('r');
 		}
 
-		$string_lengt = strlen($message)+4;
+		$string_length = strlen($message)+4;
 
-		self::message(str_repeat('*', $string_lengt));
+		self::message(str_repeat('*', $string_length));
 		self::message('* '. $message . ' *');
-		self::message(str_repeat('*', $string_lengt));
+		self::message(str_repeat('*', $string_length));
 	}
 
 	/**
@@ -302,5 +302,3 @@ class NedStars_Log {
 	}
 
 }
-
-?>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<config version="1.3">
+<config version="1.4">
 	<include_profile></include_profile>
 	<is_debug_modus>n</is_debug_modus> <!-- pre set -->
 
@@ -49,16 +49,18 @@
 		<files> <!-- pre set -->
 			<file>app/etc/local.xml</file> <!-- config file -->
 		</files>
+        <symlink> <!-- pre set -->
+        </symlink>
 		<google_files>y</google_files><!-- pre set -->
-	</preserve_data>
+    </preserve_data>
 	<clear_data>
 		<folders> <!-- pre set -->
 		</folders>
 		<files> <!-- pre set -->
 		</files>
 	</clear_data>
-	<permisions>
+	<permissions>
 		<user>apache</user> <!-- pre set -->
 		<group>apache</group> <!-- pre set -->
-	</permisions>
+	</permissions>
 </config>

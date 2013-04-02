@@ -22,10 +22,10 @@ class NedStars_Exception extends Exception {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param String    $message  Exception msg
 	 * @param Int       $code     Exception code
-	 * @param Exception $previous previouse exception
+	 * @param Exception $previous previous exception
 	 *
 	 * @return void
 	 */
@@ -35,6 +35,6 @@ class NedStars_Exception extends Exception {
 		// make sure everything is assigned properly
 		parent::__construct($message, $code, $previous);
 	}
-	
+
 
 }

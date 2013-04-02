@@ -1,6 +1,6 @@
 <?php
 /**
- * Deployer class, main deploy boject.
+ * Deployer class, main deploy object.
  *
  * @project   NedStars Deployer
  * @category  Convenience_Class
@@ -10,7 +10,7 @@
  */
 
 /**
- * Deployer class, main deploy boject.
+ * Deployer class, main deploy object.
  *
  * @project   NedStars Deployer
  * @category  Convenience_Class
@@ -18,12 +18,12 @@
  * @author    Alain Lecluse, Nedstars <alain@nedstars.nl>
  * @copyright 2012  Nedstars <info@nedstars.nl>
  */
-class Deployer {
+class Deployer extends DeployerObserver {
 
 	/**
 	 * Script version
 	 */
-	const VERSION = '1.3';
+	const VERSION = '1.4';
 	/**
 	 * Configuration object
 	 *
@@ -70,6 +70,11 @@ class Deployer {
 				'long'	=> 'version',
 				'type'	=> '',
 				),
+			'initial' => array(
+				'short' => 'i',
+				'long'	=> 'initial',
+				'type'	=> '::',
+				),
 		);
 
 	/**
@@ -99,6 +104,9 @@ class Deployer {
 	function __construct($options) {
 		$this->_time_start = microtime(true);
 
+		// trigger pre hook
+		$this->notify('Deployer_preDeployer');
+
 		// 2) set lock to prevent multiple instances
 		$this->_setLock();
 
@@ -108,6 +116,9 @@ class Deployer {
 
 		// 4) Init log level and set start msg
 		$this->_startLog($options);
+
+		// load hook files if found in config.
+		$this->_loadHooks();
 
 		// 5) Sanity_info: check if all configuration options are filled in
 		$this->_checkConfigurationValues();
@@ -183,12 +194,12 @@ class Deployer {
 		try {
 			$this->_lock = stream_socket_server("tcp://0.0.0.0:12345");
 		} catch (Exception $e) {
-			throw new DeployerException('Could not get lock! Is the proces allready running on this server?', DeployerException::NO_LOCK);
+			throw new DeployerException('Could not get lock! Is the process already running on this server?', DeployerException::NO_LOCK);
 		}
 	}
 
 	/**
-	 * Relase the locking mechanism if set
+	 * Release the locking mechanism if set
 	 *
 	 * @return void
 	 */
@@ -316,7 +327,7 @@ class Deployer {
 	 * @return void
 	 */
 	private function _checkConfigurationValues() {
-		// check if dir's exist. if not create them
+		// check if dirs exist. if not create them
 		NedStars_FileSystem::createDirIfNeeded($this->_config->paths->web_live_path);
 		NedStars_FileSystem::createDirIfNeeded($this->_config->paths->temp_new_path);
 		NedStars_FileSystem::createDirIfNeeded($this->_config->paths->temp_old_path);
@@ -327,11 +338,11 @@ class Deployer {
 		// check if mysql credentials are ok.
 		// setup a db connection to test credentials
 		// but only if backup should be made
-		if ($this->_config->backup->make_database_backup) {
+		if ($this->_config->backup->make_database_backup && !$this->_config->is_initial_modus) {
 			$this->_verifyMysqlCredentials();
 		}
 
-		// check if user has enought rights to deploy
+		// check if user has enough rights to deploy
 		$this->_verifyUserRights();
 
 		// Check if archive credentials are ok.
@@ -342,7 +353,7 @@ class Deployer {
 	 * Load specified config file
 	 * Default config file is "deploy.conf.php"
 	 *
-	 * @param array $options set of posible overrides: branch, tag, config, debug
+	 * @param array $options set of possible overrides: branch, tag, config, debug
 	 *
 	 * @return void
 	 */
@@ -375,6 +386,13 @@ class Deployer {
 			$config->is_debug_modus = $options['debug'];
 		}
 
+		// initial
+		if (isset($options['initial'])) {
+			$config->is_initial_modus = $options['initial'];
+		} else {
+			$config->is_initial_modus = false;
+		}
+
 		$this->_config = $config;
 	}
 
@@ -384,6 +402,15 @@ class Deployer {
 	 * @return void
 	 */
 	public function preserveData() {
+		// skip preservation if inital modus
+		if ($this->_config->is_initial_modus) {
+			NedStars_Log::message('Skipped preserving, initial_modus.');
+			return;
+		}
+
+		// trigger pre hook
+		$this->notify('Data_prePreserveData');
+
 		NedStars_Log::message('Start preserving data.');
 
 		// copy media files from the old live to the new environment
@@ -391,7 +418,7 @@ class Deployer {
 			$current_path = NedStars_FileSystem::getNiceDir($this->_config->paths->web_live_path.'/'.$dir_path);
 			$new_path = NedStars_FileSystem::getNiceDir($this->_getSourceFolder().$dir_path);
 
-			if (is_dir($current_path)) {
+			if (is_dir($current_path) && !NedStars_FileSystem::isSymlink($current_path)) {
 				if (!is_dir($new_path)) {
 					// try to make dir.
 					if (!mkdir($new_path)) {
@@ -406,6 +433,9 @@ class Deployer {
 					$current_path,
 					NedStars_FileSystem::popDir($new_path)
 				);
+
+				NedStars_Log::debug('Preserved data folder: '.escapeshellarg($current_path));
+
 			} else {
 				NedStars_Log::warning('Folder not found: '.$current_path);
 			}
@@ -413,18 +443,32 @@ class Deployer {
 
 		// backup / preserve files
 		foreach ($this->_config->preserve_data->files as $file_path) {
-			if (is_file($this->_config->paths->web_live_path.'/'.$file_path)) {
+            if (is_file($this->_config->paths->web_live_path.'/'.$file_path)) {
 				NedStars_FileSystem::copyFile(
 					$this->_config->paths->web_live_path.'/'.$file_path,
 					$this->_getSourceFolder().$file_path
 				);
+				NedStars_Log::debug('Preserved data file: '.escapeshellarg($this->_config->paths->web_live_path.'/'.$file_path));
 			} else {
 				NedStars_Log::warning('File not found: '.$this->_config->paths->web_live_path.'/'.$file_path);
 			}
 		}
 
+        // preserve symlinks
+        foreach ($this->_config->preserve_data->symlinks as $file_path) {
+            if (NedStars_FileSystem::isSymlink($this->_config->paths->web_live_path.'/'.$file_path)) {
+                NedStars_FileSystem::copySymlink(
+                    $this->_config->paths->web_live_path.'/'.$file_path,
+                    $this->_getSourceFolder().$file_path
+                );
+                NedStars_Log::debug('Preserved data symlink: '.escapeshellarg($this->_config->paths->web_live_path.'/'.$file_path));
+            } else {
+                NedStars_Log::warning('Symlinks not found: '.$this->_config->paths->web_live_path.'/'.$file_path);
+            }
+        }
+
 		// preserve files by regex
-		foreach($this->_config->preserve_data->regexes as $regex) {
+		foreach ($this->_config->preserve_data->regexes as $regex) {
 			if (is_dir($this->_config->paths->web_live_path)) {
 				NedStars_FileSystem::copyFilesByRegEx(
 					$regex,
@@ -438,6 +482,7 @@ class Deployer {
 
 		//backup google*.htm file in live root.
 		if ($this->_config->preserve_data->google_files) {
+            NedStars_Log::debug('Preserve Google files');
 			if (is_dir($this->_config->paths->web_live_path)) {
 				// TODO check if _getSourceFolder() works because of automated "/"
 				NedStars_FileSystem::copyFilesByRegEx(
@@ -449,6 +494,9 @@ class Deployer {
 				NedStars_Log::warning('Google folder not found: '.$this->_config->paths->web_live_path);
 			}
 		}
+
+		// trigger post hook
+		$this->notify('Data_postPreserveData');
 	}
 
 	/**
@@ -457,6 +505,9 @@ class Deployer {
 	 * @return void
 	 */
 	public function clearData() {
+		// trigger pre hook
+		$this->notify('Data_preClearData');
+
 		NedStars_Log::message('Clearing out tmp data.');
 
 		// clear out dir in temp new folder.
@@ -478,6 +529,10 @@ class Deployer {
 				NedStars_Log::warning('File not found: '.$temp_file);
 			}
 		}
+
+
+		// trigger post hook
+		$this->notify('Data_postClearData');
 	}
 
 	/**
@@ -486,7 +541,18 @@ class Deployer {
 	 * @return void
 	 */
 	public function backupMysql() {
+
+		// skip MySQL backup if inital modus
+		if ($this->_config->is_initial_modus) {
+			NedStars_Log::message('Skipped MySQL backup, initial_modus.');
+			return;
+		}
+
 		if ($this->_config->backup->make_database_backup) {
+
+			// trigger pre hook
+			$this->notify('Backup_preBackupMysql');
+
 			foreach ($this->_config->databases as $config_database) {
 				foreach ($config_database->dbnames as $dbname) {
 					$file = escapeshellarg($this->_config->paths->web_live_path.'/'.$config_database->host.'-'.$dbname.'.sql');
@@ -505,6 +571,10 @@ class Deployer {
 					}
 				}
 			}
+
+
+			// trigger pre hook
+			$this->notify('Backup_postBackupMysql');
 		} else {
 			NedStars_Log::message('MySQL backup Skipped (Config value)');
 		}
@@ -516,10 +586,25 @@ class Deployer {
 	 * @return void
 	 */
 	public function backupLive() {
+
+
+		// skip MySQL backup if inital modus
+		if ($this->_config->is_initial_modus) {
+			NedStars_Log::message('Skipped file backup, initial_modus.');
+			return;
+		}
+
 		if ($this->_config->backup->make_file_backup) {
+			// trigger pre hook
+			$this->notify('Backup_preBackupLive');
+
 			$destination_file = $this->_config->backup->folder.'/backup_'.date('Ymd_Hi').'.tar.gz';
 			NedStars_Log::message('Start backup live to : '.escapeshellarg($destination_file));
 			NedStars_FileSystem::backupDir($this->_config->paths->web_live_path, $destination_file);
+
+
+			// trigger post hook
+			$this->notify('Backup_postBackupLive');
 		} else {
 			NedStars_Log::message('File backup Skipped (Config value)');
 		}
@@ -536,6 +621,10 @@ class Deployer {
 	 * @return void
 	 */
 	public function switchLive() {
+
+		// trigger pre hook
+		$this->notify('Data_preSwitchLive');
+
 		NedStars_Log::message('Switching live installation for new export.');
 		NedStars_FileSystem::relocateDir(
 			$this->_config->paths->web_live_path.'/',
@@ -548,6 +637,10 @@ class Deployer {
 			NedStars_FileSystem::deleteDir($this->_config->paths->temp_new_path.'/');
 		}
 		NedStars_FileSystem::deleteDir($this->_config->paths->temp_old_path.'/');
+
+
+		// trigger post hook
+		$this->notify('Data_postSwitchLive');
 	}
 
 	/**
@@ -557,6 +650,10 @@ class Deployer {
 	 */
 	public function sendNotifications() {
 		if (isset($this->_config->notifications) && is_object($this->_config->notifications)) {
+
+			// trigger pre hook
+			$this->notify('Notifications_preSendNotification');
+
 			$project = preg_replace('/(.*):(.*).git/', '$2', $this->_config->archive->git->repo);
 			$branch_name = $this->_config->archive->git->branch;
 
@@ -570,6 +667,9 @@ class Deployer {
 
 			Notification::notify($title, $message, $this->_config->notifications);
 			NedStars_Log::message('Notifications send.');
+
+			// trigger post hook
+			$this->notify('Notifications_PostSendNotification');
 		} else {
 			NedStars_Log::message('No Notifications send (no recipients found).');
 		}
@@ -581,8 +681,16 @@ class Deployer {
 	 * @return void
 	 */
 	public function getSource() {
+
+		// trigger pre hook
+		$this->notify('Source_preGetSource');
+
 		switch(strtolower($this->_config->archive->type)) {
 		case 'svn' :
+
+			// trigger pre hook
+			$this->notify('Source_preSvnGetSource');
+
 			NedStars_Log::message('Get archive from SVN.');
 			NedStars_Svn::getArchive(
 				$this->_config->archive->svn->repo,
@@ -591,8 +699,15 @@ class Deployer {
 				$this->_config->paths->temp_new_path
 			);
 
+			// trigger post hook
+			$this->notify('Source_postSvnGetSource');
+
 			break;
 		case 'git' :
+
+			// trigger pre hook
+			$this->notify('Source_preGitGetSource');
+
 			NedStars_Log::message('Get archive from GIT.');
 			NedStars_Git::getArchive(
 				$this->_config->archive->git->repo,
@@ -600,29 +715,46 @@ class Deployer {
 				$this->_config->paths->temp_new_path,
 				$this->_config->archive->git->source_folder
 			);
+
+			// trigger post hook
+			$this->notify('Source_postGitGetSource');
 			break;
 		}
+
+
+		// trigger post hook
+		$this->notify('Source_postGetSource');
 	}
 
 	/**
-	 * Set permisions to apache
+	 * Set permissions to apache
 	 *
 	 * @return void
 	 */
-	public function setFolderPermisions() {
-		NedStars_Log::debug('setPermisions: '.$this->_getSourceFolder().', '.$this->_config->permisions->user.', '.$this->_config->permisions->group);
-		NedStars_FileSystem::chownDir(
-			$this->_getSourceFolder(),
-			$this->_config->permisions->user, $this->_config->permisions->group
-		);
+	public function setFolderPermissions() {
+		// trigger pre hook
+		$this->notify('Data_preSetFolderPermissions');
 
+        if ( $this->_getCurrentUser() == $this->_config->permissions->user && $this->_getCurrentUserGroup() == $this->_config->permissions->group ) {
+            NedStars_Log::debug('setPermissions: the current user and group are the same as the user to set permissions to, skipping chown.');
+        } else {
+            NedStars_Log::debug('setPermissions: '.$this->_getSourceFolder().', '.$this->_config->permissions->user.', '.$this->_config->permissions->group);
+            NedStars_FileSystem::chownDir(
+                $this->_getSourceFolder(),
+                $this->_config->permissions->user, $this->_config->permissions->group
+            );
+        }
 		NedStars_Log::debug('Making live installation read-only for relocation: '.$this->_config->paths->web_live_path);
 		NedStars_FileSystem::chmodDir($this->_config->paths->web_live_path, '0744');
+
+		// trigger post hook
+		$this->notify('Data_postSetFolderPermissions');
 	}
 
 	/**
 	 * Check if the user executing this script has enough rights on the folders
 	 *
+	 * @return void
 	 * @throws DeployException
 	 */
 	private function _verifyUserRights() {
@@ -633,8 +765,8 @@ class Deployer {
 			$this->_config->backup->folder,
 		);
 
-		foreach($is_writable as $path) {
-			if(!is_writeable($path)) {
+		foreach ($is_writable as $path) {
+			if (!is_writeable($path)) {
 				throw new DeployerException($path.' is not writeable for this user', DeployerException::NO_USER_RIGHTS);
 			}
 		}
@@ -646,11 +778,18 @@ class Deployer {
 	 * @return void
 	 */
 	public function purgeOldBackups() {
+
+		// trigger pre hook
+		$this->notify('Backup_prePurgeOldBackups');
+
 		NedStars_Log::message('Purging backup files older than '.$this->_config->backup->retention_days.' days: '.$this->_config->backup->folder);
 		NedStars_FileSystem::deleteOldFiles(
 			$this->_config->backup->folder.'/',
 			$this->_config->backup->retention_days
 		);
+
+		// trigger post hook
+		$this->notify('Backup_postPurgeOldBackups');
 	}
 
 
@@ -660,12 +799,20 @@ class Deployer {
 	 * @return Boolean
 	 */
 	private function _checkFreeDiskSpace() {
+		// skip checkFreeDiskSpace if inital modus
+		if ($this->_config->is_initial_modus) {
+			NedStars_Log::message('Skipped Check for free disk pace, initial_modus.');
+			return true;
+		}
+
 		if (is_dir($this->_config->paths->web_live_path)) {
 			// curren web folder size (good indicator)
 			$folder_size = NedStars_FileSystem::getDirectorySize($this->_config->paths->web_live_path);
 
 			// live disk
+			NedStars_Log::debug('Checking free disk page for '.escapeshellarg($this->_config->paths->web_live_path));
 			$free_size_live = disk_free_space($this->_config->paths->web_live_path);
+			NedStars_Log::debug('Finished checking free disk page for '.escapeshellarg($this->_config->paths->web_live_path));
 
 			// times 4 beacuse if both on same disk then we need 3 times and a bit on margin.
 			// one for new git checkout with data
@@ -678,7 +825,9 @@ class Deployer {
 			// check backup dir if found
 			if (is_dir($this->_config->backup->folder)) {
 				// backup disk (could be on a other partition then the live)
+				NedStars_Log::debug('Checking free disk page for '.escapeshellarg($this->_config->backup->folder));
 				$free_size_backup = disk_free_space($this->_config->backup->folder);
+				NedStars_Log::debug('Finished checking free disk page for '.escapeshellarg($this->_config->backup->folder));
 
 				// also check if backup disk has enough free disk space for 1 backup
 				if ($folder_size > $free_size_backup) {
@@ -713,6 +862,16 @@ class Deployer {
 	}
 
 	/**
+	 * Helper function to get the absoulte path for Archive source folder
+	 *
+	 * @see _getSourceFolder()
+	 * @return String Abosulte path
+	 */
+	public function getSourceFolder() {
+		return $this->_getSourceFolder();
+	}
+
+	/**
 	 * Helper function to check if all required binaries are present.
 	 *
 	 * @return void
@@ -732,7 +891,7 @@ class Deployer {
 		}
 
 		// MYSQL dump
-		if ($this->_config->backup->make_database_backup and !empty($this->_config->databases)) {
+		if ($this->_config->backup->make_database_backup and !empty($this->_config->databases) && !$this->_config->is_initial_modus) {
 			$binaries[] = 'mysqldump';
 		}
 
@@ -742,5 +901,73 @@ class Deployer {
 			throw new DeployerException('Binaries '.implode(', ', $not_found_bin).' are not found.', DeployerException::BINARY_MISSING);
 		}
 	}
+
+	/**
+	 * Load hooks that are defined in the config.
+	 *
+	 * @return void
+	 * @throws NedStars_FileSystemException when file could not be found.
+	 */
+	private function _loadHooks() {
+        if (isset($this->_config->hooks->files)) {
+
+            foreach ( $this->_config->hooks->files as $file_path ) {
+
+				if (file_exists($file_path)) {
+					$file_info = pathinfo($file_path);
+					// include the class with the hook
+					// nameing convension: filename === classname
+					include_once $file_path;
+
+					// add hook by starting the class
+					$this->attachObserver(new $file_info['filename']);
+
+					NedStars_Log::message('Attached hook: '.$file_path);
+				} else {
+					throw new NedStars_FileSystemException('Hook file not found: '. escapeshellarg($file_path), NedStars_FileSystemException::FILE_NOT_FOUND);
+				}
+            }
+        }
+    }
+
+    /**
+     * Helper function to get the user currently executing the deploy script.
+     *
+     * @return string The user name of the user executing the script.
+     * @throws DeployerException
+     */
+    private function _getCurrentUser() {
+        $result = null;
+        if ( function_exists('posix_getuid') && function_exists('posix_getpwuid') ) {
+            $userInfo = posix_getpwuid(posix_getuid());
+            $result = $userInfo['name'];
+        } else {
+            $result = trim(shell_exec('id -n -u'));
+        }
+        if ( empty($result) ) {
+            throw new DeployerException('Could not determine current user using "posix_getuid" or "id" via shell.', DeployerException::GET_USER_INFO);
+        }
+        return $result;
+    }
+
+    /**
+     * Helper function to get the group of the user currently executing the deploy script.
+     *
+     * @return string The group name of the user executing the script.
+     * @throws DeployerException
+     */
+    private function _getCurrentUserGroup() {
+        $result = null;
+        if ( function_exists('posix_getgid') && function_exists('posix_getgrgid') ) {
+            $groupInfo = posix_getgrgid(posix_getgid());
+            $result = $groupInfo['name'];
+        } else {
+            $result = trim(shell_exec('id -n -g'));
+        }
+        if ( empty($result) ) {
+            throw new DeployerException('Could not determine current user using "posix_getuid" or "id" via shell.', DeployerException::GET_USER_INFO);
+        }
+        return $result;
+    }
+
 }
-?>

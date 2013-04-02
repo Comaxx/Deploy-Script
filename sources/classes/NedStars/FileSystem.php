@@ -21,12 +21,12 @@
 class NedStars_FileSystem {
 
 	/**
-	 * Copy file fronm location x to y for backup
+	 * Copy file from location x to y for backup
 	 *
-	 * @param String $old_file_path absoulte path to origin file
+	 * @param String $old_file_path absolute path to origin file
 	 * @param String $new_file_path absolute path to destination file
 	 *
-	 * @return void
+	 * @return Boolean
 	 */
 	static public function copyFile($old_file_path, $new_file_path) {
 		if (file_exists($old_file_path)) {
@@ -41,12 +41,12 @@ class NedStars_FileSystem {
 	}
 
 	/**
-	 * Copy dir fronm location x to y
+	 * Copy dir from location x to y
 	 *
-	 * @param String $old_path absoulte path to origin dir
-	 * @param String $new_path absoulte path to destination dir
+	 * @param String $old_path absolute path to origin dir
+	 * @param String $new_path absolute path to destination dir
 	 *
-	 * @return void
+	 * @return String
 	 */
 	static public function copyDir($old_path, $new_path) {
 		// make sure path exists with line ending
@@ -56,13 +56,30 @@ class NedStars_FileSystem {
 		return NedStars_Execution::run('cp -pruf '.escapeshellarg($old_path).' '.escapeshellarg($new_path), true);
 	}
 
+    /**
+     * Copy symlink from location x to y
+     *
+     * @param String $old_path absolute path to origin dir
+     * @param String $new_path absolute path to destination dir
+     *
+     * @return String
+     */
+    static public function copySymlink($old_path, $new_path) {
+        $old_path = rtrim($old_path, '/');
+        $new_path = rtrim($new_path, '/');
+        if ( !self::isSymlink($old_path) ) {
+            throw new NedStars_FileSystemException('copySymlink: Not found or not a symlink: '. escapeshellarg($old_path), NedStars_FileSystemException::FILE_NOT_FOUND);
+        }
+        return NedStars_Execution::run('cp --preserve=links -pruf '.escapeshellarg($old_path).' '.escapeshellarg($new_path), true);
+    }
+
 	/**
 	 * Find files by regext in folder x and move them with same file name to folder y
 	 * Function is not recursive
 	 *
-	 * @param String $regex    reg ex patern, e.g. '/^google(.*).htm/i'
-	 * @param String $old_path absoulte path to origin dir
-	 * @param String $new_path absoulte path to destination dir
+	 * @param String $regex    reg ex pattern, e.g. '/^google(.*).htm/i'
+	 * @param String $old_path absolute path to origin dir
+	 * @param String $new_path absolute path to destination dir
 	 *
 	 * @return Array list of change files
 	 */
@@ -116,7 +133,7 @@ class NedStars_FileSystem {
 	 *
 	 * @param Array $binary_names set of binary names, e.g. array('mysqldump', 'git')
 	 *
-	 * @return Boolean false if one of the binairyies could not be found.
+	 * @return Boolean false if one of the binaries could not be found.
 	 */
 	static public function hasBinaries($binary_names) {
 		// make sure input is an array
@@ -187,10 +204,10 @@ class NedStars_FileSystem {
 	/**
 	 * Backup a folder by making a Tar file of it.
 	 *
-	 * @param String $path           absoulte path of folder to archive
-	 * @param String $dest_file_path absoulte path to destination file, e.g. /var/backup/backup201210261760.tar
+	 * @param String $path           absolute path of folder to archive
+	 * @param String $dest_file_path absolute path to destination file, e.g. /var/backup/backup201210261760.tar
 	 *
-	 * @return void
+	 * @return String
 	 */
 	static public function backupDir($path, $dest_file_path) {
 		// make sure path exists with a line ending
@@ -207,11 +224,11 @@ class NedStars_FileSystem {
 	}
 
 	/**
-	 * Switch dir x into y if neeed backup into z
+	 * Switch dir x into y if needed backup into z
 	 *
-	 * @param String $folder_path   absoulte path of current data folder, this data will be swaped out for new data
-	 * @param String $new_data_path absoulte path of new data location
-	 * @param String $backup_path   if absoulte path provided the current data will be moved to here.
+	 * @param String $folder_path   absolute path of current data folder, this data will be swaped out for new data
+	 * @param String $new_data_path absolute path of new data location
+	 * @param String $backup_path   if absolute path provided the current data will be moved to here.
 	 *
 	 * @return Boolean if success
 	 */
@@ -252,7 +269,7 @@ class NedStars_FileSystem {
 	/**
 	 * Delete content of a given dir recursive
 	 *
-	 * @param String $path absoulte path of folder to delete
+	 * @param String $path absolute path of folder to delete
 	 *
 	 * @return Boolean
 	 */
@@ -264,13 +281,13 @@ class NedStars_FileSystem {
 	}
 
 	/**
-	 * Return unxi file permissions
+	 * Return unix file permissions
 	 *
-	 * @param String $file_path absoulte filen path to get permission from
+	 * @param String $file_path absolute file path to get permission from
 	 *
 	 * @return string
 	 */
-	public static  function getFilePermisions($file_path) {
+	public static  function getFilePermissions($file_path) {
 		// make sure dir is writable
 		if (!is_file($file_path)) {
 			throw new NedStars_FileSystemException('$file_path is not a valid file: '.escapeshellarg($file_path), NedStars_FileSystemException::FILE_NOT_FOUND);
@@ -281,7 +298,7 @@ class NedStars_FileSystem {
 	/**
 	 * Delete files older than N day's
 	 *
-	 * @param String  $path         absoulte path of folder from wich files should be cleared.
+	 * @param String  $path         absolute path of folder from which files should be cleared.
 	 * @param integer $days_to_keep number of day's that a file should be kept
 	 *
 	 * @return Type Description
@@ -407,7 +424,9 @@ class NedStars_FileSystem {
 	 * @throws NedStars_FileSystemException When directory could not be created.
 	 */
 	public static function createDirIfNeeded($path) {
-		if (!is_dir($path)) {
+		if (empty($path)) {
+			throw new NedStars_FileSystemException('Could not create dir, path can not be empty.', NedStars_FileSystemException::DIR_NOT_FOUND);
+		} elseif (!is_dir($path)) {
 			if (mkdir($path)) {
 				NedStars_Log::message('Directory created:'. escapeshellarg($path));
 			} else {
@@ -416,5 +435,18 @@ class NedStars_FileSystem {
 
 		}
 	}
+
+    /**
+     * Check if a path to a file or dir is a symlink
+     *
+     * @param String $path Absolute or releative path
+     *
+     * @return bool
+     */
+    public static function isSymlink($path) {
+        $path = rtrim($path, DIRECTORY_SEPARATOR);
+        return is_link($path);
+    }
+
 }
 ?>

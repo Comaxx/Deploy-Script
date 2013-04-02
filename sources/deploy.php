@@ -29,7 +29,7 @@ try {
 
 	$deployer = new Deployer($options);
 
-	// TODO: Maintanance page
+	// TODO: Maintenance page
 
 	// Get git source
 	$deployer->getSource();
@@ -47,7 +47,7 @@ try {
 	$deployer->clearData();
 
 	// Apply correct permissions
-	$deployer->setFolderPermisions();
+	$deployer->setFolderPermissions();
 
 	// Switch folders so that everything is live
 	$deployer->switchLive();

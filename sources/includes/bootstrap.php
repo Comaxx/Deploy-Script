@@ -17,6 +17,10 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 date_default_timezone_set('Europe/Amsterdam');
 
+// change working dit to project path, that's the parent folder for source folder.
+chdir(dirname($_SERVER['argv'][0]));
+chdir("../");
+
 /**
  * Autoload handler
  *
@@ -48,4 +52,3 @@ function errorHandler($errorNumber, $errorString, $errorFile, $errorLine) {
 // register handlers
 spl_autoload_register('autoloadHandler');
 set_error_handler('errorHandler');
-?>
