@@ -15,6 +15,7 @@ define('CLASSES', ROOT . 'classes' . '/');
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+date_default_timezone_set('Europe/Amsterdam');
 
 // change working dit to project path, that's the parent folder for source folder.
 chdir(dirname($_SERVER['argv'][0]));

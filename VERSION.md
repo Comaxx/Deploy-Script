@@ -1,5 +1,16 @@
-Deploy Script 
+Deploy Script
 ========
+
+Deploy Script 1.4
+--------
+- Added support for Hooks #10
+- Added extra debug info where missing
+- Added support for initial deployments #31
+- Added support for PHP 5.4
+- Added support for symlinks
+- Fixed execution path problems #27, it is now posible to run the script form remote path
+- Fixed speed issues with chmod when user is allready oke.
+
 
 Deploy Script 1.3
 --------
@@ -22,7 +33,7 @@ Deploy Script 1.3
 Deploy Script 1.2
 --------
 
-- Added sub folder for profiles 
+- Added sub folder for profiles
 - Added wordpress profile (Wouter daan)
 - Updated Magento profile
 - Changed inner workings of verbose to quiet #6

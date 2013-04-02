@@ -110,7 +110,7 @@ class NedStars_Log {
 	 *
 	 * @return Boolean
 	 */
-	private function _isLogLevel($log_level) {
+	private static function _isLogLevel($log_level) {
 		// check if provided debug level is ok
 		if (!in_array($log_level, array(self::LVL_EXCEPTION, self::LVL_WARNING, self::LVL_MESSAGE, self::LVL_DEBUG, null))) {
 			return false;

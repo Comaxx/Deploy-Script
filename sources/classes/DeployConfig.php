@@ -13,7 +13,7 @@ class DeployConfig {
 	/**
 	 * Configuration object version
 	 */
-	const VERSION = 1.3;
+	const VERSION = 1.4;
 
 	/**
 	 * Fix for phpmd, do not call this function.
