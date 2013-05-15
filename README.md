@@ -88,9 +88,7 @@ There are 5 hook groups
 - Source
 - Deployer
 
-the classname and file name should be the same if you want to implement a hook
-classname: Hooks_{{group}}Interface
-filename: Hooks_{{group}}Interface.php
+the classname and file name should be the same if you want to implement a hook and implement one of  the 5 hook interfaces.
 
 The XML looks like
 
