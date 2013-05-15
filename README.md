@@ -77,3 +77,26 @@ The XML looks like
 		</pushover_users>
 	</notifications>
 
+
+Hooks
+----
+There are 5 hook groups
+
+- Data
+- Backup
+- Notifications
+- Source
+- Deployer
+
+the classname and file name should be the same if you want to implement a hook
+classname: Hooks_{{group}}Interface
+filename: Hooks_{{group}}Interface.php
+
+The XML looks like
+
+	<hooks>
+		<files>
+			<file>Hooks_DataInterface.php</file>
+			<file>Hooks_SourceInterface.php</file>
+		</files>
+	</hooks>
