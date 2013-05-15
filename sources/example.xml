@@ -75,7 +75,8 @@
 
 	<hooks>
 		<files>
-			<file>hooks.php</file>
+			<file>Hooks_DataInterface.php</file>
+			<file>Hooks_SourceInterface.php</file>
 		</files>
 	</hooks>
 </config>
