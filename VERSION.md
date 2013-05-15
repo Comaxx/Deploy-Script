@@ -1,6 +1,11 @@
 Deploy Script
 ========
 
+Deploy Script 1.4.1
+--------
+- Added support config info in hooks
+- Added basic documentation on hooks
+
 Deploy Script 1.4
 --------
 - Added support for Hooks #10
