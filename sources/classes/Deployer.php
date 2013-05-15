@@ -970,4 +970,14 @@ class Deployer extends DeployerObserver {
         return $result;
     }
 
+
+	/**
+	 * Get a copy of the config object
+	 *
+	 * @return DeployConfig copy of _config
+	 */
+    public function getConfig() {
+		return clone $this->_config;
+	} 
+
 }
