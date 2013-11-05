@@ -28,15 +28,15 @@ Available subcommands are:
 
 Installation
 ----
-- Grab project from GitHub
-- Copy the example file for your project from sources/.. to the root of the project
+- Grab project from GIT
+- Copy the example file for your project from sources/.. to the root of the project.
 - Fill in the configuration where still blank
 
 
 ###Installation Concrete 5
 Log into the server and grab a copy of the script.
 
-	$ clone git://github.com/nedstars/Deploy-Script.git
+	$ clone git://github.com/Comaxx/Deploy-Script.git
 
 Copy the example file for each enviroment that your need, for example "staging" or "live", from sources/.. to the root of the project.
 When executing ./deploy the -c or --config argument is used to specify which config should be loaded.
@@ -61,12 +61,13 @@ Execute example
 
 Notifications
 ----
-There are two types of notification services:
+There are three types of notification services:
 
 - E-mail
 - Pushover (https://pushover.net/)
+- HTTP
 
-The XML looks like:
+The XML looks like
 
 	<notifications>
 		<email_addresses>
@@ -75,6 +76,9 @@ The XML looks like:
 		<pushover_users>
 			<user>183SSd882exampleS82</user>
 		</pushover_users>
+		<http_addresses>
+			<url>http://api.example.com/</url>
+		</http_addresses>
 	</notifications>
 
 

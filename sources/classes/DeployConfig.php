@@ -13,7 +13,7 @@ class DeployConfig {
 	/**
 	 * Configuration object version
 	 */
-	const VERSION = 1.4;
+	const VERSION = '1.4.2';
 
 	/**
 	 * Fix for phpmd, do not call this function.
@@ -215,6 +215,7 @@ class DeployConfig {
 		$config->_newNode('notifications');
 		$config->notifications->_checkArray('//notifications/email_addresses/address', $oXml);
 		$config->notifications->_checkArray('//notifications/pushover_users/user', $oXml);
+		$config->notifications->_checkArray('//notifications/http_addresses/url', $oXml);
 
 		// paths
 		$config->_newNode('paths');

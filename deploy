@@ -1,4 +1,5 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/"
 ACTION="sources/deploy.php $@"
-$DIR$ACTION
+PHP="php "
+$PHP$DIR$ACTION

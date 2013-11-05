@@ -31,6 +31,8 @@ class  Notification {
 
 	const EMAIL = 'email_addresses';
 	const PUSHOVER = 'pushover_users';
+	const HTTP = 'http_addresses';
+
 
 	/**
 	 * Send notifications
@@ -38,22 +40,30 @@ class  Notification {
 	 * @param String $title      Display title
 	 * @param String $message    Message to display
 	 * @param Array  $recipients Array containing recipients per key
+	 * @param Array  $raw_data   Array containing the raw data of the message.
 	 *
 	 * @return void
 	 */
-	public static function notify($title, $message, $recipients) {
+	public static function notify($title, $message, $recipients, $raw_data) {
 
 		// send emails
-		if ($addresses = Notification::_prepapreRecipients($recipients, self::EMAIL)) {
-			foreach ($addresses as $address) {
-				self::notifyEmail($title, $message, $address);
+		if ($email_addresses = Notification::_prepapreRecipients($recipients, self::EMAIL)) {
+			foreach ($email_addresses as $email_address) {
+				self::notifyEmail($title, $message, $email_address);
 			}
 		}
 
 		// send Pushover notifications
-		if ($addresses = Notification::_prepapreRecipients($recipients, self::PUSHOVER)) {
-			foreach ($addresses as $address) {
-				self::notifyPushover($title, $message, $address);
+		if ($user_tokens = Notification::_prepapreRecipients($recipients, self::PUSHOVER)) {
+			foreach ($user_tokens as $user_token) {
+				self::notifyPushover($title, $message, $user_token);
+			}
+		}
+
+		// trigger http(s) notifications
+		if ($urls = Notification::_prepapreRecipients($recipients, self::HTTP)) {
+			foreach ($urls as $url) {
+				self::notifyHttp($title, $message, $url, $raw_data);
 			}
 		}
 	}
@@ -132,5 +142,43 @@ class  Notification {
 
 		// now lets send the email.
 		return mail($to_email, $subject, $message, $headers);
+	}
+
+	/**
+	 * Notify one http(s) address
+	 *
+	 * @param String $title    Display title
+	 * @param String $message  Message to display
+	 * @param String $url  	   Unique user identifier
+	 * @param Array  $raw_data Array containing the raw data of the message.
+	 *
+	 * @return Boolean succes
+	 */
+	protected static function notifyHttp($title, $message, $url, $raw_data) {
+		if (empty($url)) {
+			return false;
+		}
+
+		$data = array_merge(
+			$raw_data,
+			array(
+				'title' => $title,
+				'message' => $message,
+			)
+		);
+
+		// Initializing curl
+		$curl_handle = curl_init($url);
+
+		curl_setopt($curl_handle, CURLOPT_CUSTOMREQUEST, "POST");
+		curl_setopt($curl_handle, CURLOPT_POSTFIELDS, http_build_query($data));
+		curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, true);
+
+		$result = curl_exec($curl_handle);
+
+		// out put result to show 404 or 500 errors
+		echo $result;
+
+		return  $result;
 	}
 }
