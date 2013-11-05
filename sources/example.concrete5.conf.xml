@@ -31,6 +31,9 @@
 		<pushover_users>
 			<user></user>
 		</pushover_users>
+		<http_addresses>
+			<url></url><!-- http://wall.hotennoning.nl/api/deployment.php -->
+		</http_addresses>
 	</notifications>
 
 	<paths>

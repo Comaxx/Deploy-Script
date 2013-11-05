@@ -1,30 +1,30 @@
 Deploy Script
 ===================
 
-The deploy script is a tool to easily deploy updates for your web base software.
-It's goal is is to grab the new code from versioning system en safely deploy it to a (live) environment.
-functions include things like:
+The deploy script is a tool to easily deploy new releases of your webbased applications.
+It's goal is to grab the new source code from your versioning system (Git or Subversion) and safely deploy it to a (production) environment.
+Functionality included are things like:
 
-- Database backup.
-- File backup
-- Send notifications
-- hot swap to new code base.
+- Perform a database backup prior to deployment
+- Performa a file backup prior to deployment
+- Send notifications via e-mail or Pushover after deployment
+- Hot swap to new code base, so there's virtually no downtime
 
 
 Available subcommands are:
 ----
 
+  		--config <name>		Will use configuration file deploy.<name>.conf.php. default file: deploy.conf.php.
+  		--tag <tag #>		Git/SVN tag to be deployed.
+  		--branch <branch>	Git/SVN branch to be deployed.
+  		--debug				Debug mode: default = false.
+  		--quiet				Quiet mode, only output warnings and exceptions, only if debug is not given: default = false.
+  		--version			Shows version information
   		-c <name>			Alias for --config.
   		-t <tag #>			Alias for --tag.
   		-b <branch>			Alias for --branch.
   		-d					Alias for --debug.
   		-q					Alias for --quiet.
-  		--config <name>		Will set file deploy.<name>.conf.php. default file: deploy.conf.php.
-  		--tag <tag #>		Tag to be deployed.
-  		--branch <branch>	Branch to be deployed.
-  		--debug				Debug modes: default = false.
-  		--quiet				Quiet modes, only output warning and exception, only if debug is not given: default = false.
-  		--version			Shows version information of Oink.
 
 Installation
 ----
@@ -36,11 +36,11 @@ Installation
 ###Installation Concrete 5
 Log into the server and grab a copy of the script.
 
-	$ clone git://github.com/nedstars/Deploy-Script.git
+	$ clone git://github.com/Comaxx/Deploy-Script.git
 
 Copy the example file for each enviroment that your need, for example "staging" or "live", from sources/.. to the root of the project.
 When executing ./deploy the -c or --config argument is used to specify which config should be loaded.
-When none given de default is deploy.conf.xml
+When no explicit configuration is given the default one is used (deploy.conf.xml)
 
 	$ cp sources/example.concrete5.conf.xml <config_name>.conf.xml
 
@@ -63,8 +63,9 @@ Notifications
 ----
 There are three types of notification services:
 
-- email
-- Pushover https://pushover.net/
+- E-mail
+- Pushover (https://pushover.net/)
+- HTTP
 
 The XML looks like
 
@@ -75,6 +76,9 @@ The XML looks like
 		<pushover_users>
 			<user>183SSd882exampleS82</user>
 		</pushover_users>
+		<http_addresses>
+			<url>http://api.example.com/</url>
+		</http_addresses>
 	</notifications>
 
 
@@ -88,7 +92,9 @@ There are 5 hook groups
 - Source
 - Deployer
 
-the classname and file name should be the same if you want to implement a hook and implement one of  the 5 hook interfaces.
+the classname and file name should be the same if you want to implement a hook
+classname: Hooks_{{group}}Interface
+filename: Hooks_{{group}}Interface.php
 
 The XML looks like
 
