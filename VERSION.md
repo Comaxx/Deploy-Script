@@ -1,6 +1,10 @@
 Deploy Script
 ========
 
+Deploy Script 1.4.2
+--------
+- Added support for http notifications
+
 Deploy Script 1.4.1
 --------
 - Added support config info in hooks

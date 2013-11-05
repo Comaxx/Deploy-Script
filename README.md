@@ -36,7 +36,7 @@ Installation
 ###Installation Concrete 5
 Log into the server and grab a copy of the script.
 
-	$ clone git://github.com/nedstars/Deploy-Script.git
+	$ clone git://github.com/Comaxx/Deploy-Script.git
 
 Copy the example file for each enviroment that your need, for example "staging" or "live", from sources/.. to the root of the project.
 When executing ./deploy the -c or --config argument is used to specify which config should be loaded.
@@ -75,6 +75,9 @@ The XML looks like
 		<pushover_users>
 			<user>183SSd882exampleS82</user>
 		</pushover_users>
+		<http_addresses>
+			<url>http://api.example.com/</url>
+		</http_addresses>
 	</notifications>
 
 
