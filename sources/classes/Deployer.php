@@ -654,18 +654,23 @@ class Deployer extends DeployerObserver {
 			// trigger pre hook
 			$this->notify('Notifications_preSendNotification');
 
-			$project = preg_replace('/(.*):(.*).git/', '$2', $this->_config->archive->git->repo);
-			$branch_name = $this->_config->archive->git->branch;
+            $raw_data = array();
+            $raw_data['title'] = preg_replace('/(.*):(.*).git/', '$2', $this->_config->archive->git->repo);
+            $raw_data['branch'] = $this->_config->archive->git->branch;;
+            $raw_data['host'] = php_uname('n');
+            $raw_data['path'] = $this->_config->paths->web_live_path;
+            $raw_data['version'] = self::VERSION;
+            $raw_data['duration'] = round((microtime(true) - $this->_time_start), 4);
 
-			$title = 'Deploy: '.$project;
+			$title = 'Deploy: '.$raw_data['title'];
 			$message = '';
-			$message .= 'Deployment made to for: '.$branch_name."\n";
-			$message .= 'Host		: '.php_uname('n')."\n";
-			$message .= 'Path		: '.$this->_config->paths->web_live_path."\n";
-			$message .= 'Version	: '.self::VERSION."\n";
-			$message .= 'Duration	: '.round((microtime(true) - $this->_time_start), 4)." seconds\n";
+			$message .= 'Deployment made to for: '.$raw_data['branch']."\n";
+			$message .= 'Host		: '.$raw_data['host']."\n";
+			$message .= 'Path		: '.$raw_data['path']."\n";
+			$message .= 'Version	: '.$raw_data['version']."\n";
+			$message .= 'Duration	: '.$raw_data['duration']." seconds\n";
 
-			Notification::notify($title, $message, $this->_config->notifications);
+			Notification::notify($title, $message, $this->_config->notifications, $raw_data);
 			NedStars_Log::message('Notifications send.');
 
 			// trigger post hook
@@ -978,6 +983,6 @@ class Deployer extends DeployerObserver {
 	 */
     public function getConfig() {
 		return clone $this->_config;
-	} 
+	}
 
 }
