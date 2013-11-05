@@ -661,6 +661,7 @@ class Deployer extends DeployerObserver {
             $raw_data['path'] = $this->_config->paths->web_live_path;
             $raw_data['version'] = self::VERSION;
             $raw_data['duration'] = round((microtime(true) - $this->_time_start), 4);
+            $raw_data['time'] = date('c');
 
 			$title = 'Deploy: '.$raw_data['title'];
 			$message = '';
