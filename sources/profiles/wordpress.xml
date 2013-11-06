@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<config version="1.4">
+<config version="1.4.2">
 	<databases>
 		<database>
 			<database_config_file></database_config_file><!-- pre set -->
@@ -26,6 +26,9 @@
 		<!-- <pushover_users>
 			<user></user>
 		</pushover_users> -->
+		<http_addresses>
+			<url></url><!-- http://wall.hotennoning.nl/api/deployment.php -->
+		</http_addresses>
 	</notifications>
 
 	<paths>

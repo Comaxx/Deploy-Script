@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<config version="1.4">
-	<include_profile>sources/profiles/concrete5.xml</include_profile>
+<config version="1.4.2">
+	<include_profile>profiles/concrete5.xml</include_profile>
 
 	<databases>
 		<database>
