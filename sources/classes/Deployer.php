@@ -24,6 +24,12 @@ class Deployer extends DeployerObserver {
 	 * Script version
 	 */
 	const VERSION = '1.4.2';
+	
+	/**
+	 * Default config file extension string
+	 */
+	const CONFIG_FILE_EXT = '.conf.xml';
+	
 	/**
 	 * Configuration object
 	 *
@@ -360,9 +366,14 @@ class Deployer extends DeployerObserver {
 	private function _loadConfigFile($options) {
 
 		if (isset($options['config'])) {
-			$config_file = $options['config'].'.conf.xml';
+			$ext = '';
+			// Only add extention to file if not already present at the end of the config string
+			if (preg_match("~" . preg_quote(self::CONFIG_FILE_EXT) . "$~", $options['config']) === 0) {
+					$ext = self::CONFIG_FILE_EXT;
+			}
+			$config_file = $options['config'] . $ext;
 		} else {
-			$config_file = 'deploy.conf.xml';
+			$config_file = 'deploy' . self::CONFIG_FILE_EXT;
 		}
 
 		// Main Configuration object
