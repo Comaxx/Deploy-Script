@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<config version="1.4">
+<config version="1.4.2">
 	<include_profile></include_profile>
 	<is_debug_modus>n</is_debug_modus> <!-- pre set -->
 
