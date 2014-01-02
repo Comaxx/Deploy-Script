@@ -23,13 +23,13 @@ class Deployer extends DeployerObserver {
 	/**
 	 * Script version
 	 */
-	const VERSION = '1.4';
+
+	const VERSION = '1.4.2';
 
 	/**
-	  * Default config file extension string
-	  */
-	 const CONFIG_FILE_EXT = '.conf.xml';
- 
+	 * Default config file extension string
+	 */
+	const CONFIG_FILE_EXT = '.conf.xml';
 
 	/**
 	 * Configuration object
