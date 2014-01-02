@@ -159,20 +159,24 @@ class  Notification {
 			return false;
 		}
 
-		$data = array_merge(
-			$raw_data,
+		$data_string = json_encode(
 			array(
-				'title' => $title,
-				'message' => $message,
+				'channel' => "#deployments",
+				'username' => "DeployBot",
+				'text' => $title." \n".$message,
 			)
+			
 		);
 
 		// Initializing curl
-		$curl_handle = curl_init($url);
-
-		curl_setopt($curl_handle, CURLOPT_CUSTOMREQUEST, "POST");
-		curl_setopt($curl_handle, CURLOPT_POSTFIELDS, http_build_query($data));
-		curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, true);
+		$curl_handle = curl_init($url);                                                                     
+		curl_setopt($curl_handle, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
+		curl_setopt($curl_handle, CURLOPT_POSTFIELDS, $data_string);                                                                  
+		curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, true);                                                                      
+		curl_setopt($curl_handle, CURLOPT_HTTPHEADER, array(                                                                          
+			'Content-Type: application/json',                                                                                
+			'Content-Length: ' . strlen($data_string))                                                                       
+		);      
 
 		$result = curl_exec($curl_handle);
 
