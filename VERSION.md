@@ -1,6 +1,12 @@
 Deploy Script
 ========
 
+Deploy Script 1.4.3
+--------
+- Added support slack notifications
+- Added support for also load configle filenames 
+
+
 Deploy Script 1.4.2
 --------
 - Added support for http notifications

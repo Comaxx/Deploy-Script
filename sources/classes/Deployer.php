@@ -23,6 +23,7 @@ class Deployer extends DeployerObserver {
 	/**
 	 * Script version
 	 */
+
 	const VERSION = '1.4.2';
 
 	/**
