@@ -577,6 +577,7 @@ class Deployer extends DeployerObserver {
 					}
 					$command .= ' --host='.escapeshellarg($config_database->host);
 					$command .= " --databases ".escapeshellarg($dbname);
+                    $command .= ' --single-transaction';
 					$command .= " --result-file=".$file;
 
 					//force output or the function will not return the correct value.
@@ -784,6 +785,11 @@ class Deployer extends DeployerObserver {
 			$this->_config->paths->temp_old_path,
 			$this->_config->backup->folder,
 		);
+
+        $mail_log = ini_get('mail.log');
+        if (!empty($mail_log)) {
+            $is_writable[] = $mail_log;
+        }
 
 		foreach ($is_writable as $path) {
 			if (!is_writeable($path)) {
