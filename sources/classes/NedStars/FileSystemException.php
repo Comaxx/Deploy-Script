@@ -20,9 +20,9 @@
  */
 class NedStars_FileSystemException extends NedStars_Exception {
 
-	const COPY_FAILED 		= 1;
-	const FILE_NOT_FOUND 	= 2;
-	const DIR_NOT_FOUND		= 3;
-	const BIN_INVALID		= 4;
-
+	const COPY_FAILED 		 = 1;
+	const FILE_NOT_FOUND 	 = 2;
+	const DIR_NOT_FOUND		 = 3;
+	const BIN_INVALID		 = 4;
+    const ACTION_NOT_ALLOWED = 5;
 }

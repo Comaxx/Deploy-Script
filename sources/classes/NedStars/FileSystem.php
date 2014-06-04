@@ -70,6 +70,9 @@ class NedStars_FileSystem {
         if ( !self::isSymlink($old_path) ) {
             throw new NedStars_FileSystemException('copySymlink: Not found or not a symlink: '. escapeshellarg($old_path), NedStars_FileSystemException::FILE_NOT_FOUND);
         }
+
+		// Remove existing dir to be able to copy symlinks
+		self::deleteDir($new_path);
         return NedStars_Execution::run('cp --preserve=links -pruf '.escapeshellarg($old_path).' '.escapeshellarg($new_path), true);
     }
 
@@ -256,13 +259,16 @@ class NedStars_FileSystem {
 	/**
 	 * Delete given dir recursive
 	 *
-	 * @param String $path absoulte path of folder to delete
+	 * @param String $path absolute path of folder to delete
 	 *
 	 * @return Boolean
 	 */
 	static public function deleteDir($path) {
 		// make sure path exists with line ending
 		$path = self::_getValidatedDir($path);
+        if ($path == DIRECTORY_SEPARATOR) {
+            throw new NedStars_FileSystemException('Not allowed to remove '.DIRECTORY_SEPARATOR, NedStars_FileSystemException::ACTION_NOT_ALLOWED);
+        }
 
 		return NedStars_Execution::run('rm -rf '.escapeshellarg($path), true);
 	}
@@ -276,6 +282,9 @@ class NedStars_FileSystem {
 	static public function deleteDirContent($path) {
 		// make sure path exists with line ending
 		$path = self::_getValidatedDir($path);
+        if ($path == DIRECTORY_SEPARATOR) {
+            throw new NedStars_FileSystemException('Not allowed to remove '.DIRECTORY_SEPARATOR, NedStars_FileSystemException::ACTION_NOT_ALLOWED);
+        }
 
 		return NedStars_Execution::run('rm -rf '.escapeshellarg($path.DIRECTORY_SEPARATOR), true);
 	}
