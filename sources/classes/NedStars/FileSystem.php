@@ -70,6 +70,9 @@ class NedStars_FileSystem {
         if ( !self::isSymlink($old_path) ) {
             throw new NedStars_FileSystemException('copySymlink: Not found or not a symlink: '. escapeshellarg($old_path), NedStars_FileSystemException::FILE_NOT_FOUND);
         }
+
+		// Remove existing dir to be able to copy symlinks
+		self::deleteDir($new_path);
         return NedStars_Execution::run('cp --preserve=links -pruf '.escapeshellarg($old_path).' '.escapeshellarg($new_path), true);
     }
 
