@@ -3,6 +3,12 @@ Deploy Script
 
 Deploy Script 1.4.3
 --------
+- Bugfix for copy symlink
+- Added support for raw data in notification 
+
+
+Deploy Script 1.4.3
+--------
 - Added support slack notifications
 - Added support for also load configle filenames 
 
