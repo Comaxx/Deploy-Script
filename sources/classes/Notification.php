@@ -160,12 +160,14 @@ class  Notification {
 		}
 
 		$data_string = json_encode(
-			array(
-				'channel' => "#deployments",
-				'username' => "DeployBot",
-				'text' => $title." \n".$message,
+			array_merge(
+				array(
+					'channel' => "#deployments",
+					'username' => "DeployBot",
+					'text' => $title." \n".$message,
+				),
+				$raw_data
 			)
-			
 		);
 
 		// Initializing curl
