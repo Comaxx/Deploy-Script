@@ -34,6 +34,9 @@ try {
 	// Get git source
 	$deployer->getSource();
 
+	// Setup the maintenance page
+	$deployer->setMaintenance();
+
 	// Backup mysql data
 	$deployer->backupMysql();
 

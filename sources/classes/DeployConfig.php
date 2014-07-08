@@ -13,7 +13,7 @@ class DeployConfig {
 	/**
 	 * Configuration object version
 	 */
-	const VERSION = '1.4.2';
+	const VERSION = '1.4.5';
 
 	/**
 	 * Fix for phpmd, do not call this function.
@@ -247,6 +247,10 @@ class DeployConfig {
 		$config->_newNode('permissions');
 		$config->permissions->_checkLine('//permissions/user', $oXml);
 		$config->permissions->_checkLine('//permissions/group', $oXml);
+		
+		// maintenance page
+		$config->_newNode('maintenance');
+		$config->maintenance->_checkLine('//maintenance/file', $oXml);
 
 		// hooks
 		$config->_newNode('hooks');

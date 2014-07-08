@@ -23,12 +23,17 @@ class Deployer extends DeployerObserver {
 	/**
 	 * Script version
 	 */
-	const VERSION = '1.4.2';
+	const VERSION = '1.4.5';
 	
 	/**
 	 * Default config file extension string
 	 */
 	const CONFIG_FILE_EXT = '.conf.xml';
+	
+	/**
+	 * Default maintenance file name
+	 */
+	const CONFIG_MAINTENANCE = 'maintenance.html';
 	
 	/**
 	 * Configuration object
@@ -589,6 +594,50 @@ class Deployer extends DeployerObserver {
 		} else {
 			NedStars_Log::message('MySQL backup Skipped (Config value)');
 		}
+	}
+	
+	/**
+	 * Sets up the maintenance if possible, to preven queries etc during the backup phase
+	 *
+	 * @return void
+	 */
+	public function setMaintenance() {
+		$this->notify('Maintenance_preSet');
+		
+		$file = self::CONFIG_MAINTENANCE;
+		// 0. Check if maintenance page exists and we can setup
+		if (property_exists($this->_config, 'maintenance') && property_exists($this->_config->maintenance, 'file')) {
+			$file = $this->_config->maintenance->file;
+		}
+		
+		$live = $this->_config->paths->web_live_path;
+		$file = ltrim($file, DIRECTORY_SEPARATOR);
+		if (!file_exists($live . DIRECTORY_SEPARATOR . $file)) {
+			NedStars_Log::message('No maintenance page found, please configure this under maintenance > file if you have one.');
+			$this->notify('Maintenance_notConfigured');
+			return;
+		}
+		
+		if (
+			(file_exists($live . '/.htaccess') && !file_exists($live . '/original.htaccess')) &&
+			!rename($live . '/.htaccess', $live . '/original.htaccess')
+		) {
+			throw new DeployerException('Could not move the htaccess to enable the maintenance page.', DeployerException::NO_USER_RIGHTS);
+		}
+		
+		// 2. Make htaccess to redirect to configured maintenance page
+		$htaccess = '';
+		$htaccess .= "#### For maintenance\n";
+		$htaccess .= "RewriteEngine On\n";
+		$htaccess .= "RewriteCond %{REQUEST_URI} !" . preg_quote($file) . "\n";
+		$htaccess .= "RewriteRule . /$file [L]\n";
+		
+		NedStars_Log::message('Enabling maintenance page on current live.');
+		if (file_put_contents($live . '/.htaccess', $htaccess) === false) {
+			throw new DeployerException('Failed to enable maintenance page, while a page is configured.', DeployerException::NO_USER_RIGHTS);
+		}
+		
+		$this->notify('Maintenance_postSet');
 	}
 
 	/**
