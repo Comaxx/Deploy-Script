@@ -250,7 +250,8 @@ class DeployConfig {
 		
 		// maintenance page
 		$config->_newNode('maintenance');
-		$config->maintenance->_checkLine('//maintenance/file', $oXml);
+		$config->maintenance->_checkLine('//maintenance/template', $oXml);
+		$config->maintenance->_checkLine('//maintenance/deploy', $oXml);
 
 		// hooks
 		$config->_newNode('hooks');

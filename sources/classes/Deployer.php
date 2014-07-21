@@ -31,11 +31,6 @@ class Deployer extends DeployerObserver {
 	const CONFIG_FILE_EXT = '.conf.xml';
 	
 	/**
-	 * Default maintenance file name
-	 */
-	const CONFIG_MAINTENANCE = 'maintenance.html';
-	
-	/**
 	 * Configuration object
 	 *
 	 * @var DeployConfig Configuration object
@@ -604,38 +599,41 @@ class Deployer extends DeployerObserver {
 	public function setMaintenance() {
 		$this->notify('Maintenance_preSet');
 		
-		$file = self::CONFIG_MAINTENANCE;
+		$ds = DIRECTORY_SEPARATOR;
+		
 		// 0. Check if maintenance page exists and we can setup
-		if (property_exists($this->_config, 'maintenance') && property_exists($this->_config->maintenance, 'file')) {
-			$file = $this->_config->maintenance->file;
+		$live 		= $this->_config->paths->web_live_path;
+		$template 	= '';
+		$deploy 	= '';
+		if (
+			property_exists($this->_config, 'maintenance') &&
+			property_exists($this->_config->maintenance, 'template') &&
+			property_exists($this->_config->maintenance, 'deploy')
+		) {
+			$template 	= ltrim($this->_config->maintenance->template, $ds);
+			$deploy 	= ltrim($this->_config->maintenance->deploy, $ds);
 		}
 		
-		$live = $this->_config->paths->web_live_path;
-		$file = ltrim($file, DIRECTORY_SEPARATOR);
-		if (!file_exists($live . DIRECTORY_SEPARATOR . $file)) {
-			NedStars_Log::message('No maintenance page found, please configure this under maintenance > file if you have one.');
+		// Check if all required values are correct / existing
+		if (!$template || !$deploy || !file_exists($live . $ds . $template)) {
+			NedStars_Log::message('Maintenance page not configured, continuing without.');
 			$this->notify('Maintenance_notConfigured');
 			return;
 		}
 		
-		if (
-			(file_exists($live . '/.htaccess') && !file_exists($live . '/original.htaccess')) &&
-			!rename($live . '/.htaccess', $live . '/original.htaccess')
-		) {
-			throw new DeployerException('Could not move the htaccess to enable the maintenance page.', DeployerException::NO_USER_RIGHTS);
+		// Check if page is already active
+		if (file_exists($live . $ds . $deploy)) {
+			NedStars_Log::message('Maintenance page already exists, continuing without change.');
+			$this->notify('Maintenance_alreadySet');
+			return;
 		}
 		
-		// 2. Make htaccess to redirect to configured maintenance page
-		$htaccess = '';
-		$htaccess .= "#### For maintenance\n";
-		$htaccess .= "RewriteEngine On\n";
-		$htaccess .= "RewriteCond %{REQUEST_URI} !" . preg_quote($file) . "\n";
-		$htaccess .= "RewriteRule . /$file [L]\n";
-		
-		NedStars_Log::message('Enabling maintenance page on current live.');
-		if (file_put_contents($live . '/.htaccess', $htaccess) === false) {
-			throw new DeployerException('Failed to enable maintenance page, while a page is configured.', DeployerException::NO_USER_RIGHTS);
+		// Copy template to final location to activate maintenance
+		if (!copy($live.$ds.$template, $live.$ds.$deploy)) {
+			throw new DeployerException('Could not copy the maintenance page template to final location.', DeployerException::NO_USER_RIGHTS);
 		}
+		
+		NedStars_Log::message('Maintenance page enabled.');
 		
 		$this->notify('Maintenance_postSet');
 	}
