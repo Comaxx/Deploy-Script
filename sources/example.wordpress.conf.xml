@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<config version="1.4.2">
+<config version="1.4.4">
 	<include_profile>sources/profiles/wordpress.xml</include_profile>
 
 	<databases>
