@@ -75,7 +75,11 @@
 		<user>apache</user> <!-- pre set -->
 		<group>apache</group> <!-- pre set -->
 	</permissions>
-
+	<maintenance>
+		<template>_maintenance.html</template>
+		<deploy>maintenance.html</deploy>
+	</maintenance>
+	
 	<hooks>
 		<files>
 			<file>Hooks_DataInterface.php</file>

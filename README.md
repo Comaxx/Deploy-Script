@@ -81,7 +81,32 @@ The XML looks like
 		</http_addresses>
 	</notifications>
 
+Maintenance page
+----
+To speed up the process of a database backup it is advisable to stop all traffic to a website before that step. 
+For that purpose you may use the following steps to ensure a maintenance page is shown as a replacement for any and all requests to the live environment.
 
+1. You'll need the following in your .htaccess file or the equivelant in your server configuration
+
+	ErrorDocument 503 /maintenance.html
+	RewriteCond %{REQUEST_URI} !\.(css|gif|jpg|png)$
+	RewriteCond %{DOCUMENT_ROOT}/maintenance.html -f
+	RewriteCond %{SCRIPT_FILENAME} !maintenance.html
+	RewriteRule ^.*$ - [redirect=503,last]
+	
+2. Tell the script which file to use as the maintenance page in your deploy configuration
+
+	<maintenance>
+		<template>_maintenance.html</template>
+		<deploy>maintenance.html</deploy>
+	</maintenance>
+	
+The deploy script will copy the template to the location it should have during deployment (paths are relative from the root of your environment). Due 
+to the server configuration this will result in a redirect to the file as long as it exists. The file will also be present in the backup, which allows 
+you to place the code back, and then import the database dump in case of failure, while the website is in maintenance mode. 
+
+The maintenance page can be safely removed manually at any point if needed, since it is copied, rather than moved. An example page is included.
+	
 Hooks
 ----
 There are 5 hook groups
