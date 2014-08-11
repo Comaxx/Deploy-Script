@@ -93,14 +93,14 @@ For that purpose you may use the following steps to ensure a maintenance page is
 	RewriteCond %{DOCUMENT_ROOT}/maintenance.html -f
 	RewriteCond %{SCRIPT_FILENAME} !maintenance.html
 	RewriteRule ^.*$ - [redirect=503,last]
-	
+
 2. Tell the script which file to use as the maintenance page in your deploy configuration
 
 	<maintenance>
 		<template>_maintenance.html</template>
 		<deploy>maintenance.html</deploy>
 	</maintenance>
-	
+
 The deploy script will copy the template to the location it should have during deployment (paths are relative from the root of your environment). Due 
 to the server configuration this will result in a redirect to the file as long as it exists. The file will also be present in the backup, which allows 
 you to place the code back, and then import the database dump in case of failure, while the website is in maintenance mode. 
