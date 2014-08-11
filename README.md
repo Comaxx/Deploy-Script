@@ -86,7 +86,7 @@ Maintenance page
 To speed up the process of a database backup it is advisable to stop all traffic to a website before that step. 
 For that purpose you may use the following steps to ensure a maintenance page is shown as a replacement for any and all requests to the live environment.
 
-1. You'll need the following in your .htaccess file or the equivelant in your server configuration
+- You'll need the following in your .htaccess file or the equivelant in your server configuration
 
     ErrorDocument 503 /maintenance.html
     RewriteCond %{REQUEST_URI} !\.(css|gif|jpg|png)$
@@ -94,7 +94,7 @@ For that purpose you may use the following steps to ensure a maintenance page is
     RewriteCond %{SCRIPT_FILENAME} !maintenance.html
     RewriteRule ^.*$ - [redirect=503,last]
 
-2. Tell the script which file to use as the maintenance page in your deploy configuration
+- Tell the script which file to use as the maintenance page in your deploy configuration
 
     <maintenance>
         <template>_maintenance.html</template>
