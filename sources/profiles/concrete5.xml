@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<config version="1.4.2">
+<config version="1.4.5">
 	<include_profile></include_profile>
 	<is_debug_modus>n</is_debug_modus> <!-- pre set -->
 
@@ -51,8 +51,7 @@
 		</folders>
 		<files> <!-- pre set -->
 			<file>sitemap.xml</file>
-			<file>config/site.php</file>
-			<file>config/site_post.php</file>
+			<file>config/local.php</file>
 		</files>
 		<google_files>y</google_files><!-- pre set -->
 	</preserve_data>

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<config version="1.4.2">
+<config version="1.4.5">
 	<databases>
 		<database>
 			<database_config_file></database_config_file><!-- pre set -->

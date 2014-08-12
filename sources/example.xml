@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<config version="1.4.2">
+<config version="1.4.5">
 	<include_profile></include_profile>
 	<is_debug_modus>n</is_debug_modus> <!-- pre set -->
 
@@ -75,6 +75,10 @@
 		<user>apache</user> <!-- pre set -->
 		<group>apache</group> <!-- pre set -->
 	</permissions>
+	<maintenance>
+		<template>_maintenance.html</template>
+		<deploy>maintenance.html</deploy>
+	</maintenance>
 
 	<hooks>
 		<files>
