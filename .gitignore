@@ -1,0 +1,5 @@
+log.txt
+staging-config/
+*.new
+*.backup
+*.idee
