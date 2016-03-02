@@ -3,3 +3,5 @@ staging-config/
 *.new
 *.backup
 *.idee
+*.txt
+*.conf.xml

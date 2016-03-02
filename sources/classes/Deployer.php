@@ -24,7 +24,7 @@ class Deployer extends DeployerObserver {
 	 * Script version
 	 */
 
-	const VERSION = '1.4.4';
+	const VERSION = '1.4.6';
 
 	/**
 	 * Default config file extension string
@@ -37,7 +37,6 @@ class Deployer extends DeployerObserver {
 	 * @var DeployConfig Configuration object
 	 */
 	private $_config = null;
-
 
 	private $_time_start = null;
 
@@ -199,7 +198,7 @@ class Deployer extends DeployerObserver {
 		}
 
 		try {
-			$this->_lock = stream_socket_server("tcp://0.0.0.0:123456");
+			$this->_lock = stream_socket_server("tcp://0.0.0.0:12345");
 		} catch (Exception $e) {
 			throw new DeployerException('Could not get lock! Is the process already running on this server?', DeployerException::NO_LOCK);
 		}
@@ -370,6 +369,12 @@ class Deployer extends DeployerObserver {
 				// do not add extention.
 				$config_file = $options['config'];
 			}
+			$ext = '';
+			// Only add extention to file if not already present at the end of the config string
+			if (preg_match("~" . preg_quote(self::CONFIG_FILE_EXT) . "$~", $options['config']) === 0) {
+					$ext = self::CONFIG_FILE_EXT;
+			}
+			$config_file = $options['config'] . $ext;
 		} else {
 			$config_file = 'deploy' . self::CONFIG_FILE_EXT;
 		}
@@ -588,6 +593,53 @@ class Deployer extends DeployerObserver {
 		} else {
 			NedStars_Log::message('MySQL backup Skipped (Config value)');
 		}
+	}
+
+	/**
+	 * Sets up the maintenance if possible, to preven queries etc during the backup phase
+	 *
+	 * @return void
+	 */
+	public function setMaintenance() {
+		$this->notify('Maintenance_preSet');
+
+		$ds = DIRECTORY_SEPARATOR;
+
+		// 0. Check if maintenance page exists and we can setup
+		$live 		= $this->_config->paths->web_live_path;
+		$template 	= '';
+		$deploy 	= '';
+		if (
+			property_exists($this->_config, 'maintenance') &&
+			property_exists($this->_config->maintenance, 'template') &&
+			property_exists($this->_config->maintenance, 'deploy')
+		) {
+			$template 	= ltrim($this->_config->maintenance->template, $ds);
+			$deploy 	= ltrim($this->_config->maintenance->deploy, $ds);
+		}
+
+		// Check if all required values are correct / existing
+		if (!$template || !$deploy || !file_exists($live . $ds . $template)) {
+			NedStars_Log::message('Maintenance page not configured, continuing without.');
+			$this->notify('Maintenance_notConfigured');
+			return;
+		}
+
+		// Check if page is already active
+		if (file_exists($live . $ds . $deploy)) {
+			NedStars_Log::message('Maintenance page already exists, continuing without change.');
+			$this->notify('Maintenance_alreadySet');
+			return;
+		}
+
+		// Copy template to final location to activate maintenance
+		if (!copy($live.$ds.$template, $live.$ds.$deploy)) {
+			throw new DeployerException('Could not copy the maintenance page template to final location.', DeployerException::NO_USER_RIGHTS);
+		}
+
+		NedStars_Log::message('Maintenance page enabled.');
+
+		$this->notify('Maintenance_postSet');
 	}
 
 	/**

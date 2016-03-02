@@ -45,8 +45,7 @@
 			<file>.htaccess</file>
 			<file>robots.txt</file>
 			<file>sitemap.xml</file>
-			<file>config/site.php</file>
-			<file>config/site_post.php</file>
+			<file>config/local.php</file>
 		</files>
 		<folders>    
       <folder>files</folder>
