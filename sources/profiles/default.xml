@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<config version="1.4.2">
+
+	<!-- Datebase settings -->
+	<databases>
+		<!--
+		<database>
+			<read_from_config>n</read_from_config>
+			<host>localhost</host> 
+      <username></username> 
+      <password></password>
+      <dbname></dbname>
+		</database>
+		-->
+	</databases>
+
+	<!-- Code repository settings -->
+	<archive>
+		<type>git</type>
+		<git>
+			<source_folder>sources</source_folder>
+			<branch>develop</branch>
+		</git>
+	</archive>
+
+	<!-- Notifications of deployment -->
+	<notifications>
+		<http_addresses>
+			<url>http://api.comaxx.nl/deploy_hook</url>
+		</http_addresses>
+	</notifications>
+
+	<!-- Backup settings -->
+	<backup>
+    <retention_days>3</retention_days>
+		<make_database_backup>y</make_database_backup>
+    <make_file_backup>y</make_file_backup>
+  </backup>
+
+	<!-- Preserve data -->
+  <preserve_data>
+    <files> 
+			<file>.htaccess</file>
+			<file>robots.txt</file>
+			<file>sitemap.xml</file>
+    </files>
+  </preserve_data>
+
+	<!-- Clear data -->
+	<clear_data>
+    <folders>
+    </folders>
+    <files> 
+    </files>
+  </clear_data>
+	
+	<!-- User permissions -->
+  <permissions>
+    <user>www-data</user> 
+    <group>www-data</group> 
+  </permissions>
+</config>
