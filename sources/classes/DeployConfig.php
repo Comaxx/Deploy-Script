@@ -310,6 +310,7 @@ class DeployConfig {
 		$database->dbnames = array();
 
 		$dbnames = $element->xpath('dbnames/dbname');
+
 		if (count($dbnames) > 0) {
 			//multiple db's
 			foreach ($dbnames as $dbname) {
@@ -318,7 +319,9 @@ class DeployConfig {
 		} else {
 			//single db
 			$dbname = $element->xpath('dbname');
-			array_push($database->dbnames, strval($dbname[0]));
+			if (!empty($dbname) && is_array($dbname)) {
+				array_push($database->dbnames, strval($dbname[0]));
+			}
 		}
 		return $database;
 	}
