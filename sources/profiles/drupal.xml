@@ -1,71 +1,76 @@
 <?xml version="1.0"?>
 <config version="1.4.2">
-	<include_profile></include_profile>
-	<is_debug_modus>n</is_debug_modus> <!-- pre set -->
+	<!-- Debug settings -->
+	<is_debug_modus>n</is_debug_modus> 
 
+	<!-- Datebase settings -->
 	<databases>
+		<!--
 		<database>
-			<database_config_file></database_config_file><!-- pre set -->
+			<database_config_file></database_config_file>
 			<read_from_config>n</read_from_config>
-			<host>localhost</host> <!-- localhost -->
-			<username></username> <!-- root -->
+			<host>127.0.0.1</host> 
+			<username></username> 
 			<password></password>
 			<dbname></dbname>
 		</database>
+		-->
 	</databases>
 
+	<!-- Code repository settings -->
 	<archive>
 		<git>
-			<repo></repo> <!-- git@github.com:nedstars/Deploy-Script.git -->
-			<branch></branch>
-			<source_folder>web</source_folder> <!-- web -->
+			<source_folder>sources</source_folder>
+			<branch>develop</branch>
 		</git>
 	</archive>
 
+	<!-- Notifications of deployment -->
 	<notifications>
-		<email_addresses>
-			<address></address><!-- pre set -->
-		</email_addresses>
-		<!-- <pushover_users>
-			<user></user>
-		</pushover_users> -->
 		<http_addresses>
-			<url>http://wall.hotennoning.nl/api/deployment.php</url>
+			<url>http://api.comaxx.nl/deploy_hook</url>
 		</http_addresses>
 	</notifications>
 
-	<paths>
-		<web_live_path></web_live_path> <!-- /var/projects/www/staging  -->
-		<temp_new_path></temp_new_path> <!-- /var/projects/www/staging.new.tmp  -->
-		<temp_old_path></temp_old_path> <!-- /var/projects/www/staging.old.tmp  -->
-	</paths>
+	<!-- Backup settings -->
 	<backup>
-		<folder></folder> <!-- /var/projects/www/backup -->
-		<retention_days>30</retention_days> <!-- 30 -->
-		<make_database_backup>y</make_database_backup><!-- y or n-->
-		<make_file_backup>y</make_file_backup><!-- y or n-->
+		<retention_days>3</retention_days> 
+		<make_database_backup>y</make_database_backup>
+		<make_file_backup>y</make_file_backup>
 	</backup>
+
+	<!-- Preserve data -->
 	<preserve_data>
-		<folders> <!-- pre set -->
-			<folder>sites/all/files</folder>
-			<folder>sites/default/files</folder>
-			<folder>sites/all/private</folder>
-			<folder>sites/default/private</folder>
-		</folders>
-		<files> <!-- pre set -->
+		<files> 
+			<file>.htaccess</file>
+			<file>robots.txt</file>
+			<file>sitemap.xml</file>
 			<file>sites/all/settings.php</file>
 			<file>sites/default/settings.php</file>
 		</files>
-		<google_files>y</google_files><!-- pre set -->
+    <folders>
+      <folder>sites/all/files</folder>
+      <folder>sites/default/files</folder>
+      <folder>sites/all/private</folder>  
+      <folder>sites/default/private</folder>
+    </folders>
+    <symlink> 
+    </symlink>
+		<google_files>y</google_files>
 	</preserve_data>
+
+
+	<!-- Clear data -->
 	<clear_data>
-		<folders> <!-- pre set -->
+		<folders> 
 		</folders>
-		<files> <!-- pre set -->
+		<files> 
 		</files>
 	</clear_data>
-	<permissions>
-		<user>apache</user> <!-- pre set -->
-		<group>apache</group> <!-- pre set -->
-	</permissions>
+
+	<!-- User permissions -->
+  <permissions>
+    <user>www-data</user> 
+    <group>www-data</group> 
+  </permissions>
 </config>

@@ -1,10 +1,13 @@
 <?xml version="1.0"?>
 <config version="1.4.2">
+	<!-- Debug settings -->
+	<is_debug_modus>n</is_debug_modus> 
 
 	<!-- Datebase settings -->
 	<databases>
 		<!--
 		<database>
+			<database_config_file></database_config_file>
 			<read_from_config>n</read_from_config>
 			<host>localhost</host> 
       <username></username> 
@@ -44,6 +47,10 @@
 			<file>robots.txt</file>
 			<file>sitemap.xml</file>
     </files>
+   <folders>
+    </folders>
+    <symlink> 
+    </symlink>
   </preserve_data>
 
 	<!-- Clear data -->
