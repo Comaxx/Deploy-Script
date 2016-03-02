@@ -199,7 +199,7 @@ class Deployer extends DeployerObserver {
 		}
 
 		try {
-			$this->_lock = stream_socket_server("tcp://0.0.0.0:12345");
+			$this->_lock = stream_socket_server("tcp://0.0.0.0:123456");
 		} catch (Exception $e) {
 			throw new DeployerException('Could not get lock! Is the process already running on this server?', DeployerException::NO_LOCK);
 		}
@@ -265,21 +265,16 @@ class Deployer extends DeployerObserver {
 					$config_database->password = $password;
 				}
 
-				$connection = mysql_connect(
-					$config_database->host,
-					$config_database->username,
-					$config_database->password
-				);
 				// throw exception if database could not be selected
 				foreach ($config_database->dbnames as $dbname) {
-					if (!mysql_select_db($dbname)) {
+					$mysqli = @new mysqli($config_database->host, $config_database->username, $config_database->password, $dbname);
+					if ($mysqli->connect_error) {
 						throw new Exception('Database connection failed on ' . $config_database->username . '@' . $config_database->host . ':' . $dbname . '');
 					}
+					
+					// close connection after test
+					unset($mysqli);
 				}
-				// close connection after test
-				mysql_close($connection);
-				unset($connection);
-
 			}
 
 		} catch (Exception $exception) {
