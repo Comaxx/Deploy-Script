@@ -323,7 +323,9 @@ class DeployConfig {
 		} else {
 			//single db
 			$dbname = $element->xpath('dbname');
-			array_push($database->dbnames, strval($dbname[0]));
+			if ($dbname) {
+				array_push($database->dbnames, strval($dbname[0]));
+			}
 		}
 		return $database;
 	}

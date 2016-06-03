@@ -365,23 +365,12 @@ class Deployer extends DeployerObserver {
 	private function _loadConfigFile($options) {
 
 		if (isset($options['config'])) {
-<<<<<<< HEAD
-			// Only add extention to file if not already present at the end of the config string
-			if (preg_match("~" . preg_quote(self::CONFIG_FILE_EXT) . "$~", $options['config']) === 0) {
-				// ad extention
-				$config_file = $options['config'] . self::CONFIG_FILE_EXT;
-			} else {
-				// do not add extention.
-				$config_file = $options['config'];
-			}
-=======
 			$ext = '';
 			// Only add extention to file if not already present at the end of the config string
 			if (preg_match("~" . preg_quote(self::CONFIG_FILE_EXT) . "$~", $options['config']) === 0) {
 					$ext = self::CONFIG_FILE_EXT;
 			}
 			$config_file = $options['config'] . $ext;
->>>>>>> feature/maintenance-page
 		} else {
 			$config_file = 'deploy' . self::CONFIG_FILE_EXT;
 		}
