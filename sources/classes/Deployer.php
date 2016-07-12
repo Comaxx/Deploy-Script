@@ -263,19 +263,18 @@ class Deployer extends DeployerObserver {
 					$config_database->password = $password;
 				}
 
-				$connection = mysql_connect(
+				$connection = new mysqli(
 					$config_database->host,
 					$config_database->username,
-					$config_database->password
+					$config_database->password,
+					$config_database->dbnames[0]
 				);
 				// throw exception if database could not be selected
-				foreach ($config_database->dbnames as $dbname) {
-					if (!mysql_select_db($dbname)) {
-						throw new Exception('Database connection failed on ' . $config_database->username . '@' . $config_database->host . ':' . $dbname . '');
+					if (mysqli_connect_errno()) {
+						throw new Exception("Connect failed: ". mysqli_connect_error());
 					}
-				}
 				// close connection after test
-				mysql_close($connection);
+				mysqli_close($connection);
 				unset($connection);
 
 			}
@@ -540,6 +539,9 @@ class Deployer extends DeployerObserver {
 			}
 		}
 
+		//clear redis cache
+		$command = "redis-cli flushall && redis-cli flushdb";
+		NedStars_Execution::run($command, true);
 
 		// trigger post hook
 		$this->notify('Data_postClearData');
@@ -888,7 +890,8 @@ class Deployer extends DeployerObserver {
 			// one for backup (posibly on the same disk)
 			// one for db backup (size unknown)
 			if ($folder_size * 4 > $free_size_live) {
-				throw new DeployerException('Not enough free disk space on Live.', DeployerException::DISK_SPACE);
+				NedStars_Log::message('Much likely not enough free disk space on Live.');
+//				throw new DeployerException('Not enough free disk space on Live.', DeployerException::DISK_SPACE);
 			}
 
 			// check backup dir if found
