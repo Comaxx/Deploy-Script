@@ -5,3 +5,4 @@ staging-config/
 *.idee
 *.txt
 *.conf.xml
+.idea/
