@@ -19,8 +19,8 @@ class M2PostDeployHook implements Hooks_DeployerInterface
         $bashCMD[] = "./bin/magento setup:static-content:deploy nl_NL en_US";
         $bashCMD[] = "./bin/magento setup:upgrade";
         $bashCMD[] = "./bin/magento setup:di:compile";
+        $bashCMD[] = "./bin/magento maintenance:disable"; //always disable maintainance mode
         $bashCMD[] = "./bin/magento cache:flush";
-        $bashCMD[] = "./bin/magento maintenance:disable";
 
         $this->runBashCommand($deployer, $bashCMD);
     }
