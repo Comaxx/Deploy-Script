@@ -463,8 +463,8 @@ class Deployer extends DeployerObserver {
 					$this->_getSourceFolder().$file_path
 				);
 				NedStars_Log::debug('Preserved data file: '.escapeshellarg($this->_config->paths->web_live_path.'/'.$file_path));
-			} else {
-				NedStars_Log::warning('File not found: '.$this->_config->paths->web_live_path.'/'.$file_path);
+			//} else {
+				//NedStars_Log::warning('File not found: '.$this->_config->paths->web_live_path.'/'.$file_path);
 			}
 		}
 
@@ -539,8 +539,8 @@ class Deployer extends DeployerObserver {
 			$temp_file = $this->_getSourceFolder().$file_path;
 			if (is_file($temp_file)) {
 				unlink($temp_file);
-			} else {
-				NedStars_Log::warning('File not found: '.$temp_file);
+			//} else {
+			//	NedStars_Log::warning('File not found: '.$temp_file);
 			}
 		}
 
@@ -570,7 +570,7 @@ class Deployer extends DeployerObserver {
 			foreach ($this->_config->databases as $config_database) {
 				foreach ($config_database->dbnames as $dbname) {
 					$file = escapeshellarg($this->_config->paths->web_live_path.'/'.$config_database->host.'-'.$dbname.'.sql');
-					NedStars_Log::message('Start MySQL backup via mysqldump to: '.$file);
+					NedStars_Log::message('Start MySQL backup via mysqldump to: '.escapeshellarg($config_database->host.'-'.$dbname.'.sql'));
 					$command = 'mysqldump --user='.escapeshellarg($config_database->username);
 					if ($config_database->password !== false) {
 						$command .= ' --password='.escapeshellarg($config_database->password);
@@ -581,7 +581,7 @@ class Deployer extends DeployerObserver {
 					$command .= " --result-file=".$file;
 
 					//force output or the function will not return the correct value.
-					if (!NedStars_Execution::run($command." && echo 'OK'")) {
+					if (!NedStars_Execution::run($command." 2>&1 && echo 'OK'")) {
 						throw new DeployerException('MySQL backup failed ('.$config_database->username.'@'.$config_database->host.':'.$dbname.').', DeployerException::MYSQL_FAIL);
 					}
 				}
@@ -661,7 +661,7 @@ class Deployer extends DeployerObserver {
 			$this->notify('Backup_preBackupLive');
 
 			$destination_file = $this->_config->backup->folder.'/backup_'.date('Ymd_Hi').'.tar.gz';
-			NedStars_Log::message('Start backup live to : '.escapeshellarg($destination_file));
+			NedStars_Log::message('Start backup to : '.escapeshellarg('backup_'.date('Ymd_Hi').'.tar.gz'));
 			NedStars_FileSystem::backupDir($this->_config->paths->web_live_path, $destination_file);
 
 
@@ -703,6 +703,7 @@ class Deployer extends DeployerObserver {
 
 		// trigger post hook
 		$this->notify('Data_postSwitchLive');
+		$this->notify('Deployer_postDeployer');
 	}
 
 	/**
@@ -892,7 +893,7 @@ class Deployer extends DeployerObserver {
 			// one for backup (posibly on the same disk)
 			// one for db backup (size unknown)
 			if ($folder_size * 4 > $free_size_live) {
-				throw new DeployerException('Not enough free disk space on Live.', DeployerException::DISK_SPACE);
+				//throw new DeployerException('Not enough free disk space on Live.', DeployerException::DISK_SPACE);
 			}
 
 			// check backup dir if found
