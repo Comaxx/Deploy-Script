@@ -25,31 +25,33 @@
 
 	<!-- Preserve data -->
 	<preserve_data>
+		<config_files>
+			<file>app/etc/local.xml</file> 
+		</config_files>
 		<files> 
 			<file>.htaccess</file>
 			<file>robots.txt</file>
 			<file>sitemap.xml</file>
-			<file>app/etc/local.xml</file> 
 		</files>
 		<folders>    
-      <folder>media</folder>
-    </folders>
-    <symlink> 
-    </symlink>
+			<folder>media</folder>
+		</folders>
+		<symlink> 
+		</symlink>
 		<google_files>y</google_files>
-  </preserve_data>
+	</preserve_data>
 
 	<!-- Clear data -->
 	<clear_data>
-    <folders>
-    </folders>
-    <files> 
-    </files>
-  </clear_data>
-	
+		<folders>
+		</folders>
+		<files> 
+		</files>
+	</clear_data>
+
 	<!-- User permissions -->
-  <permissions>
-    <user>www-data</user> 
-    <group>www-data</group> 
-  </permissions>
+	<permissions>
+		<user>www-data</user> 
+		<group>www-data</group> 
+	</permissions>
 </config>

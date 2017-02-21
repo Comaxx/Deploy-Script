@@ -24,21 +24,23 @@
 
 	<!-- Preserve data -->
 	<preserve_data>
+		<config_files>
+			<file>sites/all/settings.php</file>
+			<file>sites/default/settings.php</file>
+		</config_files>
 		<files> 
 			<file>.htaccess</file>
 			<file>robots.txt</file>
 			<file>sitemap.xml</file>
-			<file>sites/all/settings.php</file>
-			<file>sites/default/settings.php</file>
 		</files>
-    <folders>
-      <folder>sites/all/files</folder>
-      <folder>sites/default/files</folder>
-      <folder>sites/all/private</folder>  
-      <folder>sites/default/private</folder>
-    </folders>
-    <symlink> 
-    </symlink>
+		<folders>
+			<folder>sites/all/files</folder>
+			<folder>sites/default/files</folder>
+			<folder>sites/all/private</folder>  
+			<folder>sites/default/private</folder>
+		</folders>
+		<symlink> 
+		</symlink>
 		<google_files>y</google_files>
 	</preserve_data>
 
