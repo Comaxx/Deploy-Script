@@ -5,16 +5,6 @@
 
 	<!-- Datebase settings -->
 	<databases>
-		<!--
-		<database>
-			<database_config_file></database_config_file>
-			<read_from_config>n</read_from_config>
-			<host>localhost</host> 
-			<username></username> 
-			<password></password>
-			<dbname></dbname>
-		</database>
-		-->
 	</databases>
 
 	<!-- Code repository settings -->
@@ -34,17 +24,19 @@
 
 	<!-- Preserve data -->
 	<preserve_data>
+		<config_files>
+			<file>config/local.php</file>
+		</config_files>
 		<files> 
 			<file>.htaccess</file>
 			<file>robots.txt</file>
 			<file>sitemap.xml</file>
-			<file>config/local.php</file>
 		</files>
 		<folders>    
-      <folder>files</folder>
-    </folders>
-    <symlink> 
-    </symlink>
+		<folder>files</folder>
+		</folders>
+		<symlink> 
+		</symlink>
 		<google_files>y</google_files>
 	</preserve_data>
 
