@@ -455,6 +455,20 @@ class Deployer extends DeployerObserver {
 			}
 		}
 
+		// backup / preserve config files
+		foreach ($this->_config->preserve_data->config_files as $config_file_path) {
+            if (is_file($this->_config->paths->web_live_path.'/'.$config_file_path)) {
+				NedStars_FileSystem::copyFile(
+					$this->_config->paths->web_live_path.'/'.$config_file_path,
+					$this->_getSourceFolder().$config_file_path
+				);
+				NedStars_Log::debug('Preserved config file: '.escapeshellarg($this->_config->paths->web_live_path.'/'.$config_file_path));
+			} else {
+				NedStars_Log::exception('Config file not found: '.$this->_config->paths->web_live_path.'/'.$config_file_path);
+				die();
+			}
+		}
+
 		// backup / preserve files
 		foreach ($this->_config->preserve_data->files as $file_path) {
             if (is_file($this->_config->paths->web_live_path.'/'.$file_path)) {
@@ -463,8 +477,8 @@ class Deployer extends DeployerObserver {
 					$this->_getSourceFolder().$file_path
 				);
 				NedStars_Log::debug('Preserved data file: '.escapeshellarg($this->_config->paths->web_live_path.'/'.$file_path));
-			//} else {
-				//NedStars_Log::warning('File not found: '.$this->_config->paths->web_live_path.'/'.$file_path);
+			} else {
+				NedStars_Log::warning('File not found: '.$this->_config->paths->web_live_path.'/'.$file_path);
 			}
 		}
 
@@ -539,8 +553,8 @@ class Deployer extends DeployerObserver {
 			$temp_file = $this->_getSourceFolder().$file_path;
 			if (is_file($temp_file)) {
 				unlink($temp_file);
-			//} else {
-			//	NedStars_Log::warning('File not found: '.$temp_file);
+			} else {
+				NedStars_Log::warning('File not found: '.$temp_file);
 			}
 		}
 
