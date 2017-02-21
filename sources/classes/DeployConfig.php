@@ -233,6 +233,7 @@ class DeployConfig {
 		// preserve_data
 		$config->_newNode('preserve_data');
 		$config->preserve_data->_checkArray('//preserve_data/folders/folder', $oXml);
+		$config->preserve_data->_checkArray('//preserve_data/config_files/file', $oXml);
 		$config->preserve_data->_checkArray('//preserve_data/files/file', $oXml);
         $config->preserve_data->_checkArray('//preserve_data/symlinks/symlink', $oXml);
         $config->preserve_data->_checkArray('//preserve_data/regexes/regex', $oXml);
