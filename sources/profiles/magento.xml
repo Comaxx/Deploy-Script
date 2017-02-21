@@ -5,16 +5,6 @@
 
 	<!-- Datebase settings -->
 	<databases>
-		<!--
-		<database>
-			<database_config_file>app/etc/local.xml</database_config_file>
-			<read_from_config>y</read_from_config>
-			<host>127.0.0.1</host> 
-			<username></username> 
-			<password></password>
-			<dbname></dbname>
-		</database>
-		-->
 	</databases>
 
 	<!-- Code repository settings -->
@@ -24,13 +14,6 @@
 			<branch>develop</branch>
 		</git>
 	</archive>
-
-	<!-- Notifications of deployment -->
-	<notifications>
-		<http_addresses>
-			<url>http://api.comaxx.nl/deploy_hook</url>
-		</http_addresses>
-	</notifications>
 
 	<!-- Backup settings -->
 	<backup>

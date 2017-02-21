@@ -26,12 +26,13 @@
 		</git>
 	</archive>
 
-	<!-- Notifications of deployment -->
+	<!-- Notifications of deployment - - >
 	<notifications>
 		<http_addresses>
 			<url>http://api.comaxx.nl/deploy_hook</url>
 		</http_addresses>
 	</notifications>
+	-->
 
 	<!-- Backup settings -->
 	<backup>

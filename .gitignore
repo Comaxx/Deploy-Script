@@ -1,5 +1,6 @@
+*~
 log.txt
-staging-config/
+*-config/
 *.new
 *.backup
 *.idee
