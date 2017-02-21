@@ -29,7 +29,9 @@ chdir("../");
  * @return void
  */
 function autoloadHandler($className) {
-    include_once CLASSES . str_replace('_', '/', $className) . '.php';
+	if (file_exists(CLASSES . str_replace('_', '/', $className) . '.php')) {
+		include_once CLASSES . str_replace('_', '/', $className) . '.php';
+	}
 }
 
 /**
