@@ -1,5 +1,13 @@
 Deploy Script
 ========
+Deploy Script 1.4.6
+-------
+- Add mysqli support.
+- Add Magento2 Post deploy hook.
+- Add ORO Post deploy hook.
+- Add Magento2 profile.
+- Add Default profile.
+- Add Drupal profile. 
 
 Deploy Script 1.4.5
 -------
