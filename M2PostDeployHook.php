@@ -16,9 +16,9 @@ class M2PostDeployHook implements Hooks_DeployerInterface
     {
         NedStars_Log::message('Running Post Deploy commands:');
         $bashCMD[] = "composer.phar install 2>1 > /dev/null";
-        $bashCMD[] = "bin/magento setup:static-content:deploy nl_NL en_US 2>1 > /dev/null";
         $bashCMD[] = "bin/magento setup:upgrade 2>1 > /dev/null";
         $bashCMD[] = "bin/magento setup:di:compile 2>1 > /dev/null";
+        $bashCMD[] = "bin/magento setup:static-content:deploy nl_NL en_US 2>1 > /dev/null";
         $bashCMD[] = "bin/magento maintenance:disable 2>1 > /dev/null"; //always disable maintainance mode
         $bashCMD[] = "bin/magento cache:flush 2>1 > /dev/null";
 
