@@ -49,17 +49,23 @@ class NedStars_Git {
 		if (!is_dir($destination_path)) {
 			throw new NedStars_GitException('$destination_path is not a valid path: '. escapeshellarg($destination_path), NedStars_GitException::INVALID_PATH);
 		}
-
-		// build command, folder in git repo is optional
-		$command = 'git archive --remote '.escapeshellarg($repository).' '.escapeshellarg($branch);
+		
 		$result_path= NedStars_FileSystem::getNiceDir($destination_path);
+		
+		// Remove the previous deployment path
+		$command = 'rm -rf '.escapeshellarg($result_path).' > /dev/null';
+		
+		// Clone repository
+		$command .= ' && git clone -b '.escapeshellarg(str_replace('heads/','',$branch)).' '.escapeshellarg($repository).' '.escapeshellarg($result_path).' > /dev/null';
+		
+		// Update submodule
+		$command .= ' && cd '.escapeshellarg($result_path).' && git submodule init > /dev/null && git submodule update > /dev/null';
+		
+		// Return correct destination path
 		if ($subfolder !== null) {
-			$command .= ' '.escapeshellarg($subfolder);
 			$result_path = NedStars_FileSystem::getNiceDir($result_path.$subfolder);
 		}
-		// extract git tar file into destination folder
-		$command .= ' | tar -x -C '.escapeshellarg($destination_path);
-
+		
 		NedStars_Execution::run($command);
 
 		if (!is_dir($result_path) ) {
