@@ -56,7 +56,7 @@ class NedStars_Git {
 		$command = 'rm -rf '.escapeshellarg($result_path).' > /dev/null';
 		
 		// Clone repository
-		$command .= ' && git clone -b '.escapeshellarg(str_replace('heads/','',$branch)).' '.escapeshellarg($repository).' '.escapeshellarg($result_path).' > /dev/null';
+		$command .= ' && git clone -b '.escapeshellarg(str_replace('heads/','',str_replace('tags/','',$branch))).' '.escapeshellarg($repository).' '.escapeshellarg($result_path).' > /dev/null';
 		
 		// Update submodule
 		$command .= ' && cd '.escapeshellarg($result_path).' && git submodule init > /dev/null && git submodule update > /dev/null';
