@@ -26,7 +26,8 @@
 	<!-- Preserve data -->
 	<preserve_data>
 		<config_files>
-			<file>app/etc/local.xml</file> 
+			<file>app/etc/env.php</file>
+            <file>app/etc/config.php</file>
 		</config_files>
 		<files> 
 			<file>.htaccess</file>
@@ -35,6 +36,9 @@
 		</files>
 		<folders>    
 			<folder>media</folder>
+			<folder>var</folder>
+			<folder>pub/media</folder>
+			<folder>pub/static</folder>
 		</folders>
 		<symlink> 
 		</symlink>

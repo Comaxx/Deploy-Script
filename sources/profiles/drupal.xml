@@ -17,7 +17,6 @@
 
 	<!-- Backup settings -->
 	<backup>
-		<folder></folder> 
 		<retention_days>3</retention_days> 
 		<make_database_backup>y</make_database_backup>
 		<make_file_backup>y</make_file_backup>
@@ -26,32 +25,37 @@
 	<!-- Preserve data -->
 	<preserve_data>
 		<config_files>
-			<file>app/etc/local.xml</file> 
+			<file>sites/all/settings.php</file>
+			<file>sites/default/settings.php</file>
 		</config_files>
 		<files> 
 			<file>.htaccess</file>
 			<file>robots.txt</file>
 			<file>sitemap.xml</file>
 		</files>
-		<folders>    
-			<folder>media</folder>
+		<folders>
+			<folder>sites/all/files</folder>
+			<folder>sites/default/files</folder>
+			<folder>sites/all/private</folder>  
+			<folder>sites/default/private</folder>
 		</folders>
 		<symlink> 
 		</symlink>
 		<google_files>y</google_files>
 	</preserve_data>
 
+
 	<!-- Clear data -->
 	<clear_data>
-		<folders>
+		<folders> 
 		</folders>
 		<files> 
 		</files>
 	</clear_data>
 
 	<!-- User permissions -->
-	<permissions>
-		<user>www-data</user> 
-		<group>www-data</group> 
-	</permissions>
+  <permissions>
+    <user>www-data</user> 
+    <group>www-data</group> 
+  </permissions>
 </config>

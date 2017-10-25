@@ -13,7 +13,7 @@ class DeployConfig {
 	/**
 	 * Configuration object version
 	 */
-	const VERSION = '1.4.5';
+	const VERSION = '1.4.6';
 
 	/**
 	 * Fix for phpmd, do not call this function.
@@ -233,6 +233,7 @@ class DeployConfig {
 		// preserve_data
 		$config->_newNode('preserve_data');
 		$config->preserve_data->_checkArray('//preserve_data/folders/folder', $oXml);
+		$config->preserve_data->_checkArray('//preserve_data/config_files/file', $oXml);
 		$config->preserve_data->_checkArray('//preserve_data/files/file', $oXml);
         $config->preserve_data->_checkArray('//preserve_data/symlinks/symlink', $oXml);
         $config->preserve_data->_checkArray('//preserve_data/regexes/regex', $oXml);
@@ -315,6 +316,7 @@ class DeployConfig {
 		$database->dbnames = array();
 
 		$dbnames = $element->xpath('dbnames/dbname');
+
 		if (count($dbnames) > 0) {
 			//multiple db's
 			foreach ($dbnames as $dbname) {
@@ -323,7 +325,7 @@ class DeployConfig {
 		} else {
 			//single db
 			$dbname = $element->xpath('dbname');
-			if ($dbname) {
+			if (!empty($dbname) && is_array($dbname)) {
 				array_push($database->dbnames, strval($dbname[0]));
 			}
 		}

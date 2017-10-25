@@ -1,3 +1,9 @@
+*~
+log.txt
+*-config/
+*.new
+*.backup
+*.idee
 *.txt
 *.conf.xml
-.idea
+.idea*
