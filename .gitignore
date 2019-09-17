@@ -6,4 +6,4 @@ log.txt
 *.idee
 *.txt
 *.conf.xml
-.idea/
+.idea*

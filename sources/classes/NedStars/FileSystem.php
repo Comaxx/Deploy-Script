@@ -216,7 +216,8 @@ class NedStars_FileSystem {
 		// make sure path exists with a line ending
 		$path = self::_getValidatedDir($path);
 
-		$return = NedStars_Execution::run('tar -czPf '.escapeshellarg($dest_file_path).' '.escapeshellarg($path), true);
+		$command = "tar --exclude='*media*' --exclude='*cache*' --exclude='*tmp*' -czPf ". escapeshellarg($dest_file_path).' '.escapeshellarg($path);
+		$return = NedStars_Execution::run($command, true);
 
 		// make sure the backup file is created
 		if (!file_exists($dest_file_path) ) {

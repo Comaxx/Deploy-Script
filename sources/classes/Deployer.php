@@ -558,6 +558,9 @@ class Deployer extends DeployerObserver {
 			}
 		}
 
+		//clear redis cache
+		$command = "redis-cli flushall && redis-cli flushdb";
+		NedStars_Execution::run($command, true);
 
 		// trigger post hook
 		$this->notify('Data_postClearData');
@@ -907,6 +910,7 @@ class Deployer extends DeployerObserver {
 			// one for backup (posibly on the same disk)
 			// one for db backup (size unknown)
 			if ($folder_size * 4 > $free_size_live) {
+				NedStars_Log::message('Much likely not enough free disk space on Live.');
 				//throw new DeployerException('Not enough free disk space on Live.', DeployerException::DISK_SPACE);
 			}
 
