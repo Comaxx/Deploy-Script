@@ -154,12 +154,7 @@ class NedStars_FileSystem {
 			}
 		}
 
-		// return true if set_of_not_found_binaries is empty
-		if (count($binary_name) == 0) {
-			return true;
-		} else {
-			return $not_found_binaries;
-		}
+                return $not_found_binaries;
 	}
 
 	/**
