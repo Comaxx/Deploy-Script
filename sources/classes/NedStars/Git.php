@@ -59,7 +59,7 @@ class NedStars_Git {
 		$command .= ' && git clone -b '.escapeshellarg(str_replace('heads/','',str_replace('tags/','',$branch))).' '.escapeshellarg($repository).' '.escapeshellarg($result_path).' > /dev/null';
 		
 		// Update submodule
-		$command .= ' && cd '.escapeshellarg($result_path).' && git submodule init > /dev/null && git submodule update > /dev/null';
+		$command .= ' && cd '.escapeshellarg($result_path).' && git submodule update --init --recursive > /dev/null';
 		
 		// Return correct destination path
 		if ($subfolder !== null) {
